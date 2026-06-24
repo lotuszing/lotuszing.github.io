@@ -1,1107 +1,817 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0c0c0e">
-  <meta name="description" content="A live community noticeboard for maintenance issues raised by residents of Lotus Zing.">
-  <title>Lotus Zing Community Noticeboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    * { margin: 0; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0c0e">
+<meta name="description" content="Live community noticeboard — Lotus Zing, Sector 168, Noida">
+<title>Lotus Zing — Community Noticeboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+*{margin:0;}
+:root{
+  color-scheme:dark;
+  --ink:#0c0c0e; --paper:#f2ede6; --soft:#c9c3bc; --dim:#817d78;
+  --line:rgba(242,237,230,0.1); --line2:rgba(242,237,230,0.26);
+  --urgent:#e8503a; --moderate:#e8943a; --low:#5c9e78;
+  --accent:#5b6ce1; --accent2:#6f7dea;
+  --r:6px;
+  --page:min(1180px,calc(100vw - 32px));
+  --dp:"Syne",sans-serif; --bd:"Inter",sans-serif; --mn:"JetBrains Mono",monospace;
+}
+html{scroll-behavior:smooth;background:var(--ink);}
+body{
+  min-width:320px;min-height:100dvh;overflow-x:hidden;
+  background:linear-gradient(rgba(242,237,230,0.018) 1px,transparent 1px),var(--ink);
+  background-size:100% 72px;
+  color:var(--paper);font-family:var(--bd);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit;}
+button,a{-webkit-tap-highlight-color:transparent;}
+a{color:inherit;}
+::selection{background:var(--accent);color:var(--paper);}
+.skip{position:fixed;top:10px;left:10px;z-index:200;padding:10px 14px;border-radius:var(--r);background:var(--paper);color:var(--ink);transform:translateY(-150%);transition:transform 180ms;text-decoration:none;}
+.skip:focus{transform:translateY(0);}
+.sh{width:var(--page);margin-inline:auto;}
 
-    :root {
-      color-scheme: dark;
-      --ink: #0c0c0e;
-      --paper: #f2ede6;
-      --paper-soft: #c9c3bc;
-      --paper-dim: #817d78;
-      --line: rgba(242, 237, 230, 0.14);
-      --line-strong: rgba(242, 237, 230, 0.3);
-      --urgent: #e8503a;
-      --moderate: #e8943a;
-      --low: #5c9e78;
-      --accent: #5b6ce1;
-      --accent-hover: #6f7dea;
-      --radius: 6px;
-      --page: min(1180px, calc(100vw - 32px));
-      --display: "Syne", sans-serif;
-      --body: "Inter", sans-serif;
-      --mono: "JetBrains Mono", monospace;
-      --text-label: 10px;
-      --text-meta: 12px;
-      --text-small: 14px;
-      --text-body: 16px;
-    }
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(12,12,14,0.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
+.topbar-in{width:var(--page);margin-inline:auto;min-height:64px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--dp);font-weight:700;text-decoration:none;}
+.bmark{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line2);border-radius:var(--r);font-family:var(--mn);font-size:10px;}
+.bname{font-size:13px;}
+.blabel{color:var(--dim);font-family:var(--mn);font-size:10px;text-align:center;text-transform:uppercase;letter-spacing:.12em;}
+.tactions{justify-self:end;display:flex;align-items:center;gap:12px;}
+.ldot{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-family:var(--mn);font-size:9px;text-transform:uppercase;letter-spacing:.08em;}
+.ldot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--low);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.addlink{min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border:1px solid var(--accent);border-radius:var(--r);background:var(--accent);color:var(--paper);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background 150ms,transform 150ms;}
+.addlink:hover{background:var(--accent2);}
+.addlink:active{transform:translateY(1px);}
 
-    html { scroll-behavior: smooth; background: var(--ink); }
-    body {
-      min-width: 320px;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      background:
-        linear-gradient(rgba(242, 237, 230, 0.025) 1px, transparent 1px),
-        var(--ink);
-      background-size: 100% 72px;
-      color: var(--paper);
-      font-family: var(--body);
-      font-size: 16px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+/* PATTERN ALERT */
+.pat-alert{background:rgba(232,148,58,.09);border-bottom:1px solid rgba(232,148,58,.28);padding:10px 0;}
+.pat-in{width:var(--page);margin-inline:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.pat-icon{font-size:14px;}
+.pat-txt{font-size:13px;color:var(--moderate);}
+.pat-txt strong{font-weight:600;}
+.pat-close{margin-left:auto;background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;line-height:1;padding:0 4px;}
 
-    button, input { font: inherit; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    a { color: inherit; }
-    ::selection { background: var(--accent); color: var(--paper); }
+/* HERO */
+.hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(400px,1.15fr);grid-template-rows:auto auto;column-gap:clamp(32px,7vw,110px);padding:clamp(48px,7vw,82px) 0 32px;border-bottom:1px solid var(--line);}
+.hero-main{align-self:center;}
+.hero-kicker{margin-bottom:20px;color:var(--dim);font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.1em;}
+.ctr-wrap{display:flex;align-items:flex-end;gap:clamp(12px,2vw,26px);}
+.ctr{min-width:1.2ch;color:var(--paper);font-family:var(--dp);font-size:clamp(96px,14vw,200px);font-variant-numeric:tabular-nums;font-weight:700;line-height:.72;letter-spacing:-.02em;}
+.ctr-copy{max-width:10ch;padding-bottom:clamp(4px,1vw,18px);font-family:var(--dp);font-size:clamp(22px,2.8vw,40px);font-weight:600;line-height:1;}
+.hero-side{align-self:center;border-left:1px solid var(--line);padding-left:clamp(20px,4vw,48px);}
+.hero-foot{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding-top:24px;}
+.insight{color:var(--soft);font-size:13px;}
+.insight strong{color:var(--paper);font-weight:600;}
+.upd{color:var(--dim);font-family:var(--mn);font-size:9px;text-align:right;text-transform:uppercase;letter-spacing:.07em;}
 
-    .skip-link {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 20;
-      padding: 10px 14px;
-      border-radius: var(--radius);
-      background: var(--paper);
-      color: var(--ink);
-      transform: translateY(-150%);
-    }
-    .skip-link:focus { transform: translateY(0); }
+/* HEALTH SCORE */
+.health-blk{margin-bottom:22px;}
+.health-lbl{font-family:var(--mn);font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.health-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.health-grade{font-family:var(--dp);font-size:42px;font-weight:700;line-height:1;letter-spacing:-.04em;}
+.health-grade.g{color:var(--low);}
+.health-grade.m{color:var(--moderate);}
+.health-grade.b{color:var(--urgent);}
+.health-pct{font-family:var(--mn);font-size:20px;font-weight:500;color:var(--soft);}
+.health-bar{height:4px;background:rgba(242,237,230,.07);border-radius:2px;overflow:hidden;margin-bottom:5px;}
+.health-fill{height:100%;border-radius:2px;transition:width 1.2s ease;}
+.health-note{font-size:11px;color:var(--dim);}
 
-    .shell { width: var(--page); margin-inline: auto; }
+/* SIGNAL GRID */
+.sig-grid{display:grid;grid-template-columns:repeat(2,1fr);}
+.sig{min-height:90px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:14px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+.sig:nth-child(even){border-right:0;}
+.sig:nth-child(n+3){border-bottom:0;}
+.sig-lbl{color:var(--dim);font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;}
+.sig-val{color:var(--paper);font-family:var(--dp);font-size:clamp(18px,2.2vw,30px);font-weight:600;line-height:1;overflow-wrap:anywhere;}
+.sig-val.urg{color:var(--urgent);}
+.sig-note{color:var(--dim);font-size:10px;}
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid var(--line);
-      background: rgba(12, 12, 14, 0.88);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-    .topbar-inner {
-      width: var(--page);
-      min-height: 68px;
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 16px;
-    }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      width: fit-content;
-      font-family: var(--display);
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .brand-mark {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-    .brand-name { font-size: 14px; letter-spacing: 0; }
-    .board-label {
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: 10px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-    .top-actions { justify-self: end; display: flex; align-items: center; gap: 14px; }
-    .live-state {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .live-state::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--low);
-    }
-    .add-link {
-      min-height: 40px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 15px;
-      border: 1px solid var(--accent);
-      border-radius: var(--radius);
-      background: var(--accent);
-      color: var(--paper);
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background-color 180ms ease, transform 180ms ease;
-    }
-    .add-link:hover { background: var(--accent-hover); }
-    .add-link:active { transform: translateY(1px); }
+/* SECTION */
+.sec{padding:clamp(56px,8vw,100px) 0;border-bottom:1px solid var(--line);}
+.sec-title{max-width:14ch;margin-bottom:12px;font-family:var(--dp);font-size:clamp(30px,4.5vw,60px);font-weight:600;line-height:.98;}
+.sec-intro{max-width:46ch;color:var(--soft);font-size:14px;line-height:1.65;}
 
-    .hero {
-      min-height: auto;
-      display: grid;
-      grid-template-columns: minmax(0, 0.85fr) minmax(460px, 1.15fr);
-      grid-template-rows: auto auto;
-      column-gap: clamp(32px, 7vw, 110px);
-      padding: clamp(48px, 7vw, 82px) 0 30px;
-      border-bottom: 1px solid var(--line);
-    }
-    .hero-main { align-self: center; }
-    .hero-kicker {
-      max-width: 28ch;
-      margin-bottom: 24px;
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: var(--text-label);
-      text-transform: uppercase;
-    }
-    .counter-wrap { display: flex; align-items: flex-end; gap: clamp(14px, 2vw, 28px); }
-    .counter {
-      min-width: 1.2ch;
-      color: var(--paper);
-      font-family: var(--display);
-      font-size: clamp(112px, 16vw, 220px);
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-      line-height: 0.72;
-      letter-spacing: 0;
-    }
-    .counter-copy {
-      max-width: 10ch;
-      padding-bottom: clamp(4px, 2vw, 24px);
-      font-family: var(--display);
-      font-size: clamp(25px, 3.2vw, 44px);
-      font-weight: 600;
-      line-height: 0.98;
-    }
-    .hero-side {
-      align-self: center;
-      border-left: 1px solid var(--line);
-      padding-left: clamp(24px, 4vw, 48px);
-    }
-    .hero-foot {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 28px;
-      padding-top: 28px;
-    }
-    .insight-line {
-      min-height: 24px;
-      color: var(--paper-soft);
-      font-size: 13px;
-    }
-    .insight-line strong { color: var(--paper); font-weight: 600; }
-    .updated {
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: 9px;
-      text-align: right;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
+/* TOWERS */
+.tower-layout{display:grid;grid-template-columns:minmax(200px,.42fr) minmax(0,1fr);gap:clamp(40px,8vw,120px);align-items:start;}
+.tower-leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;color:var(--dim);font-family:var(--mn);font-size:9px;text-transform:uppercase;}
+.tower-leg span{display:inline-flex;align-items:center;gap:5px;}
+.tower-leg i{width:14px;height:3px;background:currentColor;}
+.tower-leg .u{color:var(--urgent);}
+.tower-leg .m{color:var(--moderate);}
+.tower-leg .l{color:var(--low);}
+.tower-list{display:grid;gap:15px;}
+.trow{display:grid;grid-template-columns:68px minmax(0,1fr) 110px;gap:10px;align-items:center;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;}
+.trow:hover .tname{color:var(--paper);}
+.trow[aria-pressed="true"] .tname{color:var(--paper);}
+.trow[aria-pressed="true"] .ttrack{outline:1px solid rgba(242,237,230,.38);outline-offset:3px;}
+.tname,.tbd{font-family:var(--mn);font-size:10px;}
+.tname{color:var(--soft);}
+.ttrack{height:11px;background:rgba(242,237,230,.05);overflow:hidden;border-radius:1px;}
+.tfill{height:100%;display:flex;}
+.tseg{height:100%;}
+.tseg.urgent{background:var(--urgent);}
+.tseg.moderate{background:var(--moderate);}
+.tseg.low{background:var(--low);}
+.trow.empty{opacity:.32;}
+.trow.empty .ttrack{height:1px;}
+.tbd{color:var(--dim);text-align:right;font-size:9px;}
+.tbd strong{color:var(--soft);font-weight:500;}
 
-    .signal-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .signal {
-      min-width: 0;
-      min-height: 112px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 20px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-    .signal:nth-child(even) { border-right: 0; }
-    .signal:nth-child(n + 3) { border-bottom: 0; }
-    .signal-label {
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: var(--text-label);
-      text-transform: uppercase;
-    }
-    .signal-value {
-      color: var(--paper);
-      font-family: var(--display);
-      font-size: clamp(24px, 2.8vw, 38px);
-      font-weight: 600;
-      line-height: 1;
-      overflow-wrap: anywhere;
-    }
-    .signal-value.urgent { color: var(--urgent); }
-    .signal-note { color: var(--paper-dim); font-size: 11px; }
+/* FLOOR HEATMAP */
+.floor-drawer{margin-top:28px;padding:18px 22px;border:1px solid var(--line2);border-radius:var(--r);background:rgba(242,237,230,.02);}
+.fdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.fdtitle{font-family:var(--mn);font-size:11px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;}
+.fdclose{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;line-height:1;padding:0 4px;}
+.floor-bars{display:flex;gap:5px;align-items:flex-end;}
+.fbar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.fbar{border-radius:2px 2px 0 0;transition:opacity .15s;position:relative;}
+.fbar:hover{opacity:.7;}
+.fbar-lbl{font-family:var(--mn);font-size:8px;color:var(--dim);}
+.floor-note{margin-top:10px;font-family:var(--mn);font-size:10px;color:var(--dim);}
 
-    .section { padding: clamp(64px, 9vw, 116px) 0; border-bottom: 1px solid var(--line); }
-    .section-title {
-      max-width: 15ch;
-      margin-bottom: 12px;
-      font-family: var(--display);
-      font-size: clamp(34px, 5vw, 68px);
-      font-weight: 600;
-      line-height: 0.98;
-    }
-    .section-intro { max-width: 46ch; color: var(--paper-soft); font-size: 14px; line-height: 1.65; }
+/* HEAT CALENDAR */
+.cal-layout{display:grid;grid-template-columns:minmax(200px,.38fr) minmax(0,1fr);gap:clamp(40px,8vw,120px);align-items:start;}
+.cal-wrap{overflow-x:auto;padding-bottom:8px;}
+.cal-svg{display:block;}
+.cal-leg{display:flex;align-items:center;gap:8px;margin-top:10px;font-family:var(--mn);font-size:9px;color:var(--dim);}
+.cal-leg-cells{display:flex;gap:3px;}
+.cal-leg-cell{width:10px;height:10px;border-radius:1px;}
 
-    .tower-layout {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
-      gap: clamp(42px, 9vw, 130px);
-      align-items: start;
-    }
-    .tower-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: 9px;
-      text-transform: uppercase;
-    }
-    .tower-legend span { display: inline-flex; align-items: center; gap: 6px; }
-    .tower-legend i { width: 16px; height: 3px; background: currentColor; }
-    .tower-legend .u { color: var(--urgent); }
-    .tower-legend .m { color: var(--moderate); }
-    .tower-legend .l { color: var(--low); }
-    .tower-list { display: grid; gap: 17px; }
-    .tower-row {
-      display: grid;
-      grid-template-columns: 74px minmax(0, 1fr) 112px;
-      gap: 12px;
-      align-items: center;
-      width: 100%;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
-    .tower-name, .tower-count { font-family: var(--mono); font-size: 10px; }
-    .tower-name { color: var(--paper-soft); }
-    .tower-count { color: var(--paper-dim); text-align: right; }
-    .tower-track { height: 13px; background: rgba(242, 237, 230, 0.055); overflow: hidden; }
-    .tower-fill { height: 100%; display: flex; transform-origin: left; }
-    .tower-segment { height: 100%; }
-    .tower-segment.urgent { background: var(--urgent); }
-    .tower-segment.moderate { background: var(--moderate); }
-    .tower-segment.low { background: var(--low); }
-    .tower-row:hover .tower-name, .tower-row[aria-pressed="true"] .tower-name { color: var(--paper); }
-    .tower-row[aria-pressed="true"] .tower-track { outline: 1px solid var(--paper); outline-offset: 3px; }
-    .tower-row.is-empty { min-height: 20px; opacity: 0.42; }
-    .tower-row.is-empty .tower-track { height: 1px; }
-    .tower-breakdown { color: var(--paper-dim); font-family: var(--mono); font-size: 9px; text-align: right; }
-    .tower-breakdown strong { color: var(--paper-soft); font-weight: 500; }
+/* FILTER PANEL */
+.filter-panel{position:sticky;top:64px;z-index:7;display:grid;gap:10px;margin:0 0 22px;padding:12px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(12,12,14,.95);backdrop-filter:blur(18px);}
+.ctrl-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.ctrl-set{display:flex;align-items:center;gap:8px;}
+.ctrl-lbl{color:var(--dim);font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;}
+.view-tog{display:inline-grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
+.vbtn{min-height:32px;padding:0 10px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--soft);font-size:11px;cursor:pointer;}
+.vbtn:last-child{border-right:0;}
+.vbtn[aria-pressed="true"]{background:var(--paper);color:var(--ink);}
+.srt{min-height:32px;padding:0 28px 0 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--ink);color:var(--paper);font-size:11px;cursor:pointer;}
+.frow{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.frow::-webkit-scrollbar{display:none;}
+.frow-lbl{flex:0 0 auto;width:52px;color:var(--dim);font-family:var(--mn);font-size:10px;text-transform:uppercase;}
+.fbtn{flex:0 0 auto;min-height:30px;padding:0 10px;border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--soft);font-size:11px;cursor:pointer;white-space:nowrap;transition:border-color 120ms,color 120ms,background 120ms;}
+.fbtn:hover{border-color:var(--line2);color:var(--paper);}
+.fbtn[aria-pressed="true"]{border-color:var(--paper);background:var(--paper);color:var(--ink);}
+.fbtn[data-v="urgent"][aria-pressed="true"]{border-color:var(--urgent);background:var(--urgent);color:var(--ink);}
+.fbtn[data-v="moderate"][aria-pressed="true"]{border-color:var(--moderate);background:var(--moderate);color:var(--ink);}
+.fbtn[data-v="low"][aria-pressed="true"]{border-color:var(--low);background:var(--low);color:var(--ink);}
 
-    .feed-head {
-      display: grid;
-      grid-template-columns: 1fr minmax(280px, 0.54fr);
-      gap: clamp(32px, 7vw, 90px);
-      align-items: end;
-      margin-bottom: 36px;
-    }
-    .feed-title {
-      font-family: var(--display);
-      font-size: clamp(42px, 7vw, 88px);
-      font-weight: 600;
-      line-height: 0.9;
-    }
-    .feed-summary { color: var(--paper-soft); font-size: 14px; }
-    .feed-summary strong { color: var(--paper); }
-    .filter-panel {
-      position: sticky;
-      top: 68px;
-      z-index: 7;
-      display: grid;
-      gap: 12px;
-      margin: 0 0 26px;
-      padding: 14px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: rgba(12, 12, 14, 0.94);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-    .control-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .control-set { display: flex; align-items: center; gap: 8px; }
-    .control-label { color: var(--paper-dim); font-family: var(--mono); font-size: var(--text-label); text-transform: uppercase; }
-    .view-toggle { display: inline-grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-    .view-button {
-      min-height: 34px;
-      padding: 0 12px;
-      border: 0;
-      border-right: 1px solid var(--line);
-      background: transparent;
-      color: var(--paper-soft);
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .view-button:last-child { border-right: 0; }
-    .view-button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
-    .sort-select {
-      min-height: 34px;
-      padding: 0 32px 0 11px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--ink);
-      color: var(--paper);
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding-bottom: 2px;
-    }
-    .filter-group::-webkit-scrollbar { display: none; }
-    .filter-label {
-      flex: 0 0 auto;
-      width: 58px;
-      color: var(--paper-dim);
-      font-family: var(--mono);
-      font-size: var(--text-label);
-      text-transform: uppercase;
-    }
-    .filter-button {
-      flex: 0 0 auto;
-      min-height: 34px;
-      padding: 0 12px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: transparent;
-      color: var(--paper-soft);
-      font-size: var(--text-meta);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease;
-    }
-    .filter-button:hover { border-color: var(--line-strong); color: var(--paper); }
-    .filter-button[aria-pressed="true"] { border-color: var(--paper); background: var(--paper); color: var(--ink); }
-    .filter-button[data-value="urgent"][aria-pressed="true"] { border-color: var(--urgent); background: var(--urgent); color: var(--ink); }
-    .filter-button[data-value="moderate"][aria-pressed="true"] { border-color: var(--moderate); background: var(--moderate); color: var(--ink); }
-    .filter-button[data-value="low"][aria-pressed="true"] { border-color: var(--low); background: var(--low); color: var(--ink); }
+/* FEED */
+.feed-head{display:grid;grid-template-columns:1fr minmax(240px,.5fr);gap:clamp(28px,6vw,80px);align-items:end;margin-bottom:28px;}
+.feed-title{font-family:var(--dp);font-size:clamp(36px,6vw,80px);font-weight:600;line-height:.9;}
+.feed-sum{color:var(--soft);font-size:14px;}
+.feed-sum strong{color:var(--paper);}
 
-    .issues-grid {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: 12px;
-    }
-    .issue-card {
-      --tone: var(--low);
-      grid-column: span 6;
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--line);
-      border-top: 4px solid var(--tone);
-      border-radius: var(--radius);
-      background: rgba(242, 237, 230, 0.025);
-      padding: clamp(20px, 3vw, 30px);
-      overflow: hidden;
-      transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
-    }
-    .issue-card:nth-child(5n + 1) { grid-column: span 7; }
-    .issue-card:nth-child(5n + 2) { grid-column: span 5; }
-    .issue-card.urgent { --tone: var(--urgent); }
-    .issue-card.moderate { --tone: var(--moderate); }
-    .issue-card.low { --tone: var(--low); }
-    .issue-card.is-new { background: rgba(91, 108, 225, 0.09); border-color: rgba(91, 108, 225, 0.7); border-top-color: var(--accent); }
-    .issue-card:hover { transform: translateY(-3px); border-color: var(--line-strong); background-color: rgba(242, 237, 230, 0.045); }
-    .card-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-    .issue-number { color: var(--paper-dim); font-family: var(--mono); font-size: var(--text-label); word-break: break-all; }
-    .new-badge {
-      padding: 4px 7px;
-      border-radius: 3px;
-      background: var(--accent);
-      color: var(--paper);
-      font-family: var(--mono);
-      font-size: var(--text-label);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-    .issue-type {
-      max-width: 13ch;
-      margin-top: 26px;
-      font-family: var(--display);
-      font-size: clamp(28px, 2.7vw, 38px);
-      font-weight: 600;
-      line-height: 0.98;
-      overflow-wrap: anywhere;
-    }
-    .issue-card:nth-child(5n + 1) .issue-type { font-size: clamp(30px, 3vw, 42px); }
-    .issue-description {
-      max-width: 58ch;
-      margin-top: 18px;
-      color: var(--paper-soft);
-      font-size: var(--text-body);
-      line-height: 1.65;
-      overflow-wrap: anywhere;
-    }
-    .issue-history {
-      margin-top: 17px;
-      padding: 11px 0 0 12px;
-      border-left: 2px solid var(--tone);
-      color: var(--paper-dim);
-      font-size: var(--text-meta);
-      line-height: 1.55;
-    }
-    .issue-history summary { color: var(--paper-soft); cursor: pointer; font-weight: 500; }
-    .issue-history p { margin-top: 8px; }
-    .card-meta {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 11px 18px;
-      margin-top: auto;
-      padding-top: 28px;
-    }
-    .meta-item { min-width: 0; }
-    .meta-label { display: block; color: var(--paper-dim); font-family: var(--mono); font-size: var(--text-label); text-transform: uppercase; letter-spacing: 0.05em; }
-    .meta-value { display: block; margin-top: 4px; color: var(--paper-soft); font-family: var(--mono); font-size: var(--text-meta); line-height: 1.45; overflow-wrap: anywhere; }
-    .meta-value.urgency { color: var(--tone); }
-    .card-footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--paper-dim); font-family: var(--mono); font-size: var(--text-label); }
+/* ISSUE CARDS */
+.igrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;}
+.icard{
+  --tone:var(--low);
+  grid-column:span 6;min-height:280px;
+  display:flex;flex-direction:column;
+  border:1px solid var(--line);border-top:3px solid var(--tone);
+  border-radius:var(--r);background:rgba(242,237,230,.022);
+  padding:clamp(18px,2.4vw,26px);overflow:hidden;
+  transition:transform 160ms,border-color 160ms,background 160ms;
+  position:relative;
+}
+.icard:nth-child(5n+1){grid-column:span 7;}
+.icard:nth-child(5n+2){grid-column:span 5;}
+.icard.urgent{--tone:var(--urgent);}
+.icard.moderate{--tone:var(--moderate);}
+.icard.is-new{background:rgba(91,108,225,.08);border-color:rgba(91,108,225,.6);border-top-color:var(--accent);}
+.icard:hover{transform:translateY(-2px);border-color:var(--line2);background:rgba(242,237,230,.04);}
+.ctopline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.cid{color:var(--dim);font-family:var(--mn);font-size:10px;}
+.cbadges{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.new-badge{padding:2px 6px;border-radius:3px;background:var(--accent);color:var(--paper);font-family:var(--mn);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+.age-badge{padding:2px 6px;border-radius:3px;font-family:var(--mn);font-size:9px;font-weight:500;white-space:nowrap;}
+.age-badge.old{background:rgba(232,80,58,.14);color:var(--urgent);border:1px solid rgba(232,80,58,.28);}
+.age-badge.mid{background:rgba(232,148,58,.11);color:var(--moderate);border:1px solid rgba(232,148,58,.28);}
+.age-badge.fresh{background:rgba(92,158,120,.1);color:var(--low);border:1px solid rgba(92,158,120,.25);}
+.itype{max-width:13ch;margin-top:18px;font-family:var(--dp);font-size:clamp(22px,2.4vw,32px);font-weight:600;line-height:.98;}
+.icard:nth-child(5n+1) .itype{font-size:clamp(24px,2.7vw,36px);}
+.idesc{max-width:54ch;margin-top:12px;color:var(--soft);font-size:14px;line-height:1.6;}
+.ihist{margin-top:12px;padding:8px 0 0 10px;border-left:2px solid var(--tone);color:var(--dim);font-size:12px;line-height:1.5;}
+.ihist summary{color:var(--soft);cursor:pointer;font-weight:500;font-size:12px;}
+.ihist p{margin-top:5px;}
+.cmeta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 14px;margin-top:auto;padding-top:20px;}
+.mi{min-width:0;}
+.mlbl{display:block;color:var(--dim);font-family:var(--mn);font-size:9px;text-transform:uppercase;letter-spacing:.05em;}
+.mval{display:block;margin-top:2px;color:var(--soft);font-family:var(--mn);font-size:11px;line-height:1.4;overflow-wrap:anywhere;}
+.mval.tone{color:var(--tone);}
+/* Pressure score badge */
+.pres-badge{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;align-items:flex-end;}
+.pres-num{font-family:var(--dp);font-size:26px;font-weight:700;color:var(--tone);line-height:1;opacity:.65;}
+.pres-lbl{font-family:var(--mn);font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;}
+/* Footer + WA */
+.cfooter{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);}
+.cdate{color:var(--dim);font-family:var(--mn);font-size:10px;}
+.wa{display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid var(--line);border-radius:4px;color:var(--dim);font-family:var(--mn);font-size:9px;padding:4px 8px;cursor:pointer;text-decoration:none;transition:border-color 140ms,color 140ms;white-space:nowrap;}
+.wa:hover{border-color:#25d366;color:#25d366;}
 
-    .issues-grid.compact { display: block; border-top: 1px solid var(--line); }
-    .issues-grid.compact .issue-card,
-    .issues-grid.compact .issue-card:nth-child(5n + 1),
-    .issues-grid.compact .issue-card:nth-child(5n + 2) {
-      min-height: 0;
-      display: grid;
-      grid-template-columns: minmax(150px, 0.8fr) minmax(220px, 1.5fr) minmax(130px, 0.8fr) minmax(110px, 0.65fr) minmax(120px, 0.7fr);
-      gap: 18px;
-      align-items: center;
-      padding: 18px 0;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      border-radius: 0;
-      background: transparent;
-    }
-    .issues-grid.compact .issue-card:hover { transform: none; background: rgba(242, 237, 230, 0.025); }
-    .issues-grid.compact .card-topline { display: none; }
-    .issues-grid.compact .issue-type { grid-column: 1; grid-row: 1; margin: 0; font-size: 18px; line-height: 1.15; }
-    .issues-grid.compact .issue-description { grid-column: 2; margin: 0; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .issues-grid.compact .issue-history { display: none; }
-    .issues-grid.compact .card-meta { display: contents; }
-    .issues-grid.compact .meta-item { display: none; }
-    .issues-grid.compact .meta-item.location { display: block; grid-column: 3; }
-    .issues-grid.compact .meta-item.status { display: block; grid-column: 4; }
-    .issues-grid.compact .meta-item.impact { display: block; grid-column: 5; }
-    .issues-grid.compact .card-footer { display: none; }
-    .issues-grid.compact .issue-card.is-new { padding-left: 14px; border-left: 3px solid var(--accent); }
+/* COMPACT */
+.igrid.compact{display:block;border-top:1px solid var(--line);}
+.igrid.compact .icard,
+.igrid.compact .icard:nth-child(5n+1),
+.igrid.compact .icard:nth-child(5n+2){
+  min-height:0;grid-column:unset;
+  display:grid;grid-template-columns:100px minmax(140px,1.4fr) 88px 76px 76px 50px;
+  gap:14px;align-items:center;
+  border:0;border-bottom:1px solid var(--line);border-top:0;border-radius:0;
+  padding:12px 4px;background:transparent;transform:none !important;
+}
+.igrid.compact .icard::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:var(--tone);border-radius:0 2px 2px 0;}
+.igrid.compact .ctopline,.igrid.compact .ihist,.igrid.compact .cmeta,.igrid.compact .pres-badge,.igrid.compact .cfooter{display:none;}
+.igrid.compact .itype{margin-top:0;font-size:13px;}
+.igrid.compact .idesc{margin-top:3px;font-size:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.cmono{font-family:var(--mn);font-size:10px;color:var(--dim);}
+.cmono strong{color:var(--soft);display:block;font-size:11px;margin-bottom:1px;}
+.cscore{font-family:var(--dp);font-size:18px;font-weight:700;color:var(--tone);opacity:.8;text-align:right;}
 
-    .state-box {
-      grid-column: 1 / -1;
-      min-height: 330px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 36px;
-      text-align: center;
-    }
-    .state-box h3 { font-family: var(--display); font-size: clamp(28px, 5vw, 52px); font-weight: 600; line-height: 1; }
-    .state-box p { max-width: 42ch; margin: 14px auto 0; color: var(--paper-soft); font-size: 13px; }
-    .retry-button { margin-top: 22px; min-height: 40px; padding: 0 16px; border: 1px solid var(--paper); border-radius: var(--radius); background: var(--paper); color: var(--ink); font-weight: 600; cursor: pointer; }
-    .skeleton-card { grid-column: span 6; min-height: 320px; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
-    .skeleton-line { height: 12px; margin-bottom: 14px; background: rgba(242, 237, 230, 0.08); }
-    .skeleton-line.big { width: 64%; height: 46px; margin-top: 54px; }
-    .skeleton-line.short { width: 38%; }
+/* RESOLUTION WALL */
+.res-section{background:rgba(92,158,120,.025);}
+.res-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px;}
+.res-card{border:1px solid rgba(92,158,120,.2);border-top:3px solid var(--low);border-radius:var(--r);padding:16px 18px;background:rgba(92,158,120,.035);}
+.res-badge{display:inline-flex;align-items:center;gap:5px;margin-bottom:8px;font-family:var(--mn);font-size:9px;color:var(--low);text-transform:uppercase;letter-spacing:.08em;}
+.res-badge::before{content:"✓";}
+.res-type{font-family:var(--dp);font-size:20px;font-weight:600;line-height:1;margin-bottom:7px;}
+.res-desc{font-size:13px;color:var(--soft);line-height:1.5;margin-bottom:10px;}
+.res-meta{font-family:var(--mn);font-size:10px;color:var(--dim);}
 
-    .closing {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-      gap: 32px;
-      padding: clamp(70px, 11vw, 140px) 0;
-    }
-    .closing h2 { max-width: 13ch; font-family: var(--display); font-size: clamp(40px, 7vw, 94px); font-weight: 600; line-height: 0.9; }
-    .closing h2 span { color: var(--accent); }
-    .closing-copy { max-width: 31ch; }
-    .closing-copy p { margin-bottom: 22px; color: var(--paper-soft); font-size: 14px; line-height: 1.65; }
-    .closing .add-link { min-height: 50px; padding-inline: 20px; }
+/* CLOSING */
+.closing{padding:clamp(64px,10vw,120px) 0;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;}
+.closing h2{max-width:22ch;font-family:var(--dp);font-size:clamp(26px,3.4vw,46px);font-weight:600;line-height:1.05;}
+.closing h2 span{color:var(--accent);}
+.closing-copy{display:flex;flex-direction:column;gap:14px;align-items:flex-start;}
+.closing-copy p{color:var(--soft);font-size:14px;line-height:1.65;max-width:32ch;}
 
-    .footer { border-top: 1px solid var(--line); padding: 26px 0 calc(26px + env(safe-area-inset-bottom)); }
-    .footer-inner { display: flex; justify-content: space-between; gap: 24px; color: var(--paper-dim); font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
+/* FOOTER */
+.footer{border-top:1px solid var(--line);padding:20px 0;}
+.footer-in{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--dim);font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;}
 
-    :focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+/* EMPTY / SKELETON */
+.empty-box{grid-column:1/-1;padding:64px 24px;text-align:center;}
+.empty-box h3{font-family:var(--dp);font-size:22px;font-weight:600;margin-bottom:8px;}
+.empty-box p{color:var(--soft);font-size:14px;}
+@keyframes shim{0%{opacity:.4}50%{opacity:.65}100%{opacity:.4}}
+.skel{grid-column:span 6;min-height:240px;border:1px solid var(--line);border-radius:var(--r);padding:24px;animation:shim 1.6s ease infinite;}
+.skel-l{height:11px;background:rgba(242,237,230,.07);border-radius:3px;margin-bottom:9px;}
+.skel-l.s{width:38%;}
+.skel-l.b{height:34px;width:58%;margin:18px 0;}
 
-    @media (max-width: 820px) {
-      :root { --page: min(100% - 28px, 680px); }
-      .board-label, .live-state { display: none; }
-      .topbar-inner { grid-template-columns: 1fr auto; }
-      .hero {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 34px;
-        padding-top: 46px;
-      }
-      .hero-main { align-self: start; }
-      .hero-kicker { margin-bottom: 36px; }
-      .counter-wrap { gap: 14px; }
-      .counter { font-size: clamp(96px, 34vw, 180px); }
-      .counter-copy { font-size: clamp(25px, 8vw, 42px); padding-bottom: 4px; }
-      .hero-side { border-left: 0; border-top: 1px solid var(--line); padding: 26px 0 0; }
-      .hero-foot { grid-column: 1; align-self: end; }
-      .tower-layout, .feed-head, .closing { grid-template-columns: 1fr; }
-      .tower-layout { gap: 42px; }
-      .feed-head { align-items: start; }
-      .feed-summary { max-width: 42ch; }
-      .issue-card, .issue-card:nth-child(5n + 1), .issue-card:nth-child(5n + 2), .skeleton-card { grid-column: 1 / -1; }
-      .issue-card { min-height: 300px; }
-      .issues-grid.compact .issue-card,
-      .issues-grid.compact .issue-card:nth-child(5n + 1),
-      .issues-grid.compact .issue-card:nth-child(5n + 2) {
-        grid-template-columns: minmax(120px, 0.75fr) minmax(180px, 1.25fr) minmax(120px, 0.75fr);
-      }
-      .issues-grid.compact .meta-item.status { grid-column: 3; }
-      .issues-grid.compact .meta-item.location,
-      .issues-grid.compact .meta-item.impact { display: none; }
-      .closing { align-items: start; }
-      .closing-copy { max-width: 40ch; }
-    }
-
-    @media (max-width: 500px) {
-      .brand-name { display: none; }
-      .top-actions { gap: 8px; }
-      .add-link { min-height: 38px; padding-inline: 12px; }
-      .hero { padding-top: 38px; }
-      .hero-kicker { max-width: 25ch; font-size: 13px; }
-      .counter { font-size: clamp(96px, 42vw, 180px); }
-      .counter-copy { font-size: clamp(22px, 8.4vw, 36px); }
-      .hero-foot { grid-template-columns: 1fr; gap: 10px; }
-      .updated { text-align: left; }
-      .signal { min-height: 100px; padding: 18px 14px; }
-      .signal:last-child { padding-right: 14px; }
-      .section { padding-block: 64px; }
-      .tower-row { grid-template-columns: 44px minmax(0, 1fr) 86px; gap: 9px; }
-      .tower-track { height: 11px; }
-      .tower-breakdown { font-size: 8px; }
-      .filter-panel { padding-inline: 10px; }
-      .control-row { align-items: flex-start; }
-      .control-set { flex-wrap: wrap; }
-      .control-label { width: 100%; }
-      .filter-label { width: 50px; }
-      .issue-card { padding: 20px; }
-      .issue-type, .issue-card:nth-child(5n + 1) .issue-type { font-size: clamp(27px, 8vw, 34px); }
-      .card-meta { gap: 11px; }
-      .issues-grid.compact .issue-card,
-      .issues-grid.compact .issue-card:nth-child(5n + 1),
-      .issues-grid.compact .issue-card:nth-child(5n + 2) {
-        grid-template-columns: minmax(110px, 0.85fr) minmax(0, 1.35fr);
-        gap: 14px;
-        padding: 16px 0;
-      }
-      .issues-grid.compact .issue-description { grid-column: 2; }
-      .issues-grid.compact .meta-item.status { display: none; }
-      .footer-inner { flex-direction: column; gap: 8px; }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .hero-kicker, .counter-wrap, .hero-side { animation: rise 700ms cubic-bezier(.16, 1, .3, 1) both; }
-      .counter-wrap { animation-delay: 80ms; }
-      .hero-side { animation-delay: 160ms; }
-      .issue-card { animation: rise 520ms cubic-bezier(.16, 1, .3, 1) both; animation-delay: calc(var(--index, 0) * 45ms); }
-      .skeleton-line { animation: pulse 1.3s ease-in-out infinite alternate; }
-      @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes pulse { to { opacity: 0.4; } }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}
+  .hero-side{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:22px;margin-top:22px;}
+  .hero-foot{grid-template-columns:1fr;}
+  .tower-layout,.cal-layout{grid-template-columns:1fr;}
+  .feed-head{grid-template-columns:1fr;}
+  .icard,.icard:nth-child(5n+1),.icard:nth-child(5n+2){grid-column:1/-1;}
+  .res-grid{grid-template-columns:1fr;}
+  .closing{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .blabel{display:none;}
+  .topbar-in{grid-template-columns:1fr 1fr;}
+  .igrid.compact .icard,
+  .igrid.compact .icard:nth-child(5n+1),
+  .igrid.compact .icard:nth-child(5n+2){grid-template-columns:1fr 1fr;}
+}
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#issues">Skip to issues</a>
+<a class="skip" href="#issues">Skip to issues</a>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#top" aria-label="Lotus Zing noticeboard home">
-        <span class="brand-mark">LZ</span>
-        <span class="brand-name">Lotus Zing</span>
-      </a>
-      <div class="board-label">Community noticeboard</div>
-      <div class="top-actions">
-        <span class="live-state">Live sheet</span>
-        <a class="add-link" href="https://tally.so/r/xXgPWy" target="_blank" rel="noopener">+ add to log</a>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/"><span class="bmark">LZ</span><span class="bname">Lotus Zing</span></a>
+    <span class="blabel">Community Noticeboard</span>
+    <div class="tactions">
+      <span class="ldot">Live</span>
+      <a class="addlink" href="https://tally.so/r/xXgPWy" target="_blank" rel="noopener">+ Add to log</a>
+    </div>
+  </div>
+</header>
+
+<div class="pat-alert" id="patAlert" hidden>
+  <div class="pat-in sh">
+    <span class="pat-icon">⚠</span>
+    <span class="pat-txt" id="patTxt"></span>
+    <button class="pat-close" onclick="this.closest('.pat-alert').hidden=true">×</button>
+  </div>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero sh">
+    <div class="hero-main">
+      <p class="hero-kicker">Lotus Zing · Sector 168, Noida · live community record</p>
+      <div class="ctr-wrap">
+        <span class="ctr" id="heroCount">0</span>
+        <span class="ctr-copy">things your neighbors are dealing with</span>
       </div>
     </div>
-  </header>
-
-  <main id="top">
-    <section class="hero shell" aria-label="Community report overview">
-      <div class="hero-main">
-        <p class="hero-kicker">Live community record</p>
-        <div class="counter-wrap" aria-live="polite">
-          <strong class="counter" id="heroCount">0</strong>
-          <h1 class="counter-copy">reports across Lotus Zing</h1>
+    <div class="hero-side">
+      <div class="health-blk">
+        <div class="health-lbl">Building health score</div>
+        <div class="health-row">
+          <span class="health-grade" id="hGrade">—</span>
+          <span class="health-pct" id="hPct"></span>
         </div>
+        <div class="health-bar"><div class="health-fill" id="hFill" style="width:0"></div></div>
+        <div class="health-note" id="hNote"></div>
       </div>
-      <div class="hero-side">
-        <div class="signal-grid" id="signalGrid" aria-live="polite">
-          <div class="signal"><span class="signal-label">Urgent now</span><strong class="signal-value urgent" id="metricUrgent">0</strong></div>
-          <div class="signal"><span class="signal-label">Raised before</span><strong class="signal-value" id="metricRepeated">0</strong></div>
-          <div class="signal"><span class="signal-label">People affected</span><strong class="signal-value" id="metricAffected">0</strong><span class="signal-note">Known estimates only</span></div>
-          <div class="signal"><span class="signal-label">Most raised</span><strong class="signal-value" id="metricTopType">Waiting</strong></div>
-        </div>
+      <div class="sig-grid">
+        <div class="sig"><span class="sig-lbl">Urgent open</span><span class="sig-val urg" id="sUrgent">—</span><span class="sig-note">need action now</span></div>
+        <div class="sig"><span class="sig-lbl">Top issue</span><span class="sig-val" id="sTop">—</span><span class="sig-note" id="sTopN"></span></div>
+        <div class="sig"><span class="sig-lbl">Most affected</span><span class="sig-val" id="sTower">—</span><span class="sig-note" id="sTowerN"></span></div>
+        <div class="sig"><span class="sig-lbl">Ignored reports</span><span class="sig-val urg" id="sIgn">—</span><span class="sig-note">raised before, no action</span></div>
       </div>
-      <div class="hero-foot">
-        <p class="insight-line" id="heroInsight">Reading the community log...</p>
-        <p class="updated" id="updatedAt">Connecting to live sheet</p>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="tower-title">
-      <div class="shell tower-layout">
-        <div>
-          <h2 class="section-title" id="tower-title">Where the pressure is building.</h2>
-          <p class="section-intro">Each line is a tower. Length shows volume; color shows the urgency mix. Tap a tower to see its reports.</p>
-          <div class="tower-legend" aria-label="Urgency legend">
-            <span class="u"><i></i> urgent</span>
-            <span class="m"><i></i> moderate</span>
-            <span class="l"><i></i> noted</span>
-          </div>
-        </div>
-        <div class="tower-list" id="towerList" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section class="section" id="issues" aria-labelledby="issues-title">
-      <div class="shell">
-        <div class="feed-head">
-          <h2 class="feed-title" id="issues-title">The shared log.</h2>
-          <p class="feed-summary" id="feedSummary">Loading reports from your neighbors.</p>
-        </div>
-        <div class="filter-panel" id="filterPanel" hidden>
-          <div class="control-row">
-            <div class="control-set">
-              <span class="control-label">View</span>
-              <div class="view-toggle" aria-label="Issue view">
-                <button class="view-button" type="button" data-view="story" aria-pressed="true">Stories</button>
-                <button class="view-button" type="button" data-view="compact" aria-pressed="false">Compact</button>
-              </div>
-            </div>
-            <label class="control-set">
-              <span class="control-label">Sort</span>
-              <select class="sort-select" id="sortSelect">
-                <option value="priority">Priority</option>
-                <option value="newest">Newest</option>
-                <option value="affected">Most affected</option>
-                <option value="duration">Longest running</option>
-                <option value="repeated">Reported repeatedly</option>
-              </select>
-            </label>
-          </div>
-          <div class="filter-group" id="urgencyFilters" aria-label="Filter by urgency">
-            <span class="filter-label">Urgency</span>
-          </div>
-          <div class="filter-group" id="typeFilters" aria-label="Filter by issue type">
-            <span class="filter-label">Issue</span>
-          </div>
-        </div>
-        <div class="issues-grid" id="issuesGrid" aria-live="polite" aria-busy="true">
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line big"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line big"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="shell closing" aria-labelledby="closing-title">
-      <h2 id="closing-title">A record gets stronger when <span>more of us use it.</span></h2>
-      <div class="closing-copy">
-        <p>Notice something unresolved? Add it once, describe it clearly, and let the wider pattern become visible.</p>
-        <a class="add-link" href="https://tally.so/r/xXgPWy" target="_blank" rel="noopener">+ add to log</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="shell footer-inner">
-      <span>Made for Lotus Zing residents</span>
-      <span>Refreshes every 60 seconds</span>
     </div>
-  </footer>
+    <div class="hero-foot">
+      <p class="insight" id="insight">Loading…</p>
+      <p class="upd" id="updAt">—</p>
+    </div>
+  </section>
 
-  <script>
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pub?gid=0&single=true&output=csv';
-    const TOWERS = ['Tower 1', 'Tower 2', 'Tower 3', 'Tower 4', 'Tower 5', 'Tower 6', 'Tower 15', 'Tower 16'];
-    const URGENCY_ORDER = { urgent: 0, moderate: 1, low: 2 };
-    const URGENCY_LABEL = { urgent: 'Pretty urgent', moderate: 'Managing for now', low: 'Noted' };
-
-    const state = { issues: [], urgency: 'all', type: 'all', tower: 'all', sort: 'priority', view: 'story', firstLoad: true };
-    const els = {
-      count: document.getElementById('heroCount'),
-      insight: document.getElementById('heroInsight'),
-      updated: document.getElementById('updatedAt'),
-      towerList: document.getElementById('towerList'),
-      feedSummary: document.getElementById('feedSummary'),
-      filterPanel: document.getElementById('filterPanel'),
-      urgencyFilters: document.getElementById('urgencyFilters'),
-      typeFilters: document.getElementById('typeFilters'),
-      sortSelect: document.getElementById('sortSelect'),
-      grid: document.getElementById('issuesGrid')
-    };
-
-    function urg(value) {
-      if (!value) return 'low';
-      const lower = value.toLowerCase();
-      if (lower.includes('not urgent') || lower.includes('just want it noted')) return 'low';
-      if (lower.includes('annoy') || lower.includes('manag')) return 'moderate';
-      if (lower.includes('urgent') || lower.includes('daily') || lower.includes('pretty')) return 'urgent';
-      return 'low';
-    }
-
-    function normalizeTower(tower, location) {
-      const source = tower || (location.match(/\btower\s*(1[56]|[1-6])\b/i) || [])[0] || '';
-      const number = source.match(/\b(1[56]|[1-6])\b/);
-      return number ? `Tower ${number[1]}` : 'Tower not shared';
-    }
-
-    function escapeHTML(value = '') {
-      return String(value).replace(/[&<>'"]/g, char => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-      })[char]);
-    }
-
-    function parseCSV(text) {
-      const rows = [];
-      let row = [], field = '', quoted = false;
-      for (let i = 0; i < text.length; i += 1) {
-        const char = text[i];
-        if (char === '"') {
-          if (quoted && text[i + 1] === '"') { field += '"'; i += 1; }
-          else { quoted = !quoted; }
-        } else if (char === ',' && !quoted) {
-          row.push(field); field = '';
-        } else if ((char === '\n' || char === '\r') && !quoted) {
-          if (char === '\r' && text[i + 1] === '\n') i += 1;
-          row.push(field); field = '';
-          if (row.some(cell => cell.trim())) rows.push(row);
-          row = [];
-        } else {
-          field += char;
-        }
-      }
-      row.push(field);
-      if (row.some(cell => cell.trim())) rows.push(row);
-      if (rows.length < 2) return [];
-      const headers = rows[0].map(header => header.trim().replace(/^\ufeff/, ''));
-      return rows.slice(1).map(values => Object.fromEntries(headers.map((header, index) => [header, (values[index] || '').trim()])));
-    }
-
-    function parseDate(value) {
-      if (!value) return null;
-      const direct = new Date(value);
-      if (!Number.isNaN(direct.getTime())) return direct;
-      const match = value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
-      if (!match) return null;
-      const [, day, month, year, hour = 0, minute = 0, second = 0] = match;
-      const fullYear = year.length === 2 ? 2000 + Number(year) : Number(year);
-      const date = new Date(fullYear, Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
-      return Number.isNaN(date.getTime()) ? null : date;
-    }
-
-    function relativeTime(date) {
-      if (!date) return 'Date not provided';
-      const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
-      if (seconds < 60) return 'just now';
-      const units = [['year', 31536000], ['month', 2592000], ['week', 604800], ['day', 86400], ['hour', 3600], ['minute', 60]];
-      const [unit, size] = units.find(([, size]) => seconds >= size) || units[units.length - 1];
-      const amount = Math.floor(seconds / size);
-      return `${amount} ${unit}${amount === 1 ? '' : 's'} ago`;
-    }
-
-    function normalizeRows(rows) {
-      return rows.map((row, index) => {
-        const date = parseDate(row['Submitted at']);
-        const location = row['Where exactly?'] || '';
-        return {
-          id: row['Submission ID'] || `LZ-${index + 1}`,
-          date,
-          name: row['Your name'] || 'A resident',
-          tower: normalizeTower(row['Tower'] || '', location),
-          flat: row['Flat number'] || '',
-          type: row['What kind of issue is this?'] || 'Other',
-          description: row['Describe it in your own words'] || 'No description was provided.',
-          location,
-          duration: row['How long has this been going on?'] || 'Duration not shared',
-          urgencyRaw: row['How urgent does this feel to you?'] || '',
-          urgency: urg(row['How urgent does this feel to you?']),
-          reportedBefore: row['Have you reported this to the maintenance team before?'] || 'Not shared',
-          affected: row['Roughly how many residents are affected?'] || '',
-          priorResponse: row['What happened when you reported it before?'] || ''
-        };
-      }).filter(issue => issue.type || issue.description).sort((a, b) => {
-        const urgencyDifference = URGENCY_ORDER[a.urgency] - URGENCY_ORDER[b.urgency];
-        if (urgencyDifference !== 0) return urgencyDifference;
-        return (b.date?.getTime() || 0) - (a.date?.getTime() || 0);
-      });
-    }
-
-    function animateCounter(target) {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !state.firstLoad) {
-        els.count.textContent = target;
-        return;
-      }
-      const duration = 900;
-      const start = performance.now();
-      const tick = now => {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 4);
-        els.count.textContent = Math.round(target * eased);
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }
-
-    function renderInsights() {
-      const issues = state.issues;
-      const typeCounts = issues.reduce((map, issue) => map.set(issue.type, (map.get(issue.type) || 0) + 1), new Map());
-      const topType = [...typeCounts.entries()].sort((a, b) => b[1] - a[1])[0];
-      const urgentCount = issues.filter(issue => issue.urgency === 'urgent').length;
-      const repeatedCount = issues.filter(issue => /yes|multiple|verbally|writing/i.test(issue.reportedBefore)).length;
-      const affectedCount = issues.reduce((sum, issue) => sum + (Number.parseInt(issue.affected, 10) || 0), 0);
-      document.getElementById('metricUrgent').textContent = urgentCount;
-      document.getElementById('metricRepeated').textContent = repeatedCount;
-      document.getElementById('metricAffected').textContent = affectedCount || 'Not known';
-      document.getElementById('metricTopType').textContent = topType?.[0] || 'None yet';
-      if (!issues.length) {
-        els.insight.textContent = 'The first report will begin the shared record.';
-        return;
-      }
-      const identifiedTowers = new Set(issues.filter(issue => issue.tower !== 'Tower not shared').map(issue => issue.tower)).size;
-      const missingTowers = issues.filter(issue => issue.tower === 'Tower not shared').length;
-      const parts = [`<strong>${typeCounts.size}</strong> issue ${typeCounts.size === 1 ? 'category' : 'categories'}`, `<strong>${identifiedTowers}</strong> ${identifiedTowers === 1 ? 'tower' : 'towers'} identified`];
-      if (missingTowers) parts.push(`<strong>${missingTowers}</strong> reports missing tower details`);
-      els.insight.innerHTML = parts.join(' &nbsp;/&nbsp; ');
-    }
-
-    function towerBreakdown(tower) {
-      const issues = state.issues.filter(issue => issue.tower.toLowerCase() === tower.toLowerCase());
-      return {
-        total: issues.length,
-        urgent: issues.filter(issue => issue.urgency === 'urgent').length,
-        moderate: issues.filter(issue => issue.urgency === 'moderate').length,
-        low: issues.filter(issue => issue.urgency === 'low').length
-      };
-    }
-
-    function renderTowers() {
-      const data = TOWERS.map(tower => ({ tower, ...towerBreakdown(tower) }));
-      const max = Math.max(1, ...data.map(item => item.total));
-      els.towerList.innerHTML = data.map(item => {
-        const width = item.total ? Math.max(5, (item.total / max) * 100) : 0;
-        const urgentWidth = item.total ? (item.urgent / item.total) * 100 : 0;
-        const moderateWidth = item.total ? (item.moderate / item.total) * 100 : 0;
-        const lowWidth = item.total ? (item.low / item.total) * 100 : 0;
-        const selected = state.tower === item.tower;
-        const breakdown = item.total ? `<strong>${item.total}</strong> total / ${item.urgent} urgent` : 'No reports';
-        return `<button class="tower-row${item.total ? '' : ' is-empty'}" type="button" data-tower="${escapeHTML(item.tower)}" aria-pressed="${selected}" aria-label="${escapeHTML(item.tower)}, ${item.total} reports">
-          <span class="tower-name">${escapeHTML(item.tower.replace('Tower ', 'T'))}</span>
-          <span class="tower-track"><span class="tower-fill" style="width:${width}%">
-            <span class="tower-segment urgent" style="width:${urgentWidth}%"></span>
-            <span class="tower-segment moderate" style="width:${moderateWidth}%"></span>
-            <span class="tower-segment low" style="width:${lowWidth}%"></span>
-          </span></span>
-          <span class="tower-breakdown">${breakdown}</span>
-        </button>`;
-      }).join('');
-      els.towerList.querySelectorAll('.tower-row').forEach(button => {
-        button.addEventListener('click', () => {
-          state.tower = state.tower === button.dataset.tower ? 'all' : button.dataset.tower;
-          renderTowers();
-          renderIssues();
-          document.getElementById('issues').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        });
-      });
-    }
-
-    function createFilterButton(label, value, group, active) {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'filter-button';
-      button.dataset.value = value;
-      button.dataset.group = group;
-      button.setAttribute('aria-pressed', String(value === active));
-      button.textContent = label;
-      button.addEventListener('click', () => {
-        state[group] = value;
-        renderFilters();
-        renderIssues();
-      });
-      return button;
-    }
-
-    function renderFilters() {
-      els.filterPanel.hidden = false;
-      els.urgencyFilters.querySelectorAll('button').forEach(button => button.remove());
-      els.typeFilters.querySelectorAll('button').forEach(button => button.remove());
-      [['All', 'all'], ['Urgent', 'urgent'], ['Moderate', 'moderate'], ['Not urgent', 'low']].forEach(([label, value]) => {
-        els.urgencyFilters.appendChild(createFilterButton(label, value, 'urgency', state.urgency));
-      });
-      const types = [...new Set(state.issues.map(issue => issue.type))].sort((a, b) => a.localeCompare(b));
-      els.typeFilters.appendChild(createFilterButton('All issues', 'all', 'type', state.type));
-      types.forEach(type => els.typeFilters.appendChild(createFilterButton(type, type, 'type', state.type)));
-      document.querySelectorAll('.view-button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === state.view)));
-      els.sortSelect.value = state.sort;
-    }
-
-    function durationScore(value) {
-      const lower = (value || '').toLowerCase();
-      if (lower.includes('since possession')) return 1000;
-      if (lower.includes('3 months')) return 180;
-      if (lower.includes('1 month')) return 30;
-      if (lower.includes('week')) return 14;
-      if (lower.includes('few days')) return 4;
-      if (lower.includes('just started')) return 1;
-      return 0;
-    }
-
-    function repeatedScore(value) {
-      if (/multiple/i.test(value)) return 4;
-      if (/writing/i.test(value)) return 3;
-      if (/verbally/i.test(value)) return 2;
-      return 0;
-    }
-
-    function filteredIssues() {
-      const filtered = state.issues.filter(issue => {
-        const urgencyMatch = state.urgency === 'all' || issue.urgency === state.urgency;
-        const typeMatch = state.type === 'all' || issue.type === state.type;
-        const towerMatch = state.tower === 'all' || issue.tower === state.tower;
-        return urgencyMatch && typeMatch && towerMatch;
-      });
-      return filtered.sort((a, b) => {
-        if (state.sort === 'newest') return (b.date?.getTime() || 0) - (a.date?.getTime() || 0);
-        if (state.sort === 'affected') return (Number.parseInt(b.affected, 10) || 0) - (Number.parseInt(a.affected, 10) || 0);
-        if (state.sort === 'duration') return durationScore(b.duration) - durationScore(a.duration);
-        if (state.sort === 'repeated') return repeatedScore(b.reportedBefore) - repeatedScore(a.reportedBefore);
-        return URGENCY_ORDER[a.urgency] - URGENCY_ORDER[b.urgency] || repeatedScore(b.reportedBefore) - repeatedScore(a.reportedBefore) || (b.date?.getTime() || 0) - (a.date?.getTime() || 0);
-      });
-    }
-
-    function reportStatus(value) {
-      if (/multiple/i.test(value)) return 'Raised multiple times';
-      if (/writing/i.test(value)) return 'Raised in writing';
-      if (/verbally/i.test(value)) return 'Raised verbally';
-      if (/first time|^no/i.test(value)) return 'First report';
-      return value || 'Not shared';
-    }
-
-    function renderIssues() {
-      const issues = filteredIssues();
-      const newest = [...state.issues].sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0))[0];
-      const filters = [state.tower !== 'all' ? state.tower : '', state.type !== 'all' ? state.type : '', state.urgency !== 'all' ? URGENCY_LABEL[state.urgency] : ''].filter(Boolean);
-      els.feedSummary.innerHTML = `<strong>${issues.length}</strong> ${issues.length === 1 ? 'report' : 'reports'}${filters.length ? ` matching ${escapeHTML(filters.join(', '))}` : ' across the community'}.`;
-      els.grid.setAttribute('aria-busy', 'false');
-      els.grid.className = `issues-grid${state.view === 'compact' ? ' compact' : ''}`;
-      if (!issues.length) {
-        els.grid.innerHTML = `<div class="state-box"><div><h3>No reports match.</h3><p>Try another urgency, issue type, or tap the selected tower again to clear it.</p></div></div>`;
-        return;
-      }
-      els.grid.innerHTML = issues.map((issue, index) => {
-        const isNew = issue === newest;
-        const towerFlat = [issue.tower, issue.flat ? `Flat ${issue.flat}` : ''].filter(Boolean).join(', ');
-        const locationParts = [towerFlat];
-        if (issue.location && issue.location.toLowerCase() !== issue.tower.toLowerCase()) locationParts.push(issue.location);
-        const locationText = locationParts.filter(Boolean).join(' / ') || 'Not shared';
-        const affected = issue.affected ? `${issue.affected} ${Number(issue.affected) === 1 ? 'resident' : 'residents'}` : 'Not estimated';
-        return `<article class="issue-card ${issue.urgency}${isNew ? ' is-new' : ''}" style="--index:${Math.min(index, 12)}">
-          <div class="card-topline">
-            <span class="issue-number">${escapeHTML(issue.id)}</span>
-            ${isNew ? '<span class="new-badge">Just logged</span>' : ''}
+  <!-- TOWERS -->
+  <section class="sec sh">
+    <div class="tower-layout">
+      <div>
+        <h2 class="sec-title">By tower.</h2>
+        <p class="sec-intro">Click any tower to filter the log and see which floors are most affected.</p>
+        <div class="tower-leg">
+          <span class="u"><i></i> Urgent</span>
+          <span class="m"><i></i> Moderate</span>
+          <span class="l"><i></i> Low</span>
+        </div>
+      </div>
+      <div>
+        <div class="tower-list" id="towerList"></div>
+        <div class="floor-drawer" id="floorDrawer" hidden>
+          <div class="fdh">
+            <span class="fdtitle" id="fdTitle">Floor breakdown</span>
+            <button class="fdclose" onclick="closeFloor()">×</button>
           </div>
-          <h3 class="issue-type">${escapeHTML(issue.type)}</h3>
-          <p class="issue-description">${escapeHTML(issue.description)}</p>
-          ${issue.priorResponse ? `<details class="issue-history"><summary>What happened when this was raised?</summary><p>${escapeHTML(issue.priorResponse)}</p></details>` : ''}
-          <div class="card-meta">
-            <div class="meta-item location"><span class="meta-label">Where</span><span class="meta-value">${escapeHTML(locationText)}</span></div>
-            <div class="meta-item status"><span class="meta-label">Urgency</span><span class="meta-value urgency">${escapeHTML(URGENCY_LABEL[issue.urgency])}</span></div>
-            <div class="meta-item duration"><span class="meta-label">For how long</span><span class="meta-value">${escapeHTML(issue.duration)}</span></div>
-            <div class="meta-item impact"><span class="meta-label">Affected</span><span class="meta-value">${escapeHTML(affected)}</span></div>
-            <div class="meta-item repeated"><span class="meta-label">Reported before</span><span class="meta-value">${escapeHTML(reportStatus(issue.reportedBefore))}</span></div>
+          <div id="fdContent"></div>
+          <p class="floor-note">Each bar = one floor. Color = highest urgency reported on that floor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEAT CALENDAR -->
+  <section class="sec sh">
+    <div class="cal-layout">
+      <div>
+        <h2 class="sec-title">When it happens.</h2>
+        <p class="sec-intro">Complaint patterns over 12 months. Monsoon peaks. Summer pressure spikes. Weekends. Pattern is the point.</p>
+      </div>
+      <div class="cal-wrap">
+        <div id="calWrap"></div>
+        <div class="cal-leg"><span>Less</span><div class="cal-leg-cells" id="calLeg"></div><span>More</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISSUES FEED -->
+  <section id="issues" class="sec sh" aria-labelledby="ftitle">
+    <div class="feed-head">
+      <h2 class="feed-title" id="ftitle">The shared log.</h2>
+      <p class="feed-sum" id="feedSum">Loading reports…</p>
+    </div>
+    <div class="filter-panel" id="filterPanel" hidden>
+      <div class="ctrl-row">
+        <div class="ctrl-set">
+          <span class="ctrl-lbl">View</span>
+          <div class="view-tog">
+            <button class="vbtn" data-view="story" aria-pressed="true">Stories</button>
+            <button class="vbtn" data-view="compact" aria-pressed="false">Compact</button>
           </div>
-          <div class="card-footer"><span>${escapeHTML(relativeTime(issue.date))}</span><span>${escapeHTML(issue.id)}</span></div>
-        </article>`;
-      }).join('');
-    }
+        </div>
+        <label class="ctrl-set">
+          <span class="ctrl-lbl">Sort</span>
+          <select class="srt" id="sortSel">
+            <option value="pressure">↑ Pressure score</option>
+            <option value="priority">Priority</option>
+            <option value="newest">Newest first</option>
+            <option value="affected">Most affected</option>
+            <option value="duration">Longest running</option>
+            <option value="repeated">Reported repeatedly</option>
+          </select>
+        </select>
+        </label>
+      </div>
+      <div class="frow" id="urgFilt" aria-label="Filter by urgency"><span class="frow-lbl">Urgency</span></div>
+      <div class="frow" id="typFilt" aria-label="Filter by type"><span class="frow-lbl">Issue</span></div>
+    </div>
+    <div class="igrid" id="igrid" aria-live="polite" aria-busy="true">
+      <div class="skel"><div class="skel-l s"></div><div class="skel-l b"></div><div class="skel-l"></div></div>
+      <div class="skel"><div class="skel-l s"></div><div class="skel-l b"></div><div class="skel-l"></div></div>
+      <div class="skel"><div class="skel-l s"></div><div class="skel-l b"></div><div class="skel-l"></div></div>
+      <div class="skel"><div class="skel-l s"></div><div class="skel-l b"></div><div class="skel-l"></div></div>
+    </div>
+  </section>
 
-    function renderAll() {
-      animateCounter(state.issues.length);
-      renderInsights();
-      renderTowers();
-      renderFilters();
-      renderIssues();
-      state.firstLoad = false;
-    }
+  <!-- RESOLUTION WALL -->
+  <section class="sec res-section sh">
+    <h2 class="sec-title">What got fixed.</h2>
+    <p class="sec-intro">Issues residents raised — that actually got resolved. Proof that the log works.</p>
+    <div class="res-grid" id="resGrid"></div>
+  </section>
 
-    function renderError() {
-      els.grid.setAttribute('aria-busy', 'false');
-      els.grid.innerHTML = `<div class="state-box"><div><h3>The live sheet did not answer.</h3><p>Your report is still safe in the form. This page will try again automatically, or you can retry now.</p><button class="retry-button" type="button" id="retryButton">Try again</button></div></div>`;
-      document.getElementById('retryButton').addEventListener('click', loadData);
-      els.feedSummary.textContent = 'Unable to load the community record right now.';
-      els.updated.textContent = 'Connection interrupted';
-    }
+  <!-- CLOSING -->
+  <section class="closing sh">
+    <h2>A record gets stronger when <span>more of us use it.</span></h2>
+    <div class="closing-copy">
+      <p>Notice something unresolved? Add it once, describe it clearly, and let the pattern become visible.</p>
+      <a class="addlink" href="https://tally.so/r/xXgPWy" target="_blank" rel="noopener">+ Add to the log</a>
+    </div>
+  </section>
+</main>
 
-    async function loadData() {
-      try {
-        const response = await fetch(`${CSV_URL}&_=${Date.now()}`, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Sheet returned ${response.status}`);
-        const text = await response.text();
-        state.issues = normalizeRows(parseCSV(text));
-        const now = new Date();
-        els.updated.textContent = `Updated ${now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`;
-        renderAll();
-      } catch (error) {
-        console.error('Could not load noticeboard data:', error);
-        if (!state.issues.length) renderError();
-        else els.updated.textContent = 'Refresh delayed';
+<footer class="footer">
+  <div class="footer-in sh">
+    <span>Lotus Zing · Sector 168, Noida</span>
+    <span>Community-run · not affiliated with RWA</span>
+    <span id="fUpd">Refreshes every 60s</span>
+  </div>
+</footer>
+
+<script>
+// ── CONFIG ──
+const CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pub?gid=0&single=true&output=csv';
+const TOWERS=['Tower 1','Tower 2','Tower 3','Tower 4','Tower 5','Tower 6','Tower 15','Tower 16'];
+const UO={urgent:0,moderate:1,low:2};
+const UL={urgent:'Urgent',moderate:'Moderate',low:'Not urgent'};
+
+// No mock data — all content comes from the Google Sheet only.
+// RESOLVED will be populated from the sheet when a "Resolved On" column is added.
+const RESOLVED=[];
+
+// ── STATE ──
+const S={issues:[],urgency:'all',type:'all',tower:'all',sort:'pressure',view:'story',loaded:false,error:false};
+
+// ── UTILS ──
+function esc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":"&#39;",'"':'&quot;'})[c]);}
+function urg(v){if(!v)return'low';const l=v.toLowerCase();if(l.includes('urgent')||l.includes('daily')||l.includes('pretty'))return'urgent';if(l.includes('annoy')||l.includes('manag'))return'moderate';return'low';}
+function durDays(d=''){const l=d.toLowerCase();if(l.includes('since'))return 365;if(l.includes('3 month'))return 90;if(l.includes('1 month')||l.includes('month+'))return 30;if(l.includes('week'))return 10;if(l.includes('few'))return 4;return 1;}
+function repScore(v=''){if(/multiple/i.test(v))return 5;if(/writing/i.test(v))return 3;if(/verbal/i.test(v))return 2;return 1;}
+function pressure(i){const u={urgent:10,moderate:5,low:1}[i.urgency]||1;const d=durDays(i.duration||'');const a=Math.max(1,Math.log((parseInt(i.affected)||1)+1));const r=repScore(i.reportedBefore||'');return Math.round(u*d*a*r);}
+function relTime(n){if(!n&&n!==0)return'';if(n===0)return'today';if(n===1)return'1 day ago';if(n<7)return n+' days ago';if(n<30)return Math.floor(n/7)+'w ago';return Math.floor(n/30)+'mo ago';}
+function ageBadge(n){if(n>=30)return`<span class="age-badge old">Open ${n}+ days</span>`;if(n>=7)return`<span class="age-badge mid">Open ${n} days</span>`;return`<span class="age-badge fresh">New</span>`;}
+function repStatus(v=''){if(/multiple/i.test(v))return'Raised multiple times';if(/writing/i.test(v))return'Raised in writing';if(/verbal/i.test(v))return'Raised verbally';if(/first|^no/i.test(v))return'First report';return'Not shared';}
+function waLink(i){const t=`${i.type} issue at Lotus Zing (${i.tower}${i.flat?' / Flat '+i.flat:''}). On record for ${i.duration}. See the community log: https://lotuszing.github.io`;return`https://wa.me/?text=${encodeURIComponent(t)}`;}
+
+// ── HEALTH ──
+function calcHealth(){
+  if(!S.issues.length)return 0;
+  const urgOpen=S.issues.filter(i=>i.urgency==='urgent').length;
+  const avgAge=S.issues.reduce((s,i)=>s+(i.daysAgo||0),0)/S.issues.length;
+  const uS=Math.max(0,(1-urgOpen/S.issues.length)*55);
+  const aS=Math.max(0,(1-Math.min(avgAge,90)/90)*45);
+  return Math.round(uS+aS);
+}
+
+// ── COUNTER ──
+function animCount(target){
+  const el=document.getElementById('heroCount');
+  let cur=0;const step=Math.max(1,Math.ceil(target/40));
+  const iv=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(iv);},28);
+}
+
+// ── HEALTH RENDER ──
+function renderHealth(){
+  const sc=calcHealth();
+  const grade=sc>=70?'B+':sc>=50?'C':'D';
+  const cls=sc>=70?'g':sc>=50?'m':'b';
+  const col=sc>=70?'var(--low)':sc>=50?'var(--moderate)':'var(--urgent)';
+  const note=sc>=70?'Resolution rate is healthy':'Several issues awaiting action':'Multiple critical issues unresolved';
+  document.getElementById('hGrade').textContent=grade;
+  document.getElementById('hGrade').className='health-grade '+cls;
+  document.getElementById('hPct').textContent=sc+'%';
+  document.getElementById('hFill').style.cssText=`width:${sc}%;background:${col}`;
+  document.getElementById('hNote').textContent=note;
+}
+
+// ── SIGNALS ──
+function renderSignals(){
+  const urgent=S.issues.filter(i=>i.urgency==='urgent').length;
+  const tc={};S.issues.forEach(i=>tc[i.type]=(tc[i.type]||0)+1);
+  const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
+  const tw={};S.issues.forEach(i=>{if(i.tower)tw[i.tower]=(tw[i.tower]||0)+(parseInt(i.affected)||1);});
+  const topT=Object.entries(tw).sort((a,b)=>b[1]-a[1])[0];
+  const ign=S.issues.filter(i=>/multiple/i.test(i.reportedBefore||'')).length;
+  document.getElementById('sUrgent').textContent=S.issues.length?urgent:'—';
+  document.getElementById('sTop').textContent=top?.[0]||'—';
+  document.getElementById('sTopN').textContent=top?`${top[1]} reports`:'';
+  document.getElementById('sTower').textContent=topT?.[0]?.replace('Tower','T')||'—';
+  document.getElementById('sTowerN').textContent=topT?`${topT[1]} residents affected`:'';
+  document.getElementById('sIgn').textContent=S.issues.length?ign:'—';
+  const ins=document.getElementById('insight');
+  if(!S.issues.length){
+    ins.textContent=S.error?'Could not load the log. Retrying shortly.':S.loaded?'No issues logged yet. Be the first.':'Loading community log…';
+    return;
+  }
+  const topI=[...S.issues].sort((a,b)=>pressure(b)-pressure(a))[0];
+  if(topI)ins.innerHTML=`Highest pressure: <strong>${esc(topI.type)}</strong> in <strong>${esc(topI.tower)}</strong> — pressure score <strong>${pressure(topI)}</strong>. ${ign} prior report${ign!==1?'s':''} raised with no maintenance response.`;
+}
+
+// ── PATTERN ──
+function renderPattern(){
+  const tc={};S.issues.forEach(i=>tc[i.type]=(tc[i.type]||0)+1);
+  const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
+  const el=document.getElementById('patAlert');
+  if(top&&top[1]>=3){
+    document.getElementById('patTxt').innerHTML=`<strong>Pattern detected:</strong> ${top[1]} ${top[0]} reports in the log. This may point to a systemic issue, not isolated incidents.`;
+    el.hidden=false;
+  } else {el.hidden=true;}
+}
+
+// ── TOWERS ──
+function renderTowers(){
+  const el=document.getElementById('towerList');
+  const c={};TOWERS.forEach(t=>c[t]={urgent:0,moderate:0,low:0,total:0});
+  S.issues.forEach(i=>{if(c[i.tower]){c[i.tower][i.urgency]++;c[i.tower].total++;}});
+  const mx=Math.max(...Object.values(c).map(x=>x.total),1);
+  el.innerHTML=TOWERS.map(t=>{
+    const d=c[t];const w=d.total?Math.max(6,(d.total/mx)*100):0;
+    const uw=d.total?(d.urgent/d.total)*100:0,mw=d.total?(d.moderate/d.total)*100:0,lw=d.total?(d.low/d.total)*100:0;
+    const sel=S.tower===t;
+    return`<button class="trow${!d.total?' empty':''}" data-t="${esc(t)}" aria-pressed="${sel}" type="button" onclick="toggleTower('${esc(t)}')">
+      <span class="tname">${esc(t.replace('Tower ','T'))}</span>
+      <span class="ttrack"><span class="tfill" style="width:${w}%">
+        <span class="tseg urgent" style="width:${uw}%"></span>
+        <span class="tseg moderate" style="width:${mw}%"></span>
+        <span class="tseg low" style="width:${lw}%"></span>
+      </span></span>
+      <span class="tbd">${d.total?`<strong>${d.total}</strong> · ${d.urgent} urgent`:'No reports'}</span>
+    </button>`;
+  }).join('');
+}
+
+function toggleTower(t){
+  if(S.tower===t){S.tower='all';document.getElementById('floorDrawer').hidden=true;}
+  else{S.tower=t;showFloor(t);}
+  renderTowers();renderIssues();
+  document.getElementById('issues').scrollIntoView({behavior:'smooth'});
+}
+
+// ── FLOOR HEATMAP ──
+function showFloor(tower){
+  const ti=S.issues.filter(i=>i.tower===tower&&i.floor);
+  const dr=document.getElementById('floorDrawer');
+  if(!ti.length){dr.hidden=true;return;}
+  const fc={};ti.forEach(i=>{if(!fc[i.floor])fc[i.floor]={urgent:0,moderate:0,low:0};fc[i.floor][i.urgency]++;});
+  const mxF=Math.max(...ti.map(i=>i.floor));
+  const mx=Math.max(...Object.values(fc).map(f=>f.urgent+f.moderate+f.low),1);
+  let html='<div class="floor-bars">';
+  for(let f=1;f<=Math.min(mxF,20);f++){
+    const d=fc[f]||{urgent:0,moderate:0,low:0};
+    const tot=d.urgent+d.moderate+d.low;
+    const col=d.urgent>0?'var(--urgent)':d.moderate>0?'var(--moderate)':tot>0?'var(--low)':'rgba(242,237,230,0.06)';
+    const h=tot?Math.max(20,(tot/mx)*72):6;
+    html+=`<div class="fbar-wrap"><div class="fbar" style="width:26px;height:${h}px;background:${col};opacity:${tot?1:.3}" title="Floor ${f}: ${tot} issue${tot!==1?'s':''}"></div><span class="fbar-lbl">${f}</span></div>`;
+  }
+  html+='</div>';
+  document.getElementById('fdTitle').textContent=`${tower} — floor breakdown`;
+  document.getElementById('fdContent').innerHTML=html;
+  dr.hidden=false;
+}
+function closeFloor(){document.getElementById('floorDrawer').hidden=true;}
+
+// ── HEAT CALENDAR ──
+function buildCalendar(){
+  const wrap=document.getElementById('calWrap');const legWrap=document.getElementById('calLeg');
+  if(!wrap)return;
+  const C=11,G=2,W=52;
+  const colors=['#1c1c1e','#2a4035','#3d6b52','#5c9e78','#e8503a'];
+  // Built from real submission timestamps — zero random data
+  const data={};const now=new Date();
+  S.issues.forEach(i=>{
+    if(!i.submittedAt)return;
+    try{const k=new Date(i.submittedAt).toISOString().split('T')[0];data[k]=(data[k]||0)+1;}catch(e){}
+  });
+  let start=new Date(now-W*7*86400000);
+  const dow=start.getDay();start=new Date(start-(dow===0?6:dow-1)*86400000);
+  let svg='';const ml={};
+  for(let w=0;w<W;w++){
+    for(let dy=0;dy<7;dy++){
+      const d=new Date(start.getTime()+(w*7+dy)*86400000);
+      if(d>now)continue;
+      const k=d.toISOString().split('T')[0];
+      const v=data[k]||0;
+      const x=28+w*(C+G),y=16+dy*(C+G);
+      const col=colors[Math.min(v,colors.length-1)];
+      const tt=v?`${v} report${v>1?'s':''} — ${d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}`:d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+      svg+=`<rect class="cal-cell" x="${x}" y="${y}" width="${C}" height="${C}" rx="1.5" fill="${col}"><title>${esc(tt)}</title></rect>`;
+      if(d.getDate()<=7){const mo=d.toLocaleDateString('en-IN',{month:'short'});if(!ml[mo])ml[mo]=x;}
+    }
+  }
+  const days=['','M','','W','','F',''];
+  days.forEach((l,i)=>{if(!l)return;svg+=`<text x="0" y="${16+i*(C+G)+7}" font-family="JetBrains Mono,monospace" font-size="8" fill="#817d78" dominant-baseline="middle">${l}</text>`;});
+  Object.entries(ml).forEach(([mo,x])=>{svg+=`<text x="${x}" y="10" font-family="JetBrains Mono,monospace" font-size="9" fill="#817d78">${mo}</text>`;});
+  const tw=W*(C+G)+30,th=7*(C+G)+30;
+  wrap.innerHTML=`<svg viewBox="0 0 ${tw} ${th}" width="${tw}" height="${th}" style="display:block">${svg}</svg>`;
+  legWrap.innerHTML=colors.map(c=>`<div class="cal-leg-cell" style="background:${c}"></div>`).join('');
+}
+
+// ── FILTERS ──
+function renderFilters(){
+  document.getElementById('filterPanel').hidden=false;
+  const uf=document.getElementById('urgFilt');uf.querySelectorAll('button').forEach(b=>b.remove());
+  [['All','all'],['Urgent','urgent'],['Moderate','moderate'],['Not urgent','low']].forEach(([l,v])=>{
+    const b=document.createElement('button');b.className='fbtn';b.dataset.v=v;b.textContent=l;
+    b.setAttribute('aria-pressed',v===S.urgency?'true':'false');
+    b.onclick=()=>{S.urgency=v;renderFilters();renderIssues();};uf.appendChild(b);
+  });
+  const tf=document.getElementById('typFilt');tf.querySelectorAll('button').forEach(b=>b.remove());
+  const types=[...new Set(S.issues.map(i=>i.type))].sort();
+  [['All issues','all'],...types.map(t=>[t,t])].forEach(([l,v])=>{
+    const b=document.createElement('button');b.className='fbtn';b.dataset.v=v;b.textContent=l;
+    b.setAttribute('aria-pressed',v===S.type?'true':'false');
+    b.onclick=()=>{S.type=v;renderFilters();renderIssues();};tf.appendChild(b);
+  });
+  document.querySelectorAll('.vbtn').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===S.view?'true':'false'));
+  document.getElementById('sortSel').value=S.sort;
+}
+
+// ── ISSUES ──
+function filtered(){
+  const f=S.issues.filter(i=>{
+    const um=S.urgency==='all'||i.urgency===S.urgency;
+    const tm=S.type==='all'||i.type===S.type;
+    const tw=S.tower==='all'||i.tower===S.tower;
+    return um&&tm&&tw;
+  });
+  return f.sort((a,b)=>{
+    if(S.sort==='pressure')return pressure(b)-pressure(a);
+    if(S.sort==='newest')return(a.daysAgo||999)-(b.daysAgo||999);
+    if(S.sort==='affected')return(parseInt(b.affected)||0)-(parseInt(a.affected)||0);
+    if(S.sort==='duration')return durDays(b.duration||'')-durDays(a.duration||'');
+    if(S.sort==='repeated')return repScore(b.reportedBefore||'')-repScore(a.reportedBefore||'');
+    return UO[a.urgency]-UO[b.urgency]||pressure(b)-pressure(a);
+  });
+}
+
+function renderIssues(){
+  const issues=filtered();
+  const newest=[...S.issues].sort((a,b)=>(a.daysAgo||999)-(b.daysAgo||999))[0];
+  const grid=document.getElementById('igrid');
+  grid.className='igrid'+(S.view==='compact'?' compact':'');
+  grid.setAttribute('aria-busy','false');
+  const fd=[S.tower!=='all'?S.tower:'',S.type!=='all'?S.type:'',S.urgency!=='all'?UL[S.urgency]:''].filter(Boolean);
+  document.getElementById('feedSum').innerHTML=`<strong>${issues.length}</strong> ${issues.length===1?'report':'reports'}${fd.length?' matching '+esc(fd.join(', ')):'across the community'}.`;
+  if(!issues.length){
+    const fd=[S.tower!=='all'?S.tower:'',S.type!=='all'?S.type:'',S.urgency!=='all'?UL[S.urgency]:''].filter(Boolean);
+    let msg;
+    if(fd.length){msg=`<div class="empty-box"><h3>No reports match.</h3><p>Try clearing a filter or tapping the selected tower again.</p></div>`;}
+    else if(S.error){msg=`<div class="empty-box"><h3>Couldn't reach the log.</h3><p>The sheet may be temporarily unavailable. Retrying in 60 seconds.</p></div>`;}
+    else if(S.loaded){msg=`<div class="empty-box"><h3>Nothing logged yet.</h3><p>Be the first to add something.</p></div>`;}
+    else{msg=`<div class="empty-box"><h3>Loading…</h3><p>Fetching the community log from the sheet.</p></div>`;}
+    grid.innerHTML=msg;return;
+  }
+  grid.innerHTML=issues.map((issue,idx)=>{
+    const isNew=issue===newest;
+    const p=pressure(issue);
+    const tf=[issue.tower,issue.flat?`Flat ${issue.flat}`:''].filter(Boolean).join(', ');
+    const loc=[tf,issue.location&&issue.location.toLowerCase()!==issue.tower.toLowerCase()?issue.location:''].filter(Boolean).join(' / ')||'Not shared';
+    const aff=issue.affected?`${issue.affected} ${Number(issue.affected)===1?'resident':'residents'}`:'Not estimated';
+    if(S.view==='compact'){
+      return`<article class="icard ${issue.urgency}${isNew?' is-new':''}" style="--index:${Math.min(idx,12)}">
+        <div><h3 class="itype">${esc(issue.type)}</h3><p class="idesc">${esc(issue.description)}</p></div>
+        <div class="cmono"><strong>${esc(issue.tower)}</strong>${issue.flat?` Flat ${esc(issue.flat)}`:''}</div>
+        <div class="cmono"><strong>${esc(UL[issue.urgency])}</strong>${esc(issue.duration)}</div>
+        <div class="cmono"><strong>${esc(aff)}</strong>${esc(repStatus(issue.reportedBefore||''))}</div>
+        <div class="cmono"><strong>${esc(relTime(issue.daysAgo||0))}</strong>${esc(issue.id)}</div>
+        <div class="cscore">${p}</div>
+      </article>`;
+    }
+    return`<article class="icard ${issue.urgency}${isNew?' is-new':''}" style="--index:${Math.min(idx,12)}">
+      <div class="ctopline">
+        <span class="cid">${esc(issue.id)}</span>
+        <div class="cbadges">${isNew?'<span class="new-badge">Just logged</span>':''}${ageBadge(issue.daysAgo||0)}</div>
+      </div>
+      <h3 class="itype">${esc(issue.type)}</h3>
+      <p class="idesc">${esc(issue.description)}</p>
+      ${issue.priorResponse?`<details class="ihist"><summary>What happened when raised before?</summary><p>${esc(issue.priorResponse)}</p></details>`:''}
+      <div class="cmeta">
+        <div class="mi"><span class="mlbl">Where</span><span class="mval">${esc(loc)}</span></div>
+        <div class="mi"><span class="mlbl">Urgency</span><span class="mval tone">${esc(UL[issue.urgency])}</span></div>
+        <div class="mi"><span class="mlbl">Duration</span><span class="mval">${esc(issue.duration)}</span></div>
+        <div class="mi"><span class="mlbl">Affected</span><span class="mval">${esc(aff)}</span></div>
+      </div>
+      <div class="pres-badge"><span class="pres-num">${p}</span><span class="pres-lbl">Pressure</span></div>
+      <div class="cfooter">
+        <span class="cdate">${esc(relTime(issue.daysAgo||0))} · ${esc(repStatus(issue.reportedBefore||''))}</span>
+        <a class="wa" href="${waLink(issue)}" target="_blank" rel="noopener">↗ Share</a>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+// ── RESOLVED ──
+function renderResolved(){
+  const sec=document.querySelector('.res-section');
+  if(!RESOLVED.length){if(sec)sec.hidden=true;return;}
+  if(sec)sec.hidden=false;
+  document.getElementById('resGrid').innerHTML=RESOLVED.map(r=>`
+    <div class="res-card">
+      <div class="res-badge">Resolved</div>
+      <div class="res-type">${esc(r.type)}</div>
+      <p class="res-desc">${esc(r.description)}</p>
+      <div class="res-meta">${esc(r.tower)} · Fixed in ${r.daysToFix} day${r.daysToFix!==1?'s':''} · ${r.resolvedDays} days ago</div>
+    </div>`).join('');
+}
+
+// ── MAIN RENDER ──
+function renderAll(){
+  animCount(S.issues.length);
+  renderHealth();renderSignals();renderPattern();
+  renderTowers();renderFilters();renderIssues();renderResolved();
+  buildCalendar();
+  const now=new Date();
+  const t=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const label=S.error?'Connection error · retrying':S.loaded?`Live · Updated ${t}`:'Connecting…';
+  document.getElementById('updAt').textContent=label;
+  document.getElementById('fUpd').textContent=S.error?'Could not reach the sheet — retrying in 60s':S.loaded?`Live · Refreshes every 60s`:'Connecting…';
+}
+
+// ── CSV PARSER ──
+function parseCSV(txt){
+  const rows=[];let row=[],field='',quoted=false;
+  for(let i=0;i<txt.length;i++){
+    const c=txt[i];
+    if(c==='"'){if(quoted&&txt[i+1]==='"'){field+='"';i++;}else{quoted=!quoted;}}
+    else if(c===','&&!quoted){row.push(field);field='';}
+    else if((c==='\n'||c==='\r')&&!quoted){
+      if(c==='\r'&&txt[i+1]==='\n')i++;
+      row.push(field);field='';
+      if(row.some(x=>x.trim()))rows.push(row);row=[];
+    }else field+=c;
+  }
+  row.push(field);if(row.some(x=>x.trim()))rows.push(row);
+  if(rows.length<2)return[];
+  const hdrs=rows[0].map(h=>h.trim().replace(/^\ufeff/,''));
+  return rows.slice(1).map(vals=>Object.fromEntries(hdrs.map((h,i)=>[h,(vals[i]||'').trim()])));
+}
+
+async function loadLive(){
+  S.error=false;
+  try{
+    const res=await fetch(`${CSV_URL}&_=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok)throw new Error('err');
+    const txt=await res.text();
+    const rows=parseCSV(txt);
+    const now=Date.now();
+    const live=rows.map((r,idx)=>{
+      let daysAgo=0,submittedAt='';
+      if(r['Submitted at']){
+        try{const d=new Date(r['Submitted at']);submittedAt=r['Submitted at'];daysAgo=Math.max(0,Math.floor((now-d.getTime())/86400000));}catch(e){}
       }
-    }
+      return{
+        id:r['Submission ID']||`LZ-${String(idx+1).padStart(3,'0')}`,
+        tower:r['Tower']||'Not shared',flat:r['Flat number']||'',
+        floor:parseInt((r['Flat number']||'').slice(0,-2))||0,
+        type:r['What kind of issue is this?']||'Other',
+        description:r['Describe it in your own words']||'',
+        location:r['Where exactly?']||'',
+        duration:r['How long has this been going on?']||'',
+        urgency:urg(r['How urgent does this feel to you?']||''),
+        reportedBefore:r['Have you reported this to the maintenance team before?']||'',
+        priorResponse:r['What happened when you reported it before?']||null,
+        affected:r['Roughly how many residents are affected?']||'1',
+        submittedAt,daysAgo,
+      };
+    }).filter(r=>r.type||r.description);
+    S.issues=live; // Always replace — even if empty, no mock fallback
+    S.loaded=true;
+  }catch(e){
+    S.error=true; // Sheet unreachable — show error state, not fake data
+  }
+}
 
-    document.querySelectorAll('.view-button').forEach(button => {
-      button.addEventListener('click', () => {
-        state.view = button.dataset.view;
-        renderFilters();
-        renderIssues();
-      });
-    });
-    els.sortSelect.addEventListener('change', event => {
-      state.sort = event.target.value;
-      renderIssues();
-    });
+// ── EVENTS ──
+document.querySelectorAll('.vbtn').forEach(b=>{b.addEventListener('click',()=>{S.view=b.dataset.view;renderFilters();renderIssues();});});
+document.getElementById('sortSel').addEventListener('change',e=>{S.sort=e.target.value;renderIssues();});
 
-    loadData();
-    window.setInterval(loadData, 60000);
-  </script>
+// ── BOOT ──
+S.issues=[];
+renderAll(); // Initial state: loading skeleton
+loadLive().then(()=>{renderAll();});
+setInterval(async()=>{await loadLive();renderAll();},60000);
+</script>
 </body>
 </html>
