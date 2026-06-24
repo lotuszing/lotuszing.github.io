@@ -426,7 +426,7 @@ a{color:inherit;}
   </section>
 
   <!-- RESOLUTION WALL -->
-  <section class="sec res-section sh">
+  <section class="sec res-section sh" style="display:none" id="resSec">
     <h2 class="sec-title">What got fixed.</h2>
     <p class="sec-intro">Issues residents raised — that actually got resolved. Proof that the log works.</p>
     <div class="res-grid" id="resGrid"></div>
@@ -724,9 +724,10 @@ function renderIssues(){
 
 // ── RESOLVED ──
 function renderResolved(){
-  const sec=document.querySelector('.res-section');
-  if(!RESOLVED.length){if(sec)sec.hidden=true;return;}
-  if(sec)sec.hidden=false;
+  const sec=document.getElementById('resSec');
+  if(!sec)return;
+  if(!RESOLVED.length){sec.style.display='none';return;}
+  sec.style.display='';
   document.getElementById('resGrid').innerHTML=RESOLVED.map(r=>`
     <div class="res-card">
       <div class="res-badge">Resolved</div>
