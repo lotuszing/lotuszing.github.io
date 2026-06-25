@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lotus Zing — Issue Log (full list)</title>
+<meta name="description" content="Anonymised log of all resident-reported issues at Lotus Zing. No names, flats, or personal details." />
+<meta name="theme-color" content="#13233A" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Reads the SAME published Sheet as the dashboard (CONFIG below).
+   Shows anonymised rows only — category, tower, urgency, status,
+   date. No names, flats, contact details, or free text.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F4F5F7;--surface:#FFFFFF;--surface-2:#FAFBFC;
+  --ink:#16202E;--ink-2:#43505F;--ink-3:#6B7787;--ink-4:#97A1AD;
+  --line:#E3E7EC;--line-2:#D2D8DF;
+  --navy:#13233A;--navy-2:#1E3350;--accent:#1F5FA8;--accent-soft:#E4EDF6;
+  --red:#C0392B;--red-soft:#F7E4E1;--amber:#B07A1E;--amber-soft:#F4E9D2;--green:#2E7D55;--green-soft:#DEEDE4;
+  --maxw:1240px;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+  --serif:"Source Serif 4", Georgia, serif;
+  --shadow:0 1px 2px rgba(22,32,46,.04), 0 1px 1px rgba(22,32,46,.03);
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* top strip + header (shared with dashboard) */
+.gov-strip{background:var(--navy);color:#C5D2E0}
+.gov-strip .wrap{display:flex;align-items:center;justify-content:space-between;height:34px;font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.gov-strip .tag{color:#8AA0BC}
+.gov-strip .right{color:#8AA0BC}
+header.site{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line-2)}
+.site .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;gap:16px}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}
+.crest{width:42px;height:42px;flex:none;display:block}
+.brand .name{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1}
+.brand .sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+.nav-right{display:flex;align-items:center;gap:8px}
+.navlink{font-size:13.5px;font-weight:500;color:var(--ink-2);text-decoration:none;padding:9px 13px;border-radius:6px}
+.navlink:hover{background:var(--surface-2);color:var(--ink)}
+.navlink.active{color:var(--accent);background:var(--accent-soft)}
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;border:1px solid transparent;cursor:pointer;border-radius:6px;padding:11px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .15s ease,border-color .15s ease}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1A5191}
+
+/* page head */
+.pagehead{background:var(--surface);border-bottom:1px solid var(--line)}
+.pagehead .wrap{padding:34px 32px 28px}
+.ph-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ph-top .sep{color:var(--ink-4)}
+.pagehead h1{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;font-size:clamp(26px,3.4vw,36px);line-height:1.1;color:var(--ink)}
+.pagehead p.lede{margin-top:12px;max-width:64ch;font-size:15px;color:var(--ink-2)}
+.pagehead p.lede b{color:var(--ink)}
+
+/* toolbar */
+.toolbar{position:sticky;top:74px;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:16px 0}
+.toolbar .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;position:relative}
+.search input{width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:7px;padding:10px 12px 10px 36px}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-4)}
+.sel{position:relative}
+.sel select{appearance:none;-webkit-appearance:none;font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--line-2);border-radius:7px;padding:10px 32px 10px 13px;cursor:pointer}
+.sel select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sel::after{content:"";position:absolute;right:13px;top:50%;width:7px;height:7px;border-right:1.6px solid var(--ink-4);border-bottom:1.6px solid var(--ink-4);transform:translateY(-65%) rotate(45deg);pointer-events:none}
+.clearbtn{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);background:none;border:0;cursor:pointer;padding:8px 6px;text-decoration:underline;text-underline-offset:2px}
+.clearbtn:hover{color:var(--accent)}
+
+/* count line */
+.countline{padding:18px 0 12px}
+.countline .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.countline .n{font-family:var(--serif);font-weight:600;font-size:18px;color:var(--ink)}
+.countline .n b{color:var(--accent)}
+.countline .hint{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+
+/* table */
+.tablewrap{padding-bottom:48px}
+.tablecard{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+table.log{width:100%;border-collapse:collapse;font-size:13.5px}
+table.log thead th{
+  position:sticky;top:0;background:var(--surface-2);text-align:left;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+  padding:13px 18px;border-bottom:1px solid var(--line);white-space:nowrap;user-select:none;cursor:pointer;z-index:1;
+}
+table.log thead th .ar{display:inline-block;width:9px;margin-left:5px;color:var(--ink-4)}
+table.log thead th.sorted{color:var(--ink)}
+table.log thead th.sorted .ar{color:var(--accent)}
+table.log thead th.noSort{cursor:default}
+table.log tbody td{padding:13px 18px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:middle}
+table.log tbody tr:last-child td{border-bottom:0}
+table.log tbody tr:hover{background:var(--surface-2)}
+.ref{font-family:var(--mono);font-size:12.5px;color:var(--ink-3)}
+.cat-cell{font-weight:500;color:var(--ink)}
+.tow-cell{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
+.date-cell{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.date-cell .rel{color:var(--ink-4);font-size:11px}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.tag .d{width:6px;height:6px;border-radius:50%}
+.u-Urgent{background:var(--red-soft);color:#9A2A1E}.u-Urgent .d{background:var(--red)}
+.u-Medium{background:var(--amber-soft);color:#82590F}.u-Medium .d{background:var(--amber)}
+.u-Low{background:var(--green-soft);color:#1E5C3C}.u-Low .d{background:var(--green)}
+.st{font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;white-space:nowrap}
+.st-open{background:var(--accent-soft);color:#184E89}
+.st-progress{background:var(--amber-soft);color:#82590F}
+.st-resolved{background:var(--green-soft);color:#1E5C3C}
+.empty{padding:54px 24px;text-align:center;color:var(--ink-3);font-size:14px}
+.empty .big{font-family:var(--serif);font-size:18px;color:var(--ink-2);margin-bottom:6px}
+.skelrow td{color:var(--ink-4)}
+
+/* footer (shared) */
+footer.site{border-top:1px solid var(--line);background:var(--surface);padding:30px 0 52px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:start}
+.privacy{display:flex;gap:14px;align-items:flex-start}
+.privacy .shield{width:30px;height:30px;flex:none;color:var(--accent)}
+.privacy h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.privacy p{font-size:13px;color:var(--ink-2);max-width:54ch;line-height:1.65}
+.privacy b{color:var(--ink)}
+.foot-meta{font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.95;text-align:right}
+.foot-meta b{color:var(--ink-2);font-weight:500}
+.foot-meta a{color:var(--accent);text-decoration:none}
+
+@media (max-width:780px){
+  .wrap{padding:0 18px}
+  .pagehead .wrap{padding:26px 18px 22px}
+  .toolbar{top:74px}
+  .col-ref,.th-ref{display:none}
+  .col-status-date{display:none}
+  table.log thead th,table.log tbody td{padding:12px 12px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-meta{text-align:left}
+}
+@media (max-width:560px){
+  .col-tower,.th-tower{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="gov-strip">
+  <div class="wrap">
+    <div class="left"><span>Lotus Zing Residents' Welfare Association</span><span class="tag"> · Official issue log</span></div>
+    <div class="right">Anonymised records · publicly viewable</div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Lotus Zing home">
+      <svg class="crest" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="41" height="41" rx="7" fill="#13233A"/>
+        <path d="M21 9l9 5.2v10.4L21 30l-9-5.4V14.2L21 9z" stroke="#5B7CA6" stroke-width="1.3" fill="none"/>
+        <path d="M21 15c2.4 1.6 3.6 3.6 3.6 6 0 2.5-1.6 4.2-3.6 4.2s-3.6-1.7-3.6-4.2c0-2.4 1.2-4.4 3.6-6z" fill="#3F8FD6"/>
+        <circle cx="21" cy="21.6" r="1.5" fill="#13233A"/>
+      </svg>
+      <span>
+        <span class="name">Lotus Zing</span><br/>
+        <span class="sub">Resident Issue Log</span>
+      </span>
+    </a>
+    <div class="nav-right">
+      <a class="navlink" href="index.html">Dashboard</a>
+      <a class="navlink active" href="issues.html">All issues</a>
+      <a class="btn btn-primary" id="reportLink" href="#" style="margin-left:6px">Report an issue</a>
+    </div>
+  </div>
+</header>
+
+<section class="pagehead">
+  <div class="wrap">
+    <div class="ph-top"><span class="eyebrow">Full record</span><span class="sep">·</span><span class="eyebrow" id="updated">Updated —</span></div>
+    <h1>Every reported issue, in one list</h1>
+    <p class="lede">The complete log of issues reported through the official channel. Records are <b>anonymised</b> — each row shows only the category, tower, urgency, status and date. No names, flat numbers, contact details, or written descriptions appear here.</p>
+  </div>
+</section>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="search" id="q" placeholder="Search category or tower…" autocomplete="off" />
+    </div>
+    <div class="sel"><select id="fCat"><option value="">All categories</option></select></div>
+    <div class="sel"><select id="fTow"><option value="">All towers</option></select></div>
+    <div class="sel"><select id="fUrg"><option value="">All urgency</option><option>Urgent</option><option>Medium</option><option>Low</option></select></div>
+    <div class="sel"><select id="fSt"><option value="">All statuses</option><option>Open</option><option>In progress</option><option>Resolved</option></select></div>
+    <button class="clearbtn" id="clearBtn" type="button">Reset</button>
+  </div>
+</div>
+
+<div class="countline">
+  <div class="wrap">
+    <div class="n" id="countN">Loading…</div>
+    <div class="hint" id="countHint"></div>
+  </div>
+</div>
+
+<div class="tablewrap">
+  <div class="wrap">
+    <div class="tablecard">
+      <table class="log">
+        <thead>
+          <tr>
+            <th class="th-ref noSort" data-k="ref">Ref</th>
+            <th data-k="cat">Category<span class="ar"></span></th>
+            <th class="th-tower" data-k="tow">Tower<span class="ar"></span></th>
+            <th data-k="urg">Urgency<span class="ar"></span></th>
+            <th class="th-status" data-k="status">Status<span class="ar"></span></th>
+            <th data-k="ts">Date reported<span class="ar"></span></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="skelrow"><td colspan="6" class="empty">Loading the log…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="privacy">
+        <svg class="shield" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M8.5 12l2.4 2.4 4.6-4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <h4>Privacy by design</h4>
+          <p>This list is <b>anonymised at source</b>. Reporter identity, flat numbers, contact details, photographs and free-text descriptions are stripped before publishing and remain in the private log accessible solely to the management committee.</p>
+        </div>
+      </div>
+      <div class="foot-meta">
+        <a href="index.html">← Back to dashboard</a><br/>
+        Source · <a id="sourceLink" href="#" target="_blank" rel="noopener"><b>shared resident log</b></a><br/>
+        <span id="footStatus">—</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<noscript>
+  <div style="max-width:680px;margin:60px auto;padding:0 24px;font-family:Georgia,serif;color:#16202E">
+    This log requires JavaScript to display records from the resident issue log.
+  </div>
+</noscript>
+
+<script>
+/* ============================================================
+   OPERATOR CONFIG — must match the dashboard's CONFIG.
+   ============================================================ */
+const CONFIG = {
+  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pub?gid=0&single=true&output=csv",
+  sheetPublicUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pubhtml?gid=0&single=true",
+  tallyFormId: "xXgPWy",
+  buildingName: "Lotus Zing"
+};
+
+/* ---------- CSV parsing ---------- */
+function parseCSV(text){
+  const rows=[]; let row=[], cur="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else{
+      if(c==='"') q=true;
+      else if(c===',') {row.push(cur);cur="";}
+      else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur="";}
+      else if(c==='\r'){}
+      else cur+=c;
+    }
+  }
+  if(cur.length||row.length){row.push(cur);rows.push(row);}
+  return rows.filter(r=>r.length>1||(r.length===1&&r[0].trim()!==""));
+}
+function findCol(headers, cands){
+  const h=headers.map(x=>x.toLowerCase().trim());
+  for(const cand of cands){ const i=h.findIndex(x=>x.includes(cand)); if(i>=0) return i; }
+  return -1;
+}
+function normUrg(v){
+  const s=(v||"").toLowerCase();
+  if(/urgent|high|critical|emergenc/.test(s)) return "Urgent";
+  if(/medium|moderate|normal/.test(s)) return "Medium";
+  if(/low|minor/.test(s)) return "Low";
+  return "Medium";
+}
+function normStatus(v){
+  const s=(v||"").toLowerCase();
+  if(/resolv|closed|done|complet|fixed/.test(s)) return "Resolved";
+  if(/progress|ongoing|assigned|working|action/.test(s)) return "In progress";
+  if(/open|new|pending|received|report/.test(s)) return "Open";
+  return v && v.trim() ? "Open" : "Open";
+}
+function mapRows(matrix){
+  if(!matrix.length) return [];
+  const headers=matrix[0];
+  const ci={
+    cat:findCol(headers,["categor","issue type","type of","nature","issue"]),
+    urg:findCol(headers,["urgen","priorit","severit"]),
+    tow:findCol(headers,["tower","block","building","wing"]),
+    st:findCol(headers,["status","state","resolution","stage"]),
+    ts:findCol(headers,["timestamp","submitted","date","time"])
+  };
+  const out=[];
+  for(let r=1;r<matrix.length;r++){
+    const row=matrix[r];
+    const cat=(ci.cat>=0?row[ci.cat]:"").trim();
+    const urg=(ci.urg>=0?row[ci.urg]:"").trim();
+    const tow=(ci.tow>=0?row[ci.tow]:"").trim();
+    const stRaw=(ci.st>=0?row[ci.st]:"").trim();
+    const tsRaw=(ci.ts>=0?row[ci.ts]:"").trim();
+    if(!cat && !urg && !tow && !tsRaw) continue;
+    const ts=tsRaw?new Date(tsRaw):null;
+    out.push({cat:cat||"Other", urg:normUrg(urg), tow:tow||"Unspecified",
+      status:normStatus(stRaw), ts:(ts&&!isNaN(ts))?ts:null});
+  }
+  return out;
+}
+
+/* ---------- Demo data (computed, anonymised) ---------- */
+function demoRows(){
+  let seed=20260601;
+  const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
+  const cats=[["Electricity",0.20],["Water supply",0.16],["Lift / elevator",0.14],["Plumbing",0.12],["Security",0.10],["Cleaning",0.09],["Parking",0.08],["Common area",0.06],["Noise",0.05]];
+  const towers=[["Tower A",0.30],["Tower B",0.27],["Tower C",0.24],["Tower D",0.19]];
+  const urg=[["Urgent",0.46],["Medium",0.34],["Low",0.20]];
+  const pick=(arr)=>{let x=rnd(),a=0;for(const[v,w]of arr){a+=w;if(x<=a)return v;}return arr[arr.length-1][0];};
+  const rows=[]; const N=118; const now=Date.now();
+  for(let i=0;i<N;i++){
+    const recency=Math.pow(rnd(),0.7);
+    const ts=new Date(now - recency*56*864e5 - rnd()*864e5);
+    // older issues skew resolved; recent ones skew open
+    const ageWeeks=(now-ts.getTime())/(7*864e5);
+    const rs=rnd();
+    let status;
+    if(ageWeeks>5) status = rs<0.82?"Resolved":(rs<0.93?"In progress":"Open");
+    else if(ageWeeks>2) status = rs<0.5?"Resolved":(rs<0.8?"In progress":"Open");
+    else status = rs<0.18?"Resolved":(rs<0.5?"In progress":"Open");
+    rows.push({cat:pick(cats), urg:pick(urg), tow:pick(towers), status, ts});
+  }
+  return rows;
+}
+
+/* ---------- Helpers ---------- */
+function relTime(d){
+  if(!d) return "—";
+  const s=(Date.now()-d.getTime())/1000;
+  if(s<90) return "just now";
+  if(s<3600) return Math.round(s/60)+" min ago";
+  if(s<86400) return Math.round(s/3600)+"h ago";
+  const days=Math.round(s/86400);
+  if(days===1) return "yesterday";
+  if(days<14) return days+" days ago";
+  return Math.round(days/7)+" weeks ago";
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function fmtDate(d){return d?d.toLocaleDateString(undefined,{day:"2-digit",month:"short",year:"numeric"}):"—";}
+
+/* ---------- State ---------- */
+let ALL=[];
+let sortKey="ts", sortDir=-1; // newest first
+const f={q:"",cat:"",tow:"",urg:"",st:""};
+
+function applyAndRender(){
+  let rows=ALL.filter(r=>{
+    if(f.cat && r.cat!==f.cat) return false;
+    if(f.tow && r.tow!==f.tow) return false;
+    if(f.urg && r.urg!==f.urg) return false;
+    if(f.st && r.status!==f.st) return false;
+    if(f.q){
+      const hay=(r.cat+" "+r.tow+" "+r.urg+" "+r.status).toLowerCase();
+      if(!hay.includes(f.q)) return false;
+    }
+    return true;
+  });
+  const urgRank={Urgent:3,Medium:2,Low:1};
+  const stRank={Open:3,"In progress":2,Resolved:1};
+  rows.sort((a,b)=>{
+    let av,bv;
+    if(sortKey==="ts"){av=a.ts?a.ts.getTime():0;bv=b.ts?b.ts.getTime():0;}
+    else if(sortKey==="urg"){av=urgRank[a.urg];bv=urgRank[b.urg];}
+    else if(sortKey==="status"){av=stRank[a.status];bv=stRank[b.status];}
+    else {av=(a[sortKey]||"").toLowerCase();bv=(b[sortKey]||"").toLowerCase();}
+    if(av<bv) return -1*sortDir;
+    if(av>bv) return 1*sortDir;
+    // stable tiebreak by date desc
+    const at=a.ts?a.ts.getTime():0, bt=b.ts?b.ts.getTime():0;
+    return bt-at;
+  });
+  renderRows(rows);
+  renderCount(rows.length);
+  renderHeaders();
+}
+
+function renderRows(rows){
+  const tb=document.getElementById("tbody");
+  if(!rows.length){
+    tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="big">No matching records</div>Try clearing the filters or search.</div></td></tr>`;
+    return;
+  }
+  const stClass={Open:"st-open","In progress":"st-progress",Resolved:"st-resolved"};
+  const total=ALL.length;
+  const frag=rows.map(r=>{
+    const idx = total - ALL.indexOf(r); // stable-ish ref number
+    const ref="LZ-"+String(Math.max(1,idx)).padStart(4,"0");
+    return `<tr>
+      <td class="col-ref"><span class="ref">${ref}</span></td>
+      <td class="cat-cell">${esc(r.cat)}</td>
+      <td class="col-tower tow-cell">${esc(r.tow)}</td>
+      <td><span class="tag u-${r.urg}"><span class="d"></span>${r.urg}</span></td>
+      <td class="col-status-date"><span class="st ${stClass[r.status]||"st-open"}">${esc(r.status)}</span></td>
+      <td class="date-cell">${fmtDate(r.ts)}<br/><span class="rel">${relTime(r.ts)}</span></td>
+    </tr>`;
+  }).join("");
+  tb.innerHTML=frag;
+}
+
+function renderCount(n){
+  const filtered = n!==ALL.length;
+  document.getElementById("countN").innerHTML = filtered
+    ? `<b>${n}</b> of ${ALL.length} issues`
+    : `<b>${ALL.length}</b> issues logged`;
+  const open=ALL.filter(r=>r.status==="Open").length;
+  const resolved=ALL.filter(r=>r.status==="Resolved").length;
+  document.getElementById("countHint").textContent=`${open} open · ${resolved} resolved`;
+}
+
+function renderHeaders(){
+  document.querySelectorAll("th[data-k]").forEach(th=>{
+    const k=th.dataset.k;
+    const ar=th.querySelector(".ar");
+    if(th.classList.contains("noSort")){return;}
+    if(k===sortKey){ th.classList.add("sorted"); if(ar) ar.textContent = sortDir===1?"▲":"▼"; }
+    else { th.classList.remove("sorted"); if(ar) ar.textContent=""; }
+  });
+}
+
+function buildFilters(){
+  const cats=[...new Set(ALL.map(r=>r.cat))].sort();
+  const tows=[...new Set(ALL.map(r=>r.tow))].sort();
+  const cs=document.getElementById("fCat"), ts=document.getElementById("fTow");
+  cats.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;cs.appendChild(o);});
+  tows.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;ts.appendChild(o);});
+}
+
+function setupEvents(){
+  document.getElementById("q").addEventListener("input",e=>{f.q=e.target.value.toLowerCase().trim();applyAndRender();});
+  document.getElementById("fCat").addEventListener("change",e=>{f.cat=e.target.value;applyAndRender();});
+  document.getElementById("fTow").addEventListener("change",e=>{f.tow=e.target.value;applyAndRender();});
+  document.getElementById("fUrg").addEventListener("change",e=>{f.urg=e.target.value;applyAndRender();});
+  document.getElementById("fSt").addEventListener("change",e=>{f.st=e.target.value;applyAndRender();});
+  document.getElementById("clearBtn").addEventListener("click",()=>{
+    f.q=f.cat=f.tow=f.urg=f.st="";
+    document.getElementById("q").value="";
+    ["fCat","fTow","fUrg","fSt"].forEach(id=>document.getElementById(id).value="");
+    applyAndRender();
+  });
+  document.querySelectorAll("th[data-k]").forEach(th=>{
+    if(th.classList.contains("noSort")) return;
+    th.addEventListener("click",()=>{
+      const k=th.dataset.k;
+      if(sortKey===k){ sortDir*=-1; }
+      else { sortKey=k; sortDir = (k==="cat"||k==="tow") ? 1 : -1; }
+      applyAndRender();
+    });
+  });
+}
+
+/* ---------- Report link ---------- */
+function setupReport(){
+  const id=CONFIG.tallyFormId;
+  const link=document.getElementById("reportLink");
+  if(id){ link.href=`https://tally.so/r/${id}`; link.target="_blank"; link.rel="noopener"; }
+  else { link.href="index.html#report"; }
+}
+function setupSourceLink(){
+  const link=document.getElementById("sourceLink");
+  if(!link) return;
+  if(CONFIG.sheetPublicUrl){
+    link.href=CONFIG.sheetPublicUrl;
+    link.target="_blank";
+    link.rel="noopener";
+  }else{
+    link.replaceWith(document.createTextNode("shared resident log"));
+  }
+}
+
+/* ---------- Boot ---------- */
+async function load(){
+  let rows=[], mode="demo";
+  if(CONFIG.sheetCsvUrl){
+    try{
+      const res=await fetch(CONFIG.sheetCsvUrl,{cache:"no-store"});
+      if(!res.ok) throw new Error("http "+res.status);
+      rows=mapRows(parseCSV(await res.text()));
+      mode = rows.length ? "live" : "error";
+    }catch(e){ mode="error"; }
+  }
+  if(!rows.length){ rows=demoRows(); }
+  ALL=rows;
+  const last=ALL.reduce((m,r)=>r.ts&&(!m||r.ts>m)?r.ts:m,null);
+  document.getElementById("updated").textContent="Updated "+relTime(last);
+  document.getElementById("footStatus").textContent =
+    mode==="live" ? "Live · from shared sheet" :
+    mode==="error" ? "Sheet unreachable · showing demo" : "Demo data · no sheet linked";
+  buildFilters();
+  applyAndRender();
+}
+
+setupReport();
+setupSourceLink();
+setupEvents();
+load();
+</script>
+</body>
+</html>
