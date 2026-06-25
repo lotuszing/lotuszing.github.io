@@ -39,12 +39,9 @@ body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1
 
 /* top strip + header */
 .gov-strip{background:var(--navy);color:#C5D2E0}
-.gov-strip .wrap{display:flex;align-items:center;justify-content:space-between;height:40px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em}
-.gov-strip .left{display:flex;align-items:center;gap:10px;min-width:0}
-.gov-strip .k{color:#EEF3F8;font-weight:600}
+.gov-strip .wrap{display:flex;align-items:center;justify-content:space-between;height:34px;font-family:var(--mono);font-size:11px;letter-spacing:.04em}
 .gov-strip .tag{color:#8AA0BC}
-.gov-strip .right{color:#8AA0BC;display:flex;align-items:center}
-.gov-strip .pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;border:1px solid rgba(197,210,224,.18);background:rgba(255,255,255,.04);color:#D9E3EE}
+.gov-strip .right{color:#8AA0BC}
 header.site{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line-2)}
 .site .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;gap:16px}
 .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}
@@ -235,11 +232,13 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);margin-to
 }
 @media (max-width:680px){
   .wrap{padding:0 18px}
-  .gov-strip .wrap{height:auto;padding:8px 18px;flex-direction:column;align-items:flex-start;gap:2px}
-  .site .wrap{height:auto;align-items:flex-start;flex-direction:column;padding:14px 18px}
+  .gov-strip .wrap{height:auto;padding:8px 18px;flex-direction:column;align-items:flex-start;gap:6px}
+  .gov-strip .left,.gov-strip .right{width:100%}
+  .gov-strip .pill{width:100%;justify-content:flex-start}
+  .site .wrap{display:flex;height:auto;align-items:flex-start;flex-direction:column;padding:14px 18px}
   .brand{align-items:flex-start}
   .brand .name{font-size:18px}
-  .nav-right{width:100%;flex-wrap:wrap;gap:8px}
+  .nav-right{width:100%;flex-wrap:wrap;gap:8px;justify-content:flex-start}
   .navlink{padding:8px 10px}
   .btn{padding:10px 14px}
   .masthead .wrap{padding:28px 18px 26px}
@@ -260,8 +259,8 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);margin-to
 
 <div class="gov-strip">
   <div class="wrap">
-    <div class="left"><span class="k">Lotus Zing RWA</span><span class="tag">Resident reporting dashboard</span></div>
-    <div class="right"><span class="pill">Public aggregate view</span></div>
+    <div class="left"><span>Lotus Zing Residents' Welfare Association</span><span class="tag"> · Official issue log</span></div>
+    <div class="right">Aggregate data · publicly viewable</div>
   </div>
 </div>
 
@@ -279,11 +278,7 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);margin-to
     <div class="nav-right">
       <a class="navlink active" href="index.html">Dashboard</a>
       <a class="navlink" href="issues.html">All issues</a>
-      <div class="status" id="statusWrap">
-        <span class="row"><span class="dot live" id="syncDot"></span><span id="syncText">Loading…</span></span>
-        <span class="ssub" id="syncSub">connecting to log</span>
-      </div>
-      <a class="btn btn-primary js-report" href="#" style="margin-left:6px">Report an issue</a>
+      <a class="btn btn-primary js-report" href="#">Report an issue</a>
     </div>
   </div>
 </header>
