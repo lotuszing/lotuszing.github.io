@@ -48,10 +48,11 @@ header.site{position:sticky;top:0;z-index:30;background:var(--surface);border-bo
 .crest{width:42px;height:42px;flex:none;display:block}
 .brand .name{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.05}
 .brand .sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
-.nav-right{display:flex;align-items:center;gap:10px;justify-content:flex-end;flex-wrap:wrap}
-.navlink{font-size:13.5px;font-weight:500;color:var(--ink-2);text-decoration:none;padding:9px 13px;border-radius:6px}
-.navlink:hover{background:var(--surface-2);color:var(--ink)}
-.navlink.active{color:var(--accent);background:var(--accent-soft)}
+.nav-right{display:flex;align-items:center;gap:14px;justify-content:flex-end;flex-wrap:wrap}
+.nav-tabs{display:inline-flex;align-items:center;gap:6px;padding:4px;border:1px solid var(--line);background:var(--surface-2);border-radius:10px}
+.navlink{font-size:13.5px;font-weight:500;color:var(--ink-2);text-decoration:none;padding:8px 12px;border-radius:6px;white-space:nowrap}
+.navlink:hover{background:#fff;color:var(--ink)}
+.navlink.active{color:var(--accent);background:#fff;box-shadow:0 1px 2px rgba(22,32,46,.06)}
 .btn{font-family:var(--sans);font-size:14px;font-weight:600;border:1px solid transparent;cursor:pointer;border-radius:6px;padding:11px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .15s ease,border-color .15s ease}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:#1A5191}
@@ -140,9 +141,10 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
   .site .wrap{display:flex;height:auto;align-items:flex-start;flex-direction:column;padding:14px 18px}
   .brand{align-items:flex-start}
   .brand .name{font-size:18px}
-  .nav-right{width:100%;flex-wrap:wrap;gap:8px;justify-content:flex-start}
-  .navlink{padding:8px 10px}
-  .btn{padding:10px 14px}
+  .nav-right{width:100%;display:grid;grid-template-columns:1fr;gap:10px;justify-content:flex-start}
+  .nav-tabs{width:100%;overflow:auto}
+  .navlink{padding:8px 10px;text-align:center}
+  .btn{width:100%;justify-content:center;padding:10px 14px}
   .pagehead .wrap{padding:26px 18px 22px}
   .toolbar{top:74px}
   .col-ref,.th-ref{display:none}
@@ -181,9 +183,11 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
       </span>
     </a>
     <div class="nav-right">
-      <a class="navlink" href="index.html">Dashboard</a>
-      <a class="navlink active" href="issues.html">All issues</a>
-      <a class="btn btn-primary" id="reportLink" href="#" style="margin-left:6px">Report an issue</a>
+      <div class="nav-tabs" role="tablist" aria-label="Primary">
+        <a class="navlink" href="index.html">Dashboard</a>
+        <a class="navlink active" href="issues.html">All issues</a>
+      </div>
+      <a class="btn btn-primary" id="reportLink" href="#">Report an issue</a>
     </div>
   </div>
 </header>
