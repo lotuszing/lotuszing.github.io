@@ -52,6 +52,7 @@ header.site{position:sticky;top:0;z-index:30;background:var(--surface);border-bo
 .btn{font-family:var(--sans);font-size:14px;font-weight:600;border:1px solid transparent;cursor:pointer;border-radius:6px;padding:11px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .15s ease,border-color .15s ease}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:#1A5191}
+.rl-short{display:none}
 
 /* page head */
 .pagehead{background:var(--surface);border-bottom:1px solid var(--line)}
@@ -129,10 +130,26 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
 .foot-meta b{color:var(--ink-2);font-weight:500}
 .foot-meta a{color:var(--accent);text-decoration:none}
 
+@media (max-width:860px){.gov-strip .right{display:none}}
 @media (max-width:780px){
-  .wrap{padding:0 18px}
-  .pagehead .wrap{padding:26px 18px 22px}
-  .toolbar{top:74px}
+  .wrap{padding:0 16px}
+  .gov-strip .wrap{height:32px;font-size:10px}
+  .gov-strip .tag{display:none}
+  .site .wrap{height:60px;gap:8px}
+  .crest{width:36px;height:36px}
+  .brand .name{font-size:17px}
+  .brand .sub{display:none}
+  .nav-right{gap:4px}
+  .navlink{padding:7px 9px;font-size:12.5px}
+  .btn{padding:9px 13px;font-size:13px}
+  .rl-long{display:none}.rl-short{display:inline}
+  .pagehead .wrap{padding:24px 16px 20px}
+  .toolbar{top:60px;padding:12px 0}
+  .toolbar .wrap{gap:8px}
+  .search{flex:1 1 100%;min-width:0}
+  .sel{flex:1 1 calc(50% - 4px)}
+  .sel select{width:100%}
+  .clearbtn{flex:1 1 100%;text-align:left;padding:4px 2px}
   .col-ref,.th-ref{display:none}
   .col-status-date{display:none}
   table.log thead th,table.log tbody td{padding:12px 12px}
@@ -141,6 +158,11 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
 }
 @media (max-width:560px){
   .col-tower,.th-tower{display:none}
+  table.log{font-size:13px}
+}
+@media (max-width:380px){
+  .brand .name{font-size:16px}
+  .navlink{padding:6px 7px;font-size:12px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -171,7 +193,7 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
     <div class="nav-right">
       <a class="navlink" href="index.html">Dashboard</a>
       <a class="navlink active" href="issues.html">All issues</a>
-      <a class="btn btn-primary" id="reportLink" href="#" style="margin-left:6px">Report an issue</a>
+      <a class="btn btn-primary" id="reportLink" href="#" style="margin-left:6px"><span class="rl-long">Report an issue</span><span class="rl-short">Report</span></a>
     </div>
   </div>
 </header>
@@ -242,7 +264,7 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
       </div>
       <div class="foot-meta">
         <a href="index.html">← Back to dashboard</a><br/>
-        Source · <a id="sourceLink" href="#" target="_blank" rel="noopener"><b>shared resident log</b></a><br/>
+        Source · <b>shared resident log</b> · <a id="repoLink" href="https://github.com/lotuszing/lotuszing.github.io" target="_blank" rel="noopener">GitHub</a><br/>
         <span id="footStatus">—</span>
       </div>
     </div>
@@ -260,9 +282,9 @@ footer.site{border-top:1px solid var(--line);background:var(--surface);padding:3
    OPERATOR CONFIG — must match the dashboard's CONFIG.
    ============================================================ */
 const CONFIG = {
-  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pub?gid=0&single=true&output=csv",
-  sheetPublicUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8bLKKQLiw9QsfWj3VHqVx7jgdX-MPyOrvViG74pr1uUA9VpYBSrQMfVQhKLEi6oN6bZMyZrYJU7oY/pubhtml?gid=0&single=true",
-  tallyFormId: "xXgPWy",
+  sheetCsvUrl: "",          // published Google Sheet CSV link
+  tallyFormId: "",          // code at the end of tally.so/r/XXXXXX
+  githubRepoUrl: "https://github.com/lotuszing/lotuszing.github.io",
   buildingName: "Lotus Zing"
 };
 
@@ -333,7 +355,7 @@ function demoRows(){
   let seed=20260601;
   const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
   const cats=[["Electricity",0.20],["Water supply",0.16],["Lift / elevator",0.14],["Plumbing",0.12],["Security",0.10],["Cleaning",0.09],["Parking",0.08],["Common area",0.06],["Noise",0.05]];
-  const towers=[["Tower A",0.30],["Tower B",0.27],["Tower C",0.24],["Tower D",0.19]];
+  const towers=[["Tower 1",0.16],["Tower 2",0.14],["Tower 3",0.13],["Tower 4",0.12],["Tower 5",0.13],["Tower 6",0.12],["Tower 15",0.10],["Tower 16",0.10]];
   const urg=[["Urgent",0.46],["Medium",0.34],["Low",0.20]];
   const pick=(arr)=>{let x=rnd(),a=0;for(const[v,w]of arr){a+=w;if(x<=a)return v;}return arr[arr.length-1][0];};
   const rows=[]; const N=118; const now=Date.now();
@@ -484,16 +506,9 @@ function setupReport(){
   if(id){ link.href=`https://tally.so/r/${id}`; link.target="_blank"; link.rel="noopener"; }
   else { link.href="index.html#report"; }
 }
-function setupSourceLink(){
-  const link=document.getElementById("sourceLink");
-  if(!link) return;
-  if(CONFIG.sheetPublicUrl){
-    link.href=CONFIG.sheetPublicUrl;
-    link.target="_blank";
-    link.rel="noopener";
-  }else{
-    link.replaceWith(document.createTextNode("shared resident log"));
-  }
+function setupLinks(){
+  const repo=document.getElementById("repoLink");
+  if(repo&&CONFIG.githubRepoUrl)repo.href=CONFIG.githubRepoUrl;
 }
 
 /* ---------- Boot ---------- */
@@ -519,7 +534,7 @@ async function load(){
 }
 
 setupReport();
-setupSourceLink();
+setupLinks();
 setupEvents();
 load();
 </script>
