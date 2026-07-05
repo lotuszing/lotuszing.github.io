@@ -28,22 +28,23 @@
   
   <style>
     :root {
-      --paper: #f7f3ea;
-      --paper-warm: #fffaf1;
-      --ink: #17211d;
-      --moss: #4f6b55;
-      --moss-deep: #294437;
-      --moss-soft: #edf3eb;
-      --clay: #b98254;
-      --clay-deep: #7a4d32;
-      --clay-soft: #f5ebdb;
-      --line: #25312c;
-      --muted: #68736b;
+      --paper: #fafaf9;
+      --paper-warm: #f7f2e8;
+      --ink: #0c0a09;
+      --moss: #315c48;
+      --moss-deep: #17382b;
+      --moss-soft: #eef4ee;
+      --clay: #a16207;
+      --clay-deep: #713f12;
+      --clay-soft: #f4e8d2;
+      --line: #d6d3d1;
+      --muted: #57534e;
     }
     body {
       background:
-        radial-gradient(circle at top left, rgba(185, 130, 84, 0.13), transparent 28rem),
-        linear-gradient(180deg, #fffaf1 0%, var(--paper) 18rem, #f4eee3 100%);
+        radial-gradient(circle at top left, rgba(161, 98, 7, 0.11), transparent 28rem),
+        radial-gradient(circle at top right, rgba(49, 92, 72, 0.10), transparent 24rem),
+        linear-gradient(180deg, #fffdf7 0%, var(--paper) 18rem, #f1eee8 100%);
       color: var(--ink);
       touch-action: manipulation;
     }
@@ -69,13 +70,13 @@
     }
     @keyframes greenBlink {
       0%, 100% {
-        background: #8fb58c;
-        box-shadow: 0 0 0 0 rgba(143, 181, 140, 0.38), 0 0 12px rgba(79, 107, 85, 0.65);
+        background: #9cb48f;
+        box-shadow: 0 0 0 0 rgba(156, 180, 143, 0.34), 0 0 12px rgba(49, 92, 72, 0.55);
         transform: scale(1);
       }
       45% {
-        background: #f2f6ee;
-        box-shadow: 0 0 0 5px rgba(143, 181, 140, 0), 0 0 4px rgba(79, 107, 85, 0.4);
+        background: #f6f4ec;
+        box-shadow: 0 0 0 5px rgba(156, 180, 143, 0), 0 0 4px rgba(49, 92, 72, 0.35);
         transform: scale(0.86);
       }
     }
@@ -98,10 +99,10 @@
     }
     @keyframes joinPulse {
       0%, 100% {
-        box-shadow: 2px 2px 0 0 rgba(41, 68, 55, 1), 0 0 0 0 rgba(143, 181, 140, 0.42);
+        box-shadow: 2px 2px 0 0 rgba(23, 56, 43, 1), 0 0 0 0 rgba(156, 180, 143, 0.36);
       }
       50% {
-        box-shadow: 2px 2px 0 0 rgba(41, 68, 55, 1), 0 0 0 6px rgba(143, 181, 140, 0);
+        box-shadow: 2px 2px 0 0 rgba(23, 56, 43, 1), 0 0 0 6px rgba(156, 180, 143, 0);
       }
     }
     .join-group-pulse {
@@ -115,7 +116,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(143, 181, 140, 0.24), transparent);
+      background: linear-gradient(90deg, transparent, rgba(217, 185, 114, 0.24), transparent);
       animation: bannerScan 3.8s ease-in-out infinite;
       pointer-events: none;
     }
@@ -129,9 +130,9 @@
       position: absolute;
       inset: -20%;
       background:
-        radial-gradient(circle at 82% 18%, rgba(143, 181, 140, 0.22), transparent 24%),
-        radial-gradient(circle at 8% 0%, rgba(185, 130, 84, 0.16), transparent 26%),
-        linear-gradient(115deg, transparent 0 45%, rgba(79, 107, 85, 0.08) 46% 48%, transparent 49%);
+        radial-gradient(circle at 82% 18%, rgba(49, 92, 72, 0.15), transparent 24%),
+        radial-gradient(circle at 8% 0%, rgba(161, 98, 7, 0.13), transparent 26%),
+        linear-gradient(115deg, transparent 0 45%, rgba(49, 92, 72, 0.06) 46% 48%, transparent 49%);
       animation: radarGlow 5.5s ease-in-out infinite;
       z-index: 0;
     }
@@ -145,18 +146,18 @@
     .green-light {
       width: 0.55rem;
       height: 0.55rem;
-      border: 1px solid rgba(41, 68, 55, 0.65);
+      border: 1px solid rgba(23, 56, 43, 0.65);
       border-radius: 999px;
       display: inline-block;
-      background: #8fb58c;
+      background: #9cb48f;
       animation: greenBlink 1.35s ease-in-out infinite;
     }
     .signal-rack {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      border: 1px solid rgba(41, 68, 55, 0.35);
-      background: rgba(237, 243, 235, 0.9);
+      border: 1px solid rgba(23, 56, 43, 0.28);
+      background: rgba(238, 244, 238, 0.92);
       padding: 0.25rem 0.4rem;
       border-radius: 999px;
     }
@@ -173,7 +174,7 @@
       left: -65%;
       width: 40%;
       height: 190%;
-      background: linear-gradient(90deg, transparent, rgba(255, 250, 241, 0.72), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 253, 247, 0.82), transparent);
       transform: rotate(18deg);
       animation: sparkleSweep 4.2s ease-in-out infinite;
       pointer-events: none;
@@ -197,41 +198,41 @@
     }
   </style>
 </head>
-<body class="font-sans antialiased text-[#17211d] bg-[#f7f3ea] min-h-screen pb-12">
+<body class="font-sans antialiased text-[#0c0a09] bg-[#fafaf9] min-h-screen pb-12">
 
   <!-- TOP ALERT BANNER -->
-  <div class="live-banner bg-[#14231f] px-4 py-2 text-center text-[10px] sm:text-xs font-mono text-[#d8caa7] uppercase tracking-[0.2em] flex items-center justify-center gap-2 border-b border-[#0b1411]">
+  <div class="live-banner bg-[#0c0a09] px-4 py-2 text-center text-[10px] sm:text-xs font-mono text-[#e7d7b1] uppercase tracking-[0.2em] flex items-center justify-center gap-2 border-b border-[#1c1917]">
     <span class="green-light"></span>
     Lotus Zing Society, Sector 168, Noida — Community Housing Ledger
   </div>
 
   <!-- HEADER -->
-  <header class="live-header border-b border-[#d8d0c2] bg-transparent">
+  <header class="live-header border-b border-[#d6d3d1] bg-transparent">
     <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
-          <span class="pop-in inline-block text-[10px] sm:text-xs font-mono font-bold tracking-[0.2em] text-[#68736b] uppercase bg-[#eee6d8] border border-[#d5c9b8] px-2 py-1 rounded-full">
+          <span class="pop-in inline-block text-[10px] sm:text-xs font-mono font-bold tracking-[0.2em] text-[#57534e] uppercase bg-[#f4e8d2] border border-[#dcc9aa] px-2 py-1 rounded-full">
             Community Board
           </span>
-          <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#17211d] leading-tight">
+          <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#0c0a09] leading-tight">
             Lotus Zing Flat & Room Board
           </h1>
-          <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#5f6b63] max-w-2xl leading-relaxed">
+          <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#57534e] max-w-2xl leading-relaxed">
             Live rent listings and tenant requests from the Lotus Zing community.
           </p>
-          <div class="pop-in pop-delay-3 flex flex-wrap gap-2 text-[11px] sm:text-xs font-mono text-[#68736b] pt-1 sm:pt-2">
+          <div class="pop-in pop-delay-3 flex flex-wrap gap-2 text-[11px] sm:text-xs font-mono text-[#57534e] pt-1 sm:pt-2">
             <span class="signal-rack" aria-label="Live board signal">
               <span class="green-light"></span>
               <span class="green-light"></span>
               <span class="green-light"></span>
             </span>
-            <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-[#25312c] bg-[#fffaf1] text-[#17211d] px-2.5 py-1 rounded font-bold hover:bg-[#efe6d7]">
+            <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-[#d6d3d1] bg-[#fffdf7] text-[#0c0a09] px-2.5 py-1 rounded-full font-bold hover:bg-[#f4e8d2]">
               Listings home
             </a>
-            <span id="sync-status" class="flex items-center gap-1.5 border border-[#d5c9b8] bg-[#f7f3ea] px-2.5 py-1 rounded">
+            <span id="sync-status" class="flex items-center gap-1.5 border border-[#d6d3d1] bg-[#f7f2e8] px-2.5 py-1 rounded-full">
               Sync pending
             </span>
-            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border border-[#294437] bg-[#4f6b55] text-white px-3 py-1.5 rounded-full font-bold hover:bg-[#405a48]">
+            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border border-[#17382b] bg-[#315c48] text-white px-3 py-1.5 rounded-full font-bold hover:bg-[#254938]">
               <span class="green-light"></span>
               Join WhatsApp group
             </a>
@@ -240,34 +241,34 @@
 
         <div class="lg:col-span-5 flex flex-col gap-3 sm:gap-4">
           <div class="grid grid-cols-2 gap-2 sm:gap-3">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#fff8ec] hover:bg-[#f5ebdb] border border-[#c9a47f] rounded-2xl shadow-sm transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#fff8e8] hover:bg-[#f4e8d2] border border-[#d8b071] rounded-2xl shadow-sm transition-all text-left">
               <div class="flex justify-between items-center w-full mb-3">
-                <span class="live-dot-label bg-[#b98254] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-[#25312c]"><span class="green-light"></span>Host Flat</span>
-                <span class="text-[#7a4d32] text-xl font-bold font-mono">+</span>
+                <span class="live-dot-label bg-[#a16207] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-full border border-[#713f12]"><span class="green-light"></span>Host Flat</span>
+                <span class="text-[#713f12] text-xl font-bold font-mono">+</span>
               </div>
               <div>
-                <h3 class="font-display font-bold text-[#17211d] text-sm sm:text-base">List flat</h3>
-                <p class="hidden sm:block text-[11px] text-[#5f6b63] mt-1">Owner or broker</p>
+                <h3 class="font-display font-bold text-[#0c0a09] text-sm sm:text-base">List flat</h3>
+                <p class="hidden sm:block text-[11px] text-[#57534e] mt-1">Owner or broker</p>
               </div>
             </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#f1f6ef] hover:bg-[#e4ece1] border border-[#a9bda5] rounded-2xl shadow-sm transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#eef4ee] hover:bg-[#e4ece1] border border-[#b7c7b6] rounded-2xl shadow-sm transition-all text-left">
               <div class="flex justify-between items-center w-full mb-3">
-                <span class="live-dot-label bg-[#4f6b55] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-[#25312c]"><span class="green-light"></span>Tenant Search</span>
-                <span class="text-[#294437] text-xl font-bold font-mono">+</span>
+                <span class="live-dot-label bg-[#315c48] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-full border border-[#17382b]"><span class="green-light"></span>Tenant Search</span>
+                <span class="text-[#17382b] text-xl font-bold font-mono">+</span>
               </div>
               <div>
-                <h3 class="font-display font-bold text-[#17211d] text-sm sm:text-base">Find room</h3>
-                <p class="hidden sm:block text-[11px] text-[#5f6b63] mt-1">Tenant request</p>
+                <h3 class="font-display font-bold text-[#0c0a09] text-sm sm:text-base">Find room</h3>
+                <p class="hidden sm:block text-[11px] text-[#57534e] mt-1">Tenant request</p>
               </div>
             </a>
           </div>
 
-          <div class="border border-[#d6c2aa] bg-[#fff8ec]/80 p-3 rounded-2xl flex gap-3">
+          <div class="border border-[#dcc9aa] bg-[#fff8e8]/85 p-3 rounded-2xl flex gap-3">
             <div class="space-y-1">
-              <h4 class="font-mono text-xs uppercase font-bold text-[#17211d] tracking-wider">30-Day Expiry</h4>
-              <p class="text-xs text-[#5f6b63] leading-relaxed">
-                Posts auto-expire after <strong class="text-[#17211d] font-semibold">30 days</strong>. Re-submit to stay visible.
+              <h4 class="font-mono text-xs uppercase font-bold text-[#0c0a09] tracking-wider">30-Day Expiry</h4>
+              <p class="text-xs text-[#57534e] leading-relaxed">
+                Posts auto-expire after <strong class="text-[#0c0a09] font-semibold">30 days</strong>. Re-submit to stay visible.
               </p>
             </div>
           </div>
@@ -280,11 +281,11 @@
   <main class="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-8">
     
     <!-- NAVIGATION TABS -->
-    <div class="sticky top-0 z-20 flex border border-[#d8d0c2] mb-5 sm:mb-8 overflow-hidden rounded-2xl bg-[#fffaf1]/95 backdrop-blur">
-      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d8d0c2] focus:outline-none transition-all bg-[#b98254] text-white border-b-0">
+    <div class="sticky top-0 z-20 flex border border-[#d6d3d1] mb-5 sm:mb-8 overflow-hidden rounded-2xl bg-[#fffdf7]/95 backdrop-blur">
+      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none transition-all bg-[#a16207] text-white border-b-0">
         Rent
       </button>
-      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none transition-all text-[#566155] hover:bg-[#fffaf1]">
+      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none transition-all text-[#57534e] hover:bg-[#f7f2e8]">
         Looking
       </button>
     </div>
@@ -296,7 +297,7 @@
 
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-16 text-center border-2 border-dashed border-slate-300 rounded-xl bg-white max-w-lg mx-auto my-8">
-      <div class="inline-block w-8 h-8 border-4 border-[#d5c9b8] border-t-[#25312c] rounded-full animate-spin mb-4"></div>
+      <div class="inline-block w-8 h-8 border-4 border-[#dcc9aa] border-t-[#1c1917] rounded-full animate-spin mb-4"></div>
       <h3 class="font-display font-bold text-slate-800 text-lg">Loading listings...</h3>
       <p class="text-xs text-slate-500 font-mono mt-1">Syncing sheet</p>
     </div>
@@ -321,7 +322,7 @@
     </div>
 
     <!-- SECONDARY CTA ROW -->
-    <div class="mt-10 sm:mt-16 border border-[#25312c] bg-[#17211d] p-5 sm:p-8 rounded-2xl text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-sm">
+    <div class="mt-10 sm:mt-16 border border-[#1c1917] bg-[#0c0a09] p-5 sm:p-8 rounded-2xl text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-sm">
       <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
         Add your post
       </h3>
@@ -329,10 +330,10 @@
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#b98254] hover:bg-[#a56f48] border border-[#25312c] font-mono text-xs font-bold uppercase text-white rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#a16207] hover:bg-[#854d0e] border border-[#713f12] font-mono text-xs font-bold uppercase text-white rounded-xl transition-all">
           List flat
         </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#fffaf1] hover:bg-[#edf3eb] border border-[#25312c] font-mono text-xs font-bold uppercase text-[#17211d] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#fffdf7] hover:bg-[#eef4ee] border border-[#d6d3d1] font-mono text-xs font-bold uppercase text-[#0c0a09] rounded-xl transition-all">
           Post request
         </a>
       </div>
@@ -341,7 +342,7 @@
   </main>
 
   <!-- DISCLAIMER -->
-  <footer class="border-t border-[#d8d0c2] bg-transparent py-8 sm:py-12 px-4 text-center mt-12 sm:mt-20">
+  <footer class="border-t border-[#d6d3d1] bg-transparent py-8 sm:py-12 px-4 text-center mt-12 sm:mt-20">
     <div class="max-w-2xl mx-auto flex flex-col items-center gap-3">
       <span class="green-light" aria-hidden="true"></span>
       <h4 class="font-display font-bold text-slate-950 text-sm">Disclaimer</h4>
@@ -376,8 +377,8 @@
       const status = document.getElementById("sync-status");
       if (!status) return;
       const palette = {
-        idle: "border-[#d5c9b8] bg-[#f7f3ea] text-[#68736b]",
-        live: "border-[#b8c7ae] bg-[#edf3eb] text-[#294437]",
+        idle: "border-[#d6d3d1] bg-[#f7f2e8] text-[#57534e]",
+        live: "border-[#b7c7b6] bg-[#eef4ee] text-[#17382b]",
         error: "border-rose-200 bg-rose-50 text-rose-700"
       };
       status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded ${palette[mode] || palette.idle}`;
@@ -572,11 +573,11 @@
       const tabLookingBtn = document.getElementById('tab-looking-btn');
       
       if (tab === 'rent') {
-        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d8d0c2] focus:outline-none bg-[#b98254] text-white border-b-0";
-        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none text-[#566155] hover:bg-[#fffaf1]";
+        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none bg-[#a16207] text-white border-b-0";
+        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none text-[#57534e] hover:bg-[#f7f2e8]";
       } else {
-        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d8d0c2] focus:outline-none text-[#566155] hover:bg-[#fffaf1]";
-        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none bg-[#4f6b55] text-white border-b-0";
+        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none text-[#57534e] hover:bg-[#f7f2e8]";
+        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none bg-[#315c48] text-white border-b-0";
       }
       
       renderFilters();
@@ -589,7 +590,7 @@
       
       if (activeTab === 'rent') {
         container.innerHTML = `
-          <div class="border border-[#d8d0c2] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
+          <div class="border border-[#d6d3d1] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
               <div class="flex items-center gap-2">
                 <span class="text-slate-700">⚙</span>
@@ -637,7 +638,7 @@
 
             <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200">
               <span class="text-xs text-slate-700">Only display listings directly posted by <strong>Property Owners</strong> (hide Brokers)</span>
-              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-[#b98254]' : 'bg-slate-300'}" id="owner-toggle-btn">
+              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-[#a16207]' : 'bg-slate-300'}" id="owner-toggle-btn">
                 <div class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${rentFilters.ownerOnly ? 'translate-x-6' : 'translate-x-0'}"></div>
               </button>
             </div>
@@ -645,7 +646,7 @@
         `;
       } else {
         container.innerHTML = `
-          <div class="border border-[#d8d0c2] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
+          <div class="border border-[#d6d3d1] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
               <div class="flex items-center gap-2">
                 <span class="text-slate-700">⚙</span>
@@ -903,15 +904,15 @@
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
-        <div class="col-span-full border-2 border-dashed border-[#b98254] rounded-xl bg-[#f5ebdb] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
-          <span class="font-mono text-xs uppercase tracking-widest text-[#7a4d32]">Pending</span>
+        <div class="col-span-full border-2 border-dashed border-[#a16207] rounded-xl bg-[#f4e8d2] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
+          <span class="font-mono text-xs uppercase tracking-widest text-[#713f12]">Pending</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
             Form is live. Listings show after sheet link is added.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#fffaf1] hover:bg-[#edf3eb] text-[#294437] font-mono text-xs font-bold rounded border-2 border-[#4f6b55] shadow-[2px_2px_0px_0px_rgba(41,68,55,1)]">Join group</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#fffdf7] hover:bg-[#eef4ee] text-[#17382b] font-mono text-xs font-bold rounded border border-[#315c48]">Join group</a>
           </div>
         </div>
       `;
@@ -1017,16 +1018,16 @@ _Shared via Lotus Zing Noticeboard_
           const isOwner = item.listedBy.toLowerCase().includes("owner");
 
           const card = document.createElement('div');
-          card.className = "listing-pop border border-[#d8d0c2] bg-[#fffdf7] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
+          card.className = "listing-pop border border-[#d6d3d1] bg-[#fffdf7] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
           card.style.setProperty("--pop-index", originalIndex % 9);
           card.innerHTML = `
-            <div class="border-b border-[#e3dbcf] bg-[#faf6ee] px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap gap-2 items-center justify-between">
+            <div class="border-b border-[#e7e1d8] bg-[#faf7f1] px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-[#b98254] bg-[#f5ebdb] text-[#7a4d32]">${item.bhkType}</span>
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded-full border border-[#d8b071] bg-[#fff8e8] text-[#713f12]">${item.bhkType}</span>
                 <span class="font-mono text-[11px] text-slate-500 uppercase">${item.furnishing}</span>
               </div>
               <div class="flex items-center gap-1.5">
-                ${isNew ? '<span class="bg-[#b98254] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#25312c] rounded shadow-[1px_1px_0px_0px_rgba(37,49,44,1)]">NEW</span>' : ''}
+                ${isNew ? '<span class="bg-[#a16207] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#713f12] rounded-full">NEW</span>' : ''}
                 ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
@@ -1034,7 +1035,7 @@ _Shared via Lotus Zing Noticeboard_
               <div class="flex justify-between items-start gap-2">
                 <div>
                   <h4 class="font-display font-bold text-lg text-slate-900 leading-tight">${item.towerFlat}</h4>
-                  <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase mt-1 ${isOwner ? "text-[#294437]" : "text-slate-500"}">
+                  <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase mt-1 ${isOwner ? "text-[#17382b]" : "text-slate-500"}">
                     ${item.listedBy}
                   </span>
                 </div>
@@ -1063,10 +1064,10 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
-            <div class="border-t border-[#e3dbcf] bg-[#faf6ee] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
-              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#d8d0c2] bg-white hover:bg-slate-100 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
-              <button onclick="shareRentWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#7a4d32] bg-[#b98254] hover:bg-[#a56f48] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#4f6b55] bg-[#edf3eb] hover:bg-[#e4ece1] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#294437]">Group</a>
+            <div class="border-t border-[#e7e1d8] bg-[#faf7f1] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
+              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#d6d3d1] bg-white hover:bg-slate-100 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
+              <button onclick="shareRentWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#713f12] bg-[#a16207] hover:bg-[#854d0e] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#315c48] bg-[#eef4ee] hover:bg-[#e3ece2] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#17382b]">Group</a>
             </div>
           `;
           grid.appendChild(card);
@@ -1112,16 +1113,16 @@ _Shared via Lotus Zing Noticeboard_
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
 
           const card = document.createElement('div');
-          card.className = "listing-pop border border-[#d8d0c2] bg-[#fffdf7] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
+          card.className = "listing-pop border border-[#d6d3d1] bg-[#fffdf7] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
           card.style.setProperty("--pop-index", originalIndex % 9);
           card.innerHTML = `
-            <div class="border-b border-[#e3dbcf] bg-[#faf6ee] px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap gap-2 items-center justify-between">
+            <div class="border-b border-[#e7e1d8] bg-[#faf7f1] px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-[#4f6b55] bg-[#edf3eb] text-[#294437]">${item.preferredBhk} Layout</span>
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded-full border border-[#315c48] bg-[#eef4ee] text-[#17382b]">${item.preferredBhk} Layout</span>
                 <span class="font-mono text-[11px] text-slate-500 uppercase">${item.tenantType}</span>
               </div>
               <div class="flex items-center gap-1.5">
-                ${isNew ? '<span class="bg-[#4f6b55] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#25312c] rounded">NEW</span>' : ''}
+                ${isNew ? '<span class="bg-[#315c48] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#17382b] rounded-full">NEW</span>' : ''}
                 ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
@@ -1156,10 +1157,10 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
-            <div class="border-t border-[#e3dbcf] bg-[#faf6ee] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
-              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#d8d0c2] bg-white hover:bg-slate-100 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
-              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#294437] bg-[#4f6b55] hover:bg-[#405a48] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#4f6b55] bg-[#edf3eb] hover:bg-[#e4ece1] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#294437]">Group</a>
+            <div class="border-t border-[#e7e1d8] bg-[#faf7f1] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
+              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#d6d3d1] bg-white hover:bg-slate-100 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
+              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#17382b] bg-[#315c48] hover:bg-[#254938] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#315c48] bg-[#eef4ee] hover:bg-[#e3ece2] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#17382b]">Group</a>
             </div>
           `;
           grid.appendChild(card);
