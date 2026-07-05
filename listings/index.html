@@ -268,19 +268,21 @@
     <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
-          <span class="notice-stamp inline-flex w-fit font-mono text-[10px] uppercase tracking-[0.16em]">
-            <span>Lotus Zing</span>
-          </span>
+          <div class="flex items-center justify-between gap-2">
+            <span class="notice-stamp inline-flex w-fit font-mono text-[10px] uppercase tracking-[0.16em]">
+              <span>LZ</span>
+            </span>
+            <span id="sync-status" class="min-h-8 inline-flex items-center gap-1.5 border border-[#BBD7F2] bg-[#FFF8D6] px-3 py-1 rounded-xl text-[10px] sm:text-xs font-mono text-[#48617D]">
+              Checking
+            </span>
+          </div>
           <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#071B3A] leading-tight">
-            Lotus Zing Flat & Room Board
+            Flat & Room Board
           </h1>
           <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#48617D] max-w-2xl leading-relaxed">
-            Live rent listings and tenant requests from the Lotus Zing community.
+            Live rent listings and tenant requests from residents.
           </p>
           <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-mono text-[#48617D] pt-1 sm:pt-2">
-            <span id="sync-status" class="min-h-9 inline-flex items-center gap-1.5 border border-[#BBD7F2] bg-[#FFF8D6] px-3 py-1 rounded-xl">
-              Pending
-            </span>
             <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-9 inline-flex items-center gap-1.5 border border-[#003E73] bg-[#0058A3] text-white px-3 py-1.5 rounded-xl font-bold hover:bg-[#003E73]">
               <span class="green-light"></span>
               WhatsApp group
@@ -388,10 +390,10 @@
       <span class="green-light" aria-hidden="true"></span>
       <h4 class="font-display font-bold text-slate-950 text-sm">About this board</h4>
       <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
-        Built by a Lotus Zing resident to keep flat listings easy to share. Please verify ownership, broker terms, and agreement before payment.
+        Built by a resident to keep flat listings easy to share. Please verify ownership, broker terms, and agreement before payment.
       </p>
       <span class="font-mono text-[10px] text-slate-400 uppercase tracking-widest mt-2">
-        Lotus Zing Society, Sector 168, Noida, UP, India
+        Sector 168, Noida, UP, India
       </span>
     </div>
   </footer>
@@ -422,7 +424,7 @@
         live: "border-[#BBD7F2] bg-[#EAF4FF] text-[#0058A3]",
         error: "border-rose-200 bg-rose-50 text-rose-700"
       };
-      status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded-xl ${palette[mode] || palette.idle}`;
+      status.className = `min-h-8 inline-flex items-center gap-1.5 border px-3 py-1 rounded-xl text-[10px] sm:text-xs font-mono ${palette[mode] || palette.idle}`;
       status.textContent = text;
     }
 
@@ -862,7 +864,7 @@
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!hasSheetConfig()) {
-        setSyncStatus("No sheet", "idle");
+        setSyncStatus(`No sheet ${syncTimeLabel()}`, "idle");
         renderSetupPending();
         return;
       }
@@ -893,7 +895,7 @@
             });
           }
           loader.classList.add('hidden');
-          setSyncStatus("Live", "live");
+          setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
           renderListings();
           return;
         }
@@ -918,13 +920,13 @@
         }
 
         loader.classList.add('hidden');
-        setSyncStatus("Live", "live");
+        setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
         renderListings();
 
       } catch (err) {
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
-        setSyncStatus("Failed", "error");
+        setSyncStatus(`Sync failed ${syncTimeLabel()}`, "error");
         errorDiv.classList.remove('hidden');
       }
     }
