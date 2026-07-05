@@ -77,6 +77,9 @@
             <span id="sync-status" class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
               Sync pending
             </span>
+            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="flex items-center gap-1.5 border border-emerald-200 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded hover:bg-emerald-100">
+              Join WhatsApp group
+            </a>
           </div>
         </div>
 
@@ -206,6 +209,7 @@
     
     // Configs
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
+    const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t";
     const COMBINED_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
@@ -744,7 +748,10 @@
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
             The intake form is live, but the response sheet has not been linked to this board. New listings will show here after the published CSV URL is added.
           </p>
-          <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-white hover:bg-emerald-50 text-emerald-800 font-mono text-xs font-bold rounded border-2 border-emerald-700 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">Join group</a>
+          </div>
         </div>
       `;
     }
@@ -894,9 +901,10 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
-            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-2 gap-2 mt-auto">
+            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-3 gap-2 mt-auto">
               <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Owner</a>
               <button onclick="shareRentWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-amber-600 bg-amber-500 hover:bg-amber-600 py-2 rounded text-xs font-mono font-bold text-slate-950 shadow-[2px_2px_0px_0px_rgba(217,119,6,1)]">📢 Share Group</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-50 hover:bg-emerald-100 py-2 rounded text-xs font-mono font-bold text-emerald-800 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">↗ Open Group</a>
             </div>
           `;
           grid.appendChild(card);
@@ -985,9 +993,10 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
-            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-2 gap-2 mt-auto">
+            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-3 gap-2 mt-auto">
               <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Contact</a>
               <button onclick="shareLookingWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">📢 Share Group</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-50 hover:bg-emerald-100 py-2 rounded text-xs font-mono font-bold text-emerald-800 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">↗ Open Group</a>
             </div>
           `;
           grid.appendChild(card);
