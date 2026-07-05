@@ -220,47 +220,27 @@
           <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#57534e] max-w-2xl leading-relaxed">
             Live rent listings and tenant requests from the Lotus Zing community.
           </p>
-          <div class="pop-in pop-delay-3 flex flex-wrap gap-2 text-[11px] sm:text-xs font-mono text-[#57534e] pt-1 sm:pt-2">
-            <span class="signal-rack" aria-label="Live board signal">
-              <span class="green-light"></span>
-              <span class="green-light"></span>
-              <span class="green-light"></span>
+          <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-mono text-[#57534e] pt-1 sm:pt-2">
+            <span id="sync-status" class="min-h-9 inline-flex items-center gap-1.5 border border-[#d6d3d1] bg-[#f7f2e8] px-3 py-1 rounded-full">
+              Pending
             </span>
-            <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-[#d6d3d1] bg-[#fffdf7] text-[#0c0a09] px-2.5 py-1 rounded-full font-bold hover:bg-[#f4e8d2]">
-              Listings home
-            </a>
-            <span id="sync-status" class="flex items-center gap-1.5 border border-[#d6d3d1] bg-[#f7f2e8] px-2.5 py-1 rounded-full">
-              Sync pending
-            </span>
-            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border border-[#17382b] bg-[#315c48] text-white px-3 py-1.5 rounded-full font-bold hover:bg-[#254938]">
+            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-9 inline-flex items-center gap-1.5 border border-[#17382b] bg-[#315c48] text-white px-3 py-1.5 rounded-full font-bold hover:bg-[#254938]">
               <span class="green-light"></span>
-              Join WhatsApp group
+              WhatsApp group
             </a>
           </div>
         </div>
 
         <div class="lg:col-span-5 flex flex-col gap-3 sm:gap-4">
           <div class="grid grid-cols-2 gap-2 sm:gap-3">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#fff8e8] hover:bg-[#f4e8d2] border border-[#d8b071] rounded-2xl shadow-sm transition-all text-left">
-              <div class="flex justify-between items-center w-full mb-3">
-                <span class="live-dot-label bg-[#a16207] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-full border border-[#713f12]"><span class="green-light"></span>Host Flat</span>
-                <span class="text-[#713f12] text-xl font-bold font-mono">+</span>
-              </div>
-              <div>
-                <h3 class="font-display font-bold text-[#0c0a09] text-sm sm:text-base">List flat</h3>
-                <p class="hidden sm:block text-[11px] text-[#57534e] mt-1">Owner or broker</p>
-              </div>
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 min-h-12 flex items-center justify-center gap-2 bg-[#fff8e8] hover:bg-[#f4e8d2] border border-[#d8b071] rounded-full shadow-sm transition-all text-center">
+              <span class="font-mono text-base font-bold text-[#713f12]">+</span>
+              <span class="font-mono text-xs sm:text-sm font-bold uppercase text-[#0c0a09]">List flat</span>
             </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-3 sm:p-4 bg-[#eef4ee] hover:bg-[#e4ece1] border border-[#b7c7b6] rounded-2xl shadow-sm transition-all text-left">
-              <div class="flex justify-between items-center w-full mb-3">
-                <span class="live-dot-label bg-[#315c48] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-full border border-[#17382b]"><span class="green-light"></span>Tenant Search</span>
-                <span class="text-[#17382b] text-xl font-bold font-mono">+</span>
-              </div>
-              <div>
-                <h3 class="font-display font-bold text-[#0c0a09] text-sm sm:text-base">Find room</h3>
-                <p class="hidden sm:block text-[11px] text-[#57534e] mt-1">Tenant request</p>
-              </div>
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 min-h-12 flex items-center justify-center gap-2 bg-[#eef4ee] hover:bg-[#e4ece1] border border-[#b7c7b6] rounded-full shadow-sm transition-all text-center">
+              <span class="font-mono text-base font-bold text-[#17382b]">+</span>
+              <span class="font-mono text-xs sm:text-sm font-bold uppercase text-[#0c0a09]">Find room</span>
             </a>
           </div>
 
@@ -345,9 +325,9 @@
   <footer class="border-t border-[#d6d3d1] bg-transparent py-8 sm:py-12 px-4 text-center mt-12 sm:mt-20">
     <div class="max-w-2xl mx-auto flex flex-col items-center gap-3">
       <span class="green-light" aria-hidden="true"></span>
-      <h4 class="font-display font-bold text-slate-950 text-sm">Disclaimer</h4>
+      <h4 class="font-display font-bold text-slate-950 text-sm">About this board</h4>
       <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
-        Community-submitted posts. Verify owner, papers, broker terms, and agreement before payment.
+        Built by a Lotus Zing resident to keep flat listings easy to share. Please verify ownership, broker terms, and agreement before payment.
       </p>
       <span class="font-mono text-[10px] text-slate-400 uppercase tracking-widest mt-2">
         Lotus Zing Society, Sector 168, Noida, UP, India
@@ -587,17 +567,16 @@
     // Render Filters row dynamically based on Tab
     function renderFilters() {
       const container = document.getElementById('filters-container');
+      const filtersOpen = Boolean(container.querySelector("details")?.open);
       
       if (activeTab === 'rent') {
         container.innerHTML = `
-          <div class="border border-[#d6d3d1] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-slate-700">⚙</span>
-                <h3 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Ledger Filters</h3>
-              </div>
-              <span class="font-mono text-[10px] text-slate-400 uppercase">Rent Catalogue</span>
-            </div>
+          <details ${filtersOpen ? "open" : ""} class="border border-[#d6d3d1] bg-[#fffdf7] rounded-2xl shadow-sm overflow-hidden">
+            <summary class="min-h-12 cursor-pointer list-none flex items-center justify-between px-4 py-3">
+              <span class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Filters</span>
+              <span class="font-mono text-[10px] text-slate-400 uppercase">Rent</span>
+            </summary>
+            <div class="border-t border-slate-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
             
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
               <div class="md:col-span-4">
@@ -642,18 +621,17 @@
                 <div class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${rentFilters.ownerOnly ? 'translate-x-6' : 'translate-x-0'}"></div>
               </button>
             </div>
-          </div>
+            </div>
+          </details>
         `;
       } else {
         container.innerHTML = `
-          <div class="border border-[#d6d3d1] bg-[#fffdf7] p-3 sm:p-5 rounded-2xl shadow-sm space-y-3 sm:space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-slate-700">⚙</span>
-                <h3 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Ledger Filters</h3>
-              </div>
-              <span class="font-mono text-[10px] text-slate-400 uppercase">Tenant Requests</span>
-            </div>
+          <details ${filtersOpen ? "open" : ""} class="border border-[#d6d3d1] bg-[#fffdf7] rounded-2xl shadow-sm overflow-hidden">
+            <summary class="min-h-12 cursor-pointer list-none flex items-center justify-between px-4 py-3">
+              <span class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Filters</span>
+              <span class="font-mono text-[10px] text-slate-400 uppercase">Looking</span>
+            </summary>
+            <div class="border-t border-slate-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
             
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
               <div class="md:col-span-5">
@@ -683,7 +661,8 @@
                 </select>
               </div>
             </div>
-          </div>
+            </div>
+          </details>
         `;
       }
     }
@@ -822,7 +801,7 @@
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!hasSheetConfig()) {
-        setSyncStatus("Sheet not linked", "idle");
+        setSyncStatus("No sheet", "idle");
         renderSetupPending();
         return;
       }
@@ -853,7 +832,7 @@
             });
           }
           loader.classList.add('hidden');
-          setSyncStatus(`Last synced ${syncTimeLabel()}`, "live");
+          setSyncStatus("Live", "live");
           renderListings();
           return;
         }
@@ -878,13 +857,13 @@
         }
 
         loader.classList.add('hidden');
-        setSyncStatus(`Last synced ${syncTimeLabel()}`, "live");
+        setSyncStatus("Live", "live");
         renderListings();
 
       } catch (err) {
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
-        setSyncStatus("Sync failed", "error");
+        setSyncStatus("Failed", "error");
         errorDiv.classList.remove('hidden');
       }
     }
