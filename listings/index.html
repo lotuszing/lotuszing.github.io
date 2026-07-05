@@ -155,9 +155,6 @@
         <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-mono text-xs font-bold rounded border border-slate-900">
           Retry Fetching
         </button>
-        <button onclick="useLocalFallback()" class="px-4 py-2 bg-white hover:bg-slate-100 text-rose-900 font-mono text-xs font-bold rounded border-2 border-rose-950">
-          Load Cache Fallback
-        </button>
       </div>
     </div>
 
@@ -634,8 +631,7 @@
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!COMBINED_CSV_URL && (!RENT_CSV_URL || !LOOKING_CSV_URL || RENT_CSV_URL.startsWith("#"))) {
-        console.log("No valid CSV URLs configured. Loading local fallback.");
-        useLocalFallback();
+        renderSetupPending();
         return;
       }
 
@@ -704,6 +700,24 @@
       rentListings = [...LOCAL_RENT_FALLBACK];
       lookingListings = [...LOCAL_LOOKING_FALLBACK];
       renderListings();
+    }
+
+    function renderSetupPending() {
+      document.getElementById('error-state').classList.add('hidden');
+      document.getElementById('loader-state').classList.add('hidden');
+      rentListings = [];
+      lookingListings = [];
+      const grid = document.getElementById('listings-grid');
+      grid.innerHTML = `
+        <div class="col-span-full border-2 border-dashed border-amber-400 rounded-xl bg-amber-50 p-10 text-center max-w-xl mx-auto my-6 space-y-4">
+          <span class="text-3xl">⏳</span>
+          <h3 class="font-display font-bold text-slate-900 text-lg">Listings sheet not connected yet</h3>
+          <p class="text-sm text-slate-700 font-sans leading-relaxed">
+            The intake form is live, but the response sheet has not been linked to this board. New listings will show here after the published CSV URL is added.
+          </p>
+          <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+        </div>
+      `;
     }
 
     // Share Rent Whatsapp Text Helper
