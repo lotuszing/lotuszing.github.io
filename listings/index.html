@@ -27,9 +27,22 @@
   </script>
   
   <style>
+    :root {
+      --paper: #f7f3ea;
+      --paper-warm: #fffaf1;
+      --ink: #17211d;
+      --moss: #4f6b55;
+      --moss-deep: #294437;
+      --moss-soft: #edf3eb;
+      --clay: #b98254;
+      --clay-deep: #7a4d32;
+      --clay-soft: #f5ebdb;
+      --line: #25312c;
+      --muted: #68736b;
+    }
     body {
-      background-color: #fcfbf9;
-      color: #0f172a;
+      background-color: var(--paper);
+      color: var(--ink);
     }
     /* Custom thin scrollbars for ledger vibe */
     ::-webkit-scrollbar {
@@ -53,13 +66,13 @@
     }
     @keyframes greenBlink {
       0%, 100% {
-        background: #34d399;
-        box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45), 0 0 14px rgba(16, 185, 129, 0.9);
+        background: #8fb58c;
+        box-shadow: 0 0 0 0 rgba(143, 181, 140, 0.38), 0 0 12px rgba(79, 107, 85, 0.65);
         transform: scale(1);
       }
       45% {
-        background: #ecfdf5;
-        box-shadow: 0 0 0 5px rgba(52, 211, 153, 0), 0 0 4px rgba(16, 185, 129, 0.45);
+        background: #f2f6ee;
+        box-shadow: 0 0 0 5px rgba(143, 181, 140, 0), 0 0 4px rgba(79, 107, 85, 0.4);
         transform: scale(0.86);
       }
     }
@@ -82,10 +95,10 @@
     }
     @keyframes joinPulse {
       0%, 100% {
-        box-shadow: 2px 2px 0 0 rgba(4, 120, 87, 1), 0 0 0 0 rgba(16, 185, 129, 0.45);
+        box-shadow: 2px 2px 0 0 rgba(41, 68, 55, 1), 0 0 0 0 rgba(143, 181, 140, 0.42);
       }
       50% {
-        box-shadow: 2px 2px 0 0 rgba(4, 120, 87, 1), 0 0 0 6px rgba(16, 185, 129, 0);
+        box-shadow: 2px 2px 0 0 rgba(41, 68, 55, 1), 0 0 0 6px rgba(143, 181, 140, 0);
       }
     }
     .join-group-pulse {
@@ -99,7 +112,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(143, 181, 140, 0.24), transparent);
       animation: bannerScan 3.8s ease-in-out infinite;
       pointer-events: none;
     }
@@ -113,9 +126,9 @@
       position: absolute;
       inset: -20%;
       background:
-        radial-gradient(circle at 82% 18%, rgba(52, 211, 153, 0.26), transparent 24%),
-        radial-gradient(circle at 8% 0%, rgba(245, 158, 11, 0.18), transparent 26%),
-        linear-gradient(115deg, transparent 0 45%, rgba(16, 185, 129, 0.09) 46% 48%, transparent 49%);
+        radial-gradient(circle at 82% 18%, rgba(143, 181, 140, 0.22), transparent 24%),
+        radial-gradient(circle at 8% 0%, rgba(185, 130, 84, 0.16), transparent 26%),
+        linear-gradient(115deg, transparent 0 45%, rgba(79, 107, 85, 0.08) 46% 48%, transparent 49%);
       animation: radarGlow 5.5s ease-in-out infinite;
       z-index: 0;
     }
@@ -129,18 +142,18 @@
     .green-light {
       width: 0.55rem;
       height: 0.55rem;
-      border: 1px solid rgba(6, 95, 70, 0.65);
+      border: 1px solid rgba(41, 68, 55, 0.65);
       border-radius: 999px;
       display: inline-block;
-      background: #34d399;
+      background: #8fb58c;
       animation: greenBlink 1.35s ease-in-out infinite;
     }
     .signal-rack {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      border: 1px solid rgba(6, 95, 70, 0.35);
-      background: rgba(236, 253, 245, 0.9);
+      border: 1px solid rgba(41, 68, 55, 0.35);
+      background: rgba(237, 243, 235, 0.9);
       padding: 0.25rem 0.4rem;
       border-radius: 999px;
     }
@@ -157,7 +170,7 @@
       left: -65%;
       width: 40%;
       height: 190%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 250, 241, 0.72), transparent);
       transform: rotate(18deg);
       animation: sparkleSweep 4.2s ease-in-out infinite;
       pointer-events: none;
@@ -181,41 +194,41 @@
     }
   </style>
 </head>
-<body class="font-sans antialiased text-slate-900 bg-[#fcfbf9] min-h-screen pb-12">
+<body class="font-sans antialiased text-[#17211d] bg-[#f7f3ea] min-h-screen pb-12">
 
   <!-- TOP ALERT BANNER -->
-  <div class="live-banner bg-slate-900 px-4 py-2 text-center text-xs font-mono text-amber-400 uppercase tracking-widest flex items-center justify-center gap-2 border-b border-slate-950">
+  <div class="live-banner bg-[#14231f] px-4 py-2 text-center text-xs font-mono text-[#d8caa7] uppercase tracking-widest flex items-center justify-center gap-2 border-b border-[#0b1411]">
     <span class="green-light"></span>
     Lotus Zing Society, Sector 168, Noida — Community Housing Ledger
   </div>
 
   <!-- HEADER -->
-  <header class="live-header border-b-2 border-slate-900 bg-white">
+  <header class="live-header border-b-2 border-[#25312c] bg-[#fffaf1]">
     <div class="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:py-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-7 space-y-4">
-          <span class="pop-in inline-block text-xs font-mono font-bold tracking-widest text-slate-500 uppercase bg-slate-100 border border-slate-300 px-2 py-1 rounded">
+          <span class="pop-in inline-block text-xs font-mono font-bold tracking-widest text-[#68736b] uppercase bg-[#eee6d8] border border-[#d5c9b8] px-2 py-1 rounded">
             NOTICE BOARD EXTENSION
           </span>
-          <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#17211d] leading-tight">
             Lotus Zing Flat & Room Directory
           </h1>
-          <p class="pop-in pop-delay-2 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+          <p class="pop-in pop-delay-2 text-base sm:text-lg text-[#5f6b63] max-w-2xl leading-relaxed">
             An open, neighborhood-first board to view flats available for rent and posts from residents searching for their next home inside Lotus Zing. Directly linked from our WhatsApp group noticeboard.
           </p>
-          <div class="pop-in pop-delay-3 flex flex-wrap gap-4 text-xs font-mono text-slate-500 pt-2">
+          <div class="pop-in pop-delay-3 flex flex-wrap gap-4 text-xs font-mono text-[#68736b] pt-2">
             <span class="signal-rack" aria-label="Live board signal">
               <span class="green-light"></span>
               <span class="green-light"></span>
               <span class="green-light"></span>
             </span>
-            <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-slate-900 bg-white text-slate-900 px-2.5 py-1 rounded font-bold hover:bg-slate-100">
+            <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-[#25312c] bg-[#fffaf1] text-[#17211d] px-2.5 py-1 rounded font-bold hover:bg-[#efe6d7]">
               Listings home
             </a>
-            <span id="sync-status" class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
+            <span id="sync-status" class="flex items-center gap-1.5 border border-[#d5c9b8] bg-[#f7f3ea] px-2.5 py-1 rounded">
               Sync pending
             </span>
-            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border-2 border-emerald-800 bg-emerald-500 text-white px-3 py-1.5 rounded font-bold hover:bg-emerald-600">
+            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border-2 border-[#294437] bg-[#4f6b55] text-white px-3 py-1.5 rounded font-bold hover:bg-[#405a48]">
               <span class="green-light"></span>
               Join WhatsApp group
             </a>
@@ -224,35 +237,35 @@
 
         <div class="lg:col-span-5 flex flex-col gap-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-4 bg-[#f5ebdb] hover:bg-[#efe0c9] border-2 border-[#b98254] rounded-lg shadow-[4px_4px_0px_0px_rgba(122,77,50,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
-                <span class="live-dot-label bg-amber-500 text-slate-950 text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900"><span class="green-light"></span>Host Flat</span>
-                <span class="text-amber-600 text-xl font-bold font-mono">＋</span>
+                <span class="live-dot-label bg-[#b98254] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-[#25312c]"><span class="green-light"></span>Host Flat</span>
+                <span class="text-[#7a4d32] text-xl font-bold font-mono">＋</span>
               </div>
               <div>
-                <h3 class="font-display font-bold text-slate-900 text-sm">Submit Available Rent</h3>
-                <p class="text-[11px] text-slate-600 mt-1">If you are an Owner or Broker with an active listing</p>
+                <h3 class="font-display font-bold text-[#17211d] text-sm">Submit Available Rent</h3>
+                <p class="text-[11px] text-[#5f6b63] mt-1">If you are an Owner or Broker with an active listing</p>
               </div>
             </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-4 bg-[#edf3eb] hover:bg-[#e4ece1] border-2 border-[#5d755f] rounded-lg shadow-[4px_4px_0px_0px_rgba(41,68,55,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
-                <span class="live-dot-label bg-emerald-600 text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900"><span class="green-light"></span>Tenant Search</span>
-                <span class="text-emerald-700 text-xl font-bold font-mono">＋</span>
+                <span class="live-dot-label bg-[#4f6b55] text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-[#25312c]"><span class="green-light"></span>Tenant Search</span>
+                <span class="text-[#294437] text-xl font-bold font-mono">＋</span>
               </div>
               <div>
-                <h3 class="font-display font-bold text-slate-900 text-sm">Looking for Room</h3>
-                <p class="text-[11px] text-slate-600 mt-1">If you are a tenant looking to move into the society</p>
+                <h3 class="font-display font-bold text-[#17211d] text-sm">Looking for Room</h3>
+                <p class="text-[11px] text-[#5f6b63] mt-1">If you are a tenant looking to move into the society</p>
               </div>
             </a>
           </div>
 
-          <div class="border-2 border-slate-900 bg-amber-50/50 p-4 rounded-lg flex gap-3">
-            <span class="text-amber-600 text-lg shrink-0">ℹ</span>
+          <div class="border-2 border-[#25312c] bg-[#f5ebdb]/70 p-4 rounded-lg flex gap-3">
+            <span class="text-[#7a4d32] text-lg shrink-0">ℹ</span>
             <div class="space-y-1">
-              <h4 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Important: 30-Day Expiry Notice</h4>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                To keep the directory accurate, all listings <strong class="text-slate-900 font-semibold">auto-expire 30 days</strong> after submission. To stay on the board, please re-submit details via the WhatsApp form.
+              <h4 class="font-mono text-xs uppercase font-bold text-[#17211d] tracking-wider">Important: 30-Day Expiry Notice</h4>
+              <p class="text-xs text-[#5f6b63] leading-relaxed">
+                To keep the directory accurate, all listings <strong class="text-[#17211d] font-semibold">auto-expire 30 days</strong> after submission. To stay on the board, please re-submit details via the WhatsApp form.
               </p>
             </div>
           </div>
@@ -265,11 +278,11 @@
   <main class="max-w-7xl mx-auto px-4 py-8">
     
     <!-- NAVIGATION TABS -->
-    <div class="flex border-b-2 border-slate-900 mb-8 overflow-hidden rounded-t-lg bg-slate-100">
-      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none transition-all bg-amber-500 text-slate-950 border-b-0">
+    <div class="flex border-b-2 border-[#25312c] mb-8 overflow-hidden rounded-t-lg bg-[#eee6d8]">
+      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-[#25312c] focus:outline-none transition-all bg-[#b98254] text-white border-b-0">
         🏠 FLATS AVAILABLE FOR RENT
       </button>
-      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none transition-all text-slate-600 hover:bg-slate-50">
+      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none transition-all text-[#566155] hover:bg-[#fffaf1]">
         🔍 LOOKING FOR FLAT / ROOM
       </button>
     </div>
@@ -281,7 +294,7 @@
 
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-16 text-center border-2 border-dashed border-slate-300 rounded-xl bg-white max-w-lg mx-auto my-8">
-      <div class="inline-block w-8 h-8 border-4 border-slate-300 border-t-slate-900 rounded-full animate-spin mb-4"></div>
+      <div class="inline-block w-8 h-8 border-4 border-[#d5c9b8] border-t-[#25312c] rounded-full animate-spin mb-4"></div>
       <h3 class="font-display font-bold text-slate-800 text-lg">Fetching active directory...</h3>
       <p class="text-xs text-slate-500 font-mono mt-1">Connecting to live Google Sheet records</p>
     </div>
@@ -306,7 +319,7 @@
     </div>
 
     <!-- SECONDARY CTA ROW -->
-    <div class="mt-16 border-2 border-slate-900 bg-slate-900 p-8 rounded-lg text-center space-y-6 max-w-3xl mx-auto shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]">
+    <div class="mt-16 border-2 border-[#25312c] bg-[#17211d] p-8 rounded-lg text-center space-y-6 max-w-3xl mx-auto shadow-[4px_4px_0px_0px_rgba(122,77,50,1)]">
       <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
         Need to list your flat or post a room request?
       </h3>
@@ -314,10 +327,10 @@
         Submit details through the Lotus Zing Tally intake form. Your post will appear after the next sheet sync and will remain visible for 30 days.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-600 border border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#b98254] hover:bg-[#a56f48] border border-[#25312c] font-mono text-xs font-bold uppercase text-white rounded transition-all">
           Host Flat (Owners/Brokers)
         </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-100 border-2 border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#fffaf1] hover:bg-[#edf3eb] border-2 border-[#25312c] font-mono text-xs font-bold uppercase text-[#17211d] rounded transition-all">
           Post Request (Looking for Flat)
         </a>
       </div>
@@ -361,8 +374,8 @@
       const status = document.getElementById("sync-status");
       if (!status) return;
       const palette = {
-        idle: "border-slate-200 bg-slate-50 text-slate-500",
-        live: "border-emerald-200 bg-emerald-50 text-emerald-700",
+        idle: "border-[#d5c9b8] bg-[#f7f3ea] text-[#68736b]",
+        live: "border-[#b8c7ae] bg-[#edf3eb] text-[#294437]",
         error: "border-rose-200 bg-rose-50 text-rose-700"
       };
       status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded ${palette[mode] || palette.idle}`;
@@ -557,11 +570,11 @@
       const tabLookingBtn = document.getElementById('tab-looking-btn');
       
       if (tab === 'rent') {
-        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none bg-amber-500 text-slate-950 border-b-0";
-        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none text-slate-600 hover:bg-slate-50";
+        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-[#25312c] focus:outline-none bg-[#b98254] text-white border-b-0";
+        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none text-[#566155] hover:bg-[#fffaf1]";
       } else {
-        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none text-slate-600 hover:bg-slate-50";
-        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none bg-emerald-600 text-white border-b-0";
+        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-[#25312c] focus:outline-none text-[#566155] hover:bg-[#fffaf1]";
+        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none bg-[#4f6b55] text-white border-b-0";
       }
       
       renderFilters();
@@ -622,7 +635,7 @@
 
             <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200">
               <span class="text-xs text-slate-700">Only display listings directly posted by <strong>Property Owners</strong> (hide Brokers)</span>
-              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-amber-500' : 'bg-slate-300'}" id="owner-toggle-btn">
+              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-[#b98254]' : 'bg-slate-300'}" id="owner-toggle-btn">
                 <div class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${rentFilters.ownerOnly ? 'translate-x-6' : 'translate-x-0'}"></div>
               </button>
             </div>
@@ -888,7 +901,7 @@
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
-        <div class="col-span-full border-2 border-dashed border-amber-400 rounded-xl bg-amber-50 p-10 text-center max-w-xl mx-auto my-6 space-y-4">
+        <div class="col-span-full border-2 border-dashed border-[#b98254] rounded-xl bg-[#f5ebdb] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
           <span class="text-3xl">⏳</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Listings sheet not connected yet</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
@@ -896,7 +909,7 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-white hover:bg-emerald-50 text-emerald-800 font-mono text-xs font-bold rounded border-2 border-emerald-700 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">Join group</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#fffaf1] hover:bg-[#edf3eb] text-[#294437] font-mono text-xs font-bold rounded border-2 border-[#4f6b55] shadow-[2px_2px_0px_0px_rgba(41,68,55,1)]">Join group</a>
           </div>
         </div>
       `;
@@ -1007,11 +1020,11 @@ _Shared via Lotus Zing Noticeboard_
           card.innerHTML = `
             <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-amber-500 bg-amber-50 text-amber-800">${item.bhkType}</span>
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-[#b98254] bg-[#f5ebdb] text-[#7a4d32]">${item.bhkType}</span>
                 <span class="font-mono text-[11px] text-slate-500 uppercase">${item.furnishing}</span>
               </div>
               <div class="flex items-center gap-1.5">
-                ${isNew ? '<span class="bg-amber-400 text-slate-950 font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-slate-900 rounded shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">NEW</span>' : ''}
+                ${isNew ? '<span class="bg-[#b98254] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#25312c] rounded shadow-[1px_1px_0px_0px_rgba(37,49,44,1)]">NEW</span>' : ''}
                 ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
@@ -1019,7 +1032,7 @@ _Shared via Lotus Zing Noticeboard_
               <div class="flex justify-between items-start gap-2">
                 <div>
                   <h4 class="font-display font-bold text-lg text-slate-900 leading-tight">${item.towerFlat}</h4>
-                  <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase mt-1 ${isOwner ? "text-emerald-700" : "text-slate-500"}">
+                  <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase mt-1 ${isOwner ? "text-[#294437]" : "text-slate-500"}">
                     ${isOwner ? '🛡 ' : ''}${item.listedBy}
                   </span>
                 </div>
@@ -1050,8 +1063,8 @@ _Shared via Lotus Zing Noticeboard_
             </div>
             <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-3 gap-2 mt-auto">
               <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Owner</a>
-              <button onclick="shareRentWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-amber-600 bg-amber-500 hover:bg-amber-600 py-2 rounded text-xs font-mono font-bold text-slate-950 shadow-[2px_2px_0px_0px_rgba(217,119,6,1)]">📢 Share Group</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-50 hover:bg-emerald-100 py-2 rounded text-xs font-mono font-bold text-emerald-800 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">↗ Open Group</a>
+              <button onclick="shareRentWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-[#7a4d32] bg-[#b98254] hover:bg-[#a56f48] py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(122,77,50,1)]">📢 Share Group</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-[#4f6b55] bg-[#edf3eb] hover:bg-[#e4ece1] py-2 rounded text-xs font-mono font-bold text-[#294437] shadow-[2px_2px_0px_0px_rgba(41,68,55,1)]">↗ Open Group</a>
             </div>
           `;
           grid.appendChild(card);
@@ -1102,11 +1115,11 @@ _Shared via Lotus Zing Noticeboard_
           card.innerHTML = `
             <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-emerald-600 bg-emerald-50 text-emerald-800">${item.preferredBhk} Layout</span>
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-[#4f6b55] bg-[#edf3eb] text-[#294437]">${item.preferredBhk} Layout</span>
                 <span class="font-mono text-[11px] text-slate-500 uppercase">${item.tenantType}</span>
               </div>
               <div class="flex items-center gap-1.5">
-                ${isNew ? '<span class="bg-emerald-500 text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-slate-900 rounded">NEW</span>' : ''}
+                ${isNew ? '<span class="bg-[#4f6b55] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#25312c] rounded">NEW</span>' : ''}
                 ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
@@ -1143,8 +1156,8 @@ _Shared via Lotus Zing Noticeboard_
             </div>
             <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-3 gap-2 mt-auto">
               <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Contact</a>
-              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">📢 Share Group</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-50 hover:bg-emerald-100 py-2 rounded text-xs font-mono font-bold text-emerald-800 shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">↗ Open Group</a>
+              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-[#294437] bg-[#4f6b55] hover:bg-[#405a48] py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(41,68,55,1)]">📢 Share Group</button>
+              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex items-center justify-center gap-1.5 border-2 border-[#4f6b55] bg-[#edf3eb] hover:bg-[#e4ece1] py-2 rounded text-xs font-mono font-bold text-[#294437] shadow-[2px_2px_0px_0px_rgba(41,68,55,1)]">↗ Open Group</a>
             </div>
           `;
           grid.appendChild(card);
