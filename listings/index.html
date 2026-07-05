@@ -82,7 +82,7 @@
 
         <div class="lg:col-span-5 flex flex-col gap-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="#submit-rent" target="_blank" class="group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
                 <span class="bg-amber-500 text-slate-950 text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Host Flat</span>
                 <span class="text-amber-600 text-xl font-bold font-mono">＋</span>
@@ -93,7 +93,7 @@
               </div>
             </a>
 
-            <a href="#submit-looking" target="_blank" class="group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
                 <span class="bg-emerald-600 text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Tenant Search</span>
                 <span class="text-emerald-700 text-xl font-bold font-mono">＋</span>
@@ -172,13 +172,13 @@
         Need to list your flat or post a room request?
       </h3>
       <p class="text-sm text-slate-300 max-w-xl mx-auto font-sans">
-        Submit details through Shailansh's automated WhatsApp Intake Forms. Your post will be live instantly on the next sync and will remain visible for 30 days.
+        Submit details through the Lotus Zing Tally intake form. Your post will appear after the next sheet sync and will remain visible for 30 days.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="#submit-rent" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-600 border border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-600 border border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
           Host Flat (Owners/Brokers)
         </a>
-        <a href="#submit-looking" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-100 border-2 border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-100 border-2 border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
           Post Request (Looking for Flat)
         </a>
       </div>
@@ -208,6 +208,8 @@
     let lookingListings = [];
     
     // Configs
+    const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
+    const COMBINED_CSV_URL = "";
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
 
@@ -548,38 +550,90 @@
     // Map Headers fuzzy matching
     function mapHeaders(headers) {
       const mapping = {};
+      const setOnce = (key, index) => {
+        if (mapping[key] === undefined) mapping[key] = index;
+      };
       headers.forEach((header, index) => {
         const h = header.toLowerCase().trim();
-        if (h.includes("tower") || h.includes("flat") || h.includes("unit")) mapping["towerFlat"] = index;
+        if (h.includes("what are you listing") || h === "listing type" || h.includes("listing?")) setOnce("listingType", index);
+        else if (h.includes("preferred tower") || h.includes("preferred area") || h === "preferred tower/area") setOnce("preferredArea", index);
+        else if (h.includes("tower") || h.includes("flat") || h.includes("unit")) setOnce("towerFlat", index);
         else if (h.includes("bhk") || h.includes("room type") || h.includes("room")) {
-          mapping["bhkType"] = index;
-          mapping["preferredBhk"] = index;
+          setOnce("bhkType", index);
+          setOnce("preferredBhk", index);
         }
-        else if (h.includes("furnish")) mapping["furnishing"] = index;
-        else if (h.includes("rent") || h.includes("price") || h.includes("monthly")) mapping["monthlyRent"] = index;
-        else if (h.includes("deposit") || h.includes("security")) mapping["securityDeposit"] = index;
-        else if (h.includes("available from") || h.includes("from")) mapping["availableFrom"] = index;
-        else if (h.includes("tenant") || h.includes("tenant type")) {
-          mapping["preferredTenant"] = index;
-          mapping["tenantType"] = index;
+        else if (h.includes("furnish")) setOnce("furnishing", index);
+        else if (h.includes("rent") || h.includes("price") || h.includes("monthly")) setOnce("monthlyRent", index);
+        else if (h.includes("deposit") || h.includes("security")) setOnce("securityDeposit", index);
+        else if (h.includes("available from") || h.includes("from")) setOnce("availableFrom", index);
+        else if (h.includes("preferred tenant")) setOnce("preferredTenant", index);
+        else if (h.includes("tenant type")) {
+          setOnce("tenantType", index);
+          setOnce("preferredTenant", index);
         }
-        else if (h.includes("parking")) mapping["parking"] = index;
-        else if (h.includes("listed") || h.includes("by") || h.includes("role")) mapping["listedBy"] = index;
-        else if (h.includes("name") || h.includes("poster")) mapping["posterName"] = index;
-        else if (h.includes("contact") || h.includes("phone") || h.includes("number") || h.includes("mobile")) mapping["contactNumber"] = index;
-        else if (h.includes("notes") || h.includes("comment") || h.includes("desc") || h.includes("free text")) mapping["notes"] = index;
-        else if (h.includes("budget") || h.includes("max")) mapping["budget"] = index;
-        else if (h.includes("move") || h.includes("move-in")) mapping["preferredMoveIn"] = index;
-        else if (h.includes("occupants") || h.includes("people")) mapping["occupants"] = index;
-        else if (h.includes("area") || h.includes("preferred tower")) mapping["preferredArea"] = index;
-        else if (h.includes("timestamp") || h.includes("time")) mapping["timestamp"] = index;
+        else if (h.includes("parking")) setOnce("parking", index);
+        else if (h.includes("listed") || h.includes("broker") || h.includes("agent") || h.includes("owner")) setOnce("listedBy", index);
+        else if (h.includes("name") || h.includes("poster")) setOnce("posterName", index);
+        else if (h.includes("contact") || h.includes("phone") || h.includes("mobile")) setOnce("contactNumber", index);
+        else if (h.includes("notes") || h.includes("comment") || h.includes("desc") || h.includes("free text")) setOnce("notes", index);
+        else if (h.includes("budget") || h.includes("max")) setOnce("budget", index);
+        else if (h.includes("move") || h.includes("move-in")) setOnce("preferredMoveIn", index);
+        else if (h.includes("occupants") || h.includes("people")) setOnce("occupants", index);
+        else if (h.includes("area")) setOnce("preferredArea", index);
+        else if (h.includes("timestamp") || h.includes("time")) setOnce("timestamp", index);
       });
       return mapping;
     }
 
+    function getRowValue(row, mapping, key) {
+      const index = mapping[key];
+      return index !== undefined && index < row.length ? row[index].trim() : '';
+    }
+
+    function rowToRentListing(row, mapping, idx) {
+      const getVal = (key) => getRowValue(row, mapping, key);
+      const rent = parseInt(getVal("monthlyRent").replace(/[^0-9]/g, ""), 10) || 0;
+      const dep = parseInt(getVal("securityDeposit").replace(/[^0-9]/g, ""), 10) || 0;
+      return {
+        id: 'rc-' + idx,
+        timestamp: getVal("timestamp") || "2026-07-02",
+        towerFlat: getVal("towerFlat") || "Unknown Unit",
+        bhkType: getVal("bhkType") || "2 BHK",
+        furnishing: getVal("furnishing") || "Semi-Furnished",
+        monthlyRent: rent,
+        securityDeposit: dep,
+        availableFrom: getVal("availableFrom") || "Immediate",
+        preferredTenant: getVal("preferredTenant") || "Any",
+        parking: getVal("parking") || "Yes",
+        listedBy: getVal("listedBy") || "Owner",
+        posterName: getVal("posterName") || "Resident",
+        contactNumber: getVal("contactNumber") || "",
+        notes: getVal("notes") || ""
+      };
+    }
+
+    function rowToLookingListing(row, mapping, idx) {
+      const getVal = (key) => getRowValue(row, mapping, key);
+      const budget = parseInt(getVal("budget").replace(/[^0-9]/g, ""), 10) || 0;
+      const occ = parseInt(getVal("occupants").replace(/[^0-9]/g, ""), 10) || 1;
+      return {
+        id: 'lc-' + idx,
+        timestamp: getVal("timestamp") || "2026-07-02",
+        preferredBhk: getVal("preferredBhk") || "2 BHK",
+        budget: budget,
+        preferredMoveIn: getVal("preferredMoveIn") || "Immediate",
+        occupants: occ,
+        tenantType: getVal("tenantType") || "Family",
+        preferredArea: getVal("preferredArea") || "Any",
+        posterName: getVal("posterName") || "Resident",
+        contactNumber: getVal("contactNumber") || "",
+        notes: getVal("notes") || ""
+      };
+    }
+
     // Async Fetch Sheet data
     async function fetchSheetData() {
-      if (!RENT_CSV_URL || !LOOKING_CSV_URL || RENT_CSV_URL.startsWith("#")) {
+      if (!COMBINED_CSV_URL && (!RENT_CSV_URL || !LOOKING_CSV_URL || RENT_CSV_URL.startsWith("#"))) {
         console.log("No valid CSV URLs configured. Loading local fallback.");
         useLocalFallback();
         return;
@@ -594,6 +648,27 @@
       grid.innerHTML = '';
 
       try {
+        if (COMBINED_CSV_URL) {
+          const combinedCsv = await fetch(COMBINED_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); });
+          const rows = parseCSV(combinedCsv);
+          if (rows.length > 1) {
+            const mapping = mapHeaders(rows[0]);
+            rentListings = [];
+            lookingListings = [];
+            rows.slice(1).forEach((row, idx) => {
+              const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
+              if (listingType.includes("available") || listingType.includes("rent")) {
+                rentListings.push(rowToRentListing(row, mapping, idx));
+              } else if (listingType.includes("looking") || listingType.includes("request")) {
+                lookingListings.push(rowToLookingListing(row, mapping, idx));
+              }
+            });
+          }
+          loader.classList.add('hidden');
+          renderListings();
+          return;
+        }
+
         const [rentRes, lookingRes] = await Promise.all([
           fetch(RENT_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); }),
           fetch(LOOKING_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); })
@@ -603,51 +678,14 @@
         const rentRows = parseCSV(rentRes);
         if (rentRows.length > 1) {
           const mapping = mapHeaders(rentRows[0]);
-          rentListings = rentRows.slice(1).map((row, idx) => {
-            const getVal = (k) => { const i = mapping[k]; return i !== undefined && i < row.length ? row[i].trim() : ''; };
-            const rent = parseInt(getVal("monthlyRent").replace(/[^0-9]/g, ""), 10) || 0;
-            const dep = parseInt(getVal("securityDeposit").replace(/[^0-9]/g, ""), 10) || 0;
-            return {
-              id: 'rc-' + idx,
-              timestamp: getVal("timestamp") || "2026-07-02",
-              towerFlat: getVal("towerFlat") || "Unknown Unit",
-              bhkType: getVal("bhkType") || "2 BHK",
-              furnishing: getVal("furnishing") || "Semi-Furnished",
-              monthlyRent: rent,
-              securityDeposit: dep,
-              availableFrom: getVal("availableFrom") || "Immediate",
-              preferredTenant: getVal("preferredTenant") || "Any",
-              parking: getVal("parking") || "Yes",
-              listedBy: getVal("listedBy") || "Owner",
-              posterName: getVal("posterName") || "Resident",
-              contactNumber: getVal("contactNumber") || "",
-              notes: getVal("notes") || ""
-            };
-          });
+          rentListings = rentRows.slice(1).map((row, idx) => rowToRentListing(row, mapping, idx));
         }
 
         // Process Looking Listings
         const lookingRows = parseCSV(lookingRes);
         if (lookingRows.length > 1) {
           const mapping = mapHeaders(lookingRows[0]);
-          lookingListings = lookingRows.slice(1).map((row, idx) => {
-            const getVal = (k) => { const i = mapping[k]; return i !== undefined && i < row.length ? row[i].trim() : ''; };
-            const budget = parseInt(getVal("budget").replace(/[^0-9]/g, ""), 10) || 0;
-            const occ = parseInt(getVal("occupants").replace(/[^0-9]/g, ""), 10) || 1;
-            return {
-              id: 'lc-' + idx,
-              timestamp: getVal("timestamp") || "2026-07-02",
-              preferredBhk: getVal("preferredBhk") || "2 BHK",
-              budget: budget,
-              preferredMoveIn: getVal("preferredMoveIn") || "Immediate",
-              occupants: occ,
-              tenantType: getVal("tenantType") || "Family",
-              preferredArea: getVal("preferredArea") || "Any",
-              posterName: getVal("posterName") || "Resident",
-              contactNumber: getVal("contactNumber") || "",
-              notes: getVal("notes") || ""
-            };
-          });
+          lookingListings = lookingRows.slice(1).map((row, idx) => rowToLookingListing(row, mapping, idx));
         }
 
         loader.classList.add('hidden');
@@ -900,7 +938,7 @@ _Shared via Lotus Zing Noticeboard_
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
             <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-2 gap-2 mt-auto">
-              <a href="tel:‪${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Contact</a>
+              <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Contact</a>
               <button onclick="shareLookingWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">📢 Share Group</button>
             </div>
           `;
