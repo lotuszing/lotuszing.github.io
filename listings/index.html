@@ -74,8 +74,8 @@
             <span class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
               ✔ High Trust (Verified Neighbors)
             </span>
-            <span class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
-              📅 Refreshed Daily
+            <span id="sync-status" class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
+              Sync pending
             </span>
           </div>
         </div>
@@ -212,6 +212,27 @@
 
     function hasSheetConfig() {
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
+    }
+
+    function setSyncStatus(text, mode = "idle") {
+      const status = document.getElementById("sync-status");
+      if (!status) return;
+      const palette = {
+        idle: "border-slate-200 bg-slate-50 text-slate-500",
+        live: "border-emerald-200 bg-emerald-50 text-emerald-700",
+        error: "border-rose-200 bg-rose-50 text-rose-700"
+      };
+      status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded ${palette[mode] || palette.idle}`;
+      status.textContent = text;
+    }
+
+    function syncTimeLabel() {
+      return new Intl.DateTimeFormat("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        day: "2-digit",
+        month: "short"
+      }).format(new Date());
     }
 
     // State baseline date: 2026-07-02 for age logic
@@ -635,6 +656,7 @@
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!hasSheetConfig()) {
+        setSyncStatus("Sheet not linked", "idle");
         renderSetupPending();
         return;
       }
@@ -665,6 +687,7 @@
             });
           }
           loader.classList.add('hidden');
+          setSyncStatus(`Last synced ${syncTimeLabel()}`, "live");
           renderListings();
           return;
         }
@@ -689,11 +712,13 @@
         }
 
         loader.classList.add('hidden');
+        setSyncStatus(`Last synced ${syncTimeLabel()}`, "live");
         renderListings();
 
       } catch (err) {
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
+        setSyncStatus("Sync failed", "error");
         errorDiv.classList.remove('hidden');
       }
     }
