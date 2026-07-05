@@ -214,7 +214,7 @@
             Lotus Zing Flat & Room Directory
           </h1>
           <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#5f6b63] max-w-2xl leading-relaxed">
-            An open, neighborhood-first board to view flats available for rent and posts from residents searching for their next home inside Lotus Zing. Directly linked from our WhatsApp group noticeboard.
+            Live rent listings and tenant requests from the Lotus Zing community.
           </p>
           <div class="pop-in pop-delay-3 flex flex-wrap gap-2 sm:gap-4 text-[11px] sm:text-xs font-mono text-[#68736b] pt-1 sm:pt-2">
             <span class="signal-rack" aria-label="Live board signal">
@@ -244,7 +244,7 @@
               </div>
               <div>
                 <h3 class="font-display font-bold text-[#17211d] text-sm">Submit Available Rent</h3>
-                <p class="text-[11px] text-[#5f6b63] mt-1">If you are an Owner or Broker with an active listing</p>
+                <p class="text-[11px] text-[#5f6b63] mt-1">Owner or broker listing</p>
               </div>
             </a>
 
@@ -255,7 +255,7 @@
               </div>
               <div>
                 <h3 class="font-display font-bold text-[#17211d] text-sm">Looking for Room</h3>
-                <p class="text-[11px] text-[#5f6b63] mt-1">If you are a tenant looking to move into the society</p>
+                <p class="text-[11px] text-[#5f6b63] mt-1">Tenant room/flat request</p>
               </div>
             </a>
           </div>
@@ -263,9 +263,9 @@
           <div class="border-2 border-[#25312c] bg-[#f5ebdb]/70 p-3 sm:p-4 rounded-lg flex gap-3">
             <span class="text-[#7a4d32] text-lg shrink-0">ℹ</span>
             <div class="space-y-1">
-              <h4 class="font-mono text-xs uppercase font-bold text-[#17211d] tracking-wider">Important: 30-Day Expiry Notice</h4>
+              <h4 class="font-mono text-xs uppercase font-bold text-[#17211d] tracking-wider">30-Day Expiry</h4>
               <p class="text-xs text-[#5f6b63] leading-relaxed">
-                To keep the directory accurate, all listings <strong class="text-[#17211d] font-semibold">auto-expire 30 days</strong> after submission. To stay on the board, please re-submit details via the WhatsApp form.
+                Posts auto-expire after <strong class="text-[#17211d] font-semibold">30 days</strong>. Re-submit to stay visible.
               </p>
             </div>
           </div>
@@ -295,8 +295,8 @@
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-16 text-center border-2 border-dashed border-slate-300 rounded-xl bg-white max-w-lg mx-auto my-8">
       <div class="inline-block w-8 h-8 border-4 border-[#d5c9b8] border-t-[#25312c] rounded-full animate-spin mb-4"></div>
-      <h3 class="font-display font-bold text-slate-800 text-lg">Fetching active directory...</h3>
-      <p class="text-xs text-slate-500 font-mono mt-1">Connecting to live Google Sheet records</p>
+      <h3 class="font-display font-bold text-slate-800 text-lg">Loading listings...</h3>
+      <p class="text-xs text-slate-500 font-mono mt-1">Syncing sheet</p>
     </div>
 
     <!-- FAILURE FLOW STATE -->
@@ -304,7 +304,7 @@
       <span class="text-2xl">⚠️</span>
       <h3 class="font-display font-extrabold text-rose-950 text-lg">Live Connection Interrupted</h3>
       <p class="text-xs text-rose-800 font-sans leading-relaxed">
-        We couldn't load the live listings sheet directly. This is usually due to Google Sheets cache syncing or temporary network hiccups.
+        Live sheet did not load. Try again.
       </p>
       <div class="pt-2 flex justify-center gap-3">
         <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-mono text-xs font-bold rounded border border-slate-900">
@@ -321,10 +321,10 @@
     <!-- SECONDARY CTA ROW -->
     <div class="mt-10 sm:mt-16 border-2 border-[#25312c] bg-[#17211d] p-5 sm:p-8 rounded-lg text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-[3px_3px_0px_0px_rgba(122,77,50,1)]">
       <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
-        Need to list your flat or post a room request?
+        Add your post
       </h3>
       <p class="text-sm text-slate-300 max-w-xl mx-auto font-sans">
-        Submit details through the Lotus Zing Tally intake form. Your post will appear after the next sheet sync and will remain visible for 30 days.
+        Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#b98254] hover:bg-[#a56f48] border border-[#25312c] font-mono text-xs font-bold uppercase text-white rounded transition-all">
@@ -342,9 +342,9 @@
   <footer class="border-t-2 border-slate-900 bg-slate-100 py-8 sm:py-12 px-4 text-center mt-12 sm:mt-20">
     <div class="max-w-2xl mx-auto flex flex-col items-center gap-3">
       <span class="text-xl">🛡</span>
-      <h4 class="font-display font-bold text-slate-950 text-sm">Community Board Disclaimer</h4>
+      <h4 class="font-display font-bold text-slate-950 text-sm">Disclaimer</h4>
       <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
-        This board is a community-driven initiative organized by residents of Lotus Zing. Listings are submitted by independent owners, tenants, and local brokers. The administrators do not verify identity, ownership, or licensing. Please perform your own due diligence, verify ownership papers, and sign proper agreements before transferring any money or deposit.
+        Community-submitted posts. Verify owner, papers, broker terms, and agreement before payment.
       </p>
       <span class="font-mono text-[10px] text-slate-400 uppercase tracking-widest mt-2">
         Lotus Zing Society, Sector 168, Noida, UP, India
@@ -903,9 +903,9 @@
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-[#b98254] rounded-xl bg-[#f5ebdb] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
           <span class="text-3xl">⏳</span>
-          <h3 class="font-display font-bold text-slate-900 text-lg">Listings sheet not connected yet</h3>
+          <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
-            The intake form is live, but the response sheet has not been linked to this board. New listings will show here after the published CSV URL is added.
+            Form is live. Listings show after sheet link is added.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
@@ -1171,7 +1171,7 @@ _Shared via Lotus Zing Noticeboard_
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-slate-300 rounded-xl bg-white p-12 text-center max-w-md mx-auto my-6 space-y-4">
           <span class="text-3xl">📭</span>
-          <h3 class="font-display font-bold text-slate-800 text-lg">No Listings Found</h3>
+          <h3 class="font-display font-bold text-slate-800 text-lg">No matches</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
           <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Reset All Filters</button>
         </div>
