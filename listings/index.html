@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lotus Zing Flat/Room Listings Noticeboard</title>
+  
+  <!-- Font Imports -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['DM Mono', 'ui-monospace', 'monospace'],
+            display: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background-color: #fcfbf9;
+      color: #0f172a;
+    }
+    /* Custom thin scrollbars for ledger vibe */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-slate-900 bg-[#fcfbf9] min-h-screen pb-12">
+
+  <!-- TOP ALERT BANNER -->
+  <div class="bg-slate-900 px-4 py-2 text-center text-xs font-mono text-amber-400 uppercase tracking-widest flex items-center justify-center gap-2 border-b border-slate-950">
+    <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+    Lotus Zing Society, Sector 168, Noida — Community Housing Ledger
+  </div>
+
+  <!-- HEADER -->
+  <header class="border-b-2 border-slate-900 bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7 space-y-4">
+          <span class="inline-block text-xs font-mono font-bold tracking-widest text-slate-500 uppercase bg-slate-100 border border-slate-300 px-2 py-1 rounded">
+            NOTICE BOARD EXTENSION
+          </span>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-slate-900 leading-tight">
+            Lotus Zing Flat & Room Directory
+          </h1>
+          <p class="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+            An open, neighborhood-first board to view flats available for rent and posts from residents searching for their next home inside Lotus Zing. Directly linked from our WhatsApp group noticeboard.
+          </p>
+          <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-500 pt-2">
+            <span class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
+              ✔ High Trust (Verified Neighbors)
+            </span>
+            <span class="flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded">
+              📅 Refreshed Daily
+            </span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a href="#submit-rent" target="_blank" class="group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+              <div class="flex justify-between items-center w-full mb-4">
+                <span class="bg-amber-500 text-slate-950 text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Host Flat</span>
+                <span class="text-amber-600 text-xl font-bold font-mono">＋</span>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-slate-900 text-sm">Submit Available Rent</h3>
+                <p class="text-[11px] text-slate-600 mt-1">If you are an Owner or Broker with an active listing</p>
+              </div>
+            </a>
+
+            <a href="#submit-looking" target="_blank" class="group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+              <div class="flex justify-between items-center w-full mb-4">
+                <span class="bg-emerald-600 text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Tenant Search</span>
+                <span class="text-emerald-700 text-xl font-bold font-mono">＋</span>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-slate-900 text-sm">Looking for Room</h3>
+                <p class="text-[11px] text-slate-600 mt-1">If you are a tenant looking to move into the society</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="border-2 border-slate-900 bg-amber-50/50 p-4 rounded-lg flex gap-3">
+            <span class="text-amber-600 text-lg shrink-0">ℹ</span>
+            <div class="space-y-1">
+              <h4 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Important: 30-Day Expiry Notice</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                To keep the directory accurate, all listings <strong class="text-slate-900 font-semibold">auto-expire 30 days</strong> after submission. To stay on the board, please re-submit details via the WhatsApp form.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP AREA -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- NAVIGATION TABS -->
+    <div class="flex border-b-2 border-slate-900 mb-8 overflow-hidden rounded-t-lg bg-slate-100">
+      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none transition-all bg-amber-500 text-slate-950 border-b-0">
+        🏠 FLATS AVAILABLE FOR RENT
+      </button>
+      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none transition-all text-slate-600 hover:bg-slate-50">
+        🔍 LOOKING FOR FLAT / ROOM
+      </button>
+    </div>
+
+    <!-- FILTER BOARD CONTAINER -->
+    <div id="filters-container" class="mb-8">
+      <!-- DYNAMIC FILTERS LOADED BY JS -->
+    </div>
+
+    <!-- LOADER STATE -->
+    <div id="loader-state" class="hidden py-16 text-center border-2 border-dashed border-slate-300 rounded-xl bg-white max-w-lg mx-auto my-8">
+      <div class="inline-block w-8 h-8 border-4 border-slate-300 border-t-slate-900 rounded-full animate-spin mb-4"></div>
+      <h3 class="font-display font-bold text-slate-800 text-lg">Fetching active directory...</h3>
+      <p class="text-xs text-slate-500 font-mono mt-1">Connecting to live Google Sheet records</p>
+    </div>
+
+    <!-- FAILURE FLOW STATE -->
+    <div id="error-state" class="hidden border-2 border-rose-900 bg-rose-50 p-6 rounded-lg max-w-lg mx-auto my-8 text-center space-y-4">
+      <span class="text-2xl">⚠️</span>
+      <h3 class="font-display font-extrabold text-rose-950 text-lg">Live Connection Interrupted</h3>
+      <p class="text-xs text-rose-800 font-sans leading-relaxed">
+        We couldn't load the live listings sheet directly. This is usually due to Google Sheets cache syncing or temporary network hiccups.
+      </p>
+      <div class="pt-2 flex justify-center gap-3">
+        <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-mono text-xs font-bold rounded border border-slate-900">
+          Retry Fetching
+        </button>
+        <button onclick="useLocalFallback()" class="px-4 py-2 bg-white hover:bg-slate-100 text-rose-900 font-mono text-xs font-bold rounded border-2 border-rose-950">
+          Load Cache Fallback
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTINGS CONTAINER GRID -->
+    <div id="listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- CARDS RENDERED BY JS -->
+    </div>
+
+    <!-- SECONDARY CTA ROW -->
+    <div class="mt-16 border-2 border-slate-900 bg-slate-900 p-8 rounded-lg text-center space-y-6 max-w-3xl mx-auto shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]">
+      <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
+        Need to list your flat or post a room request?
+      </h3>
+      <p class="text-sm text-slate-300 max-w-xl mx-auto font-sans">
+        Submit details through Shailansh's automated WhatsApp Intake Forms. Your post will be live instantly on the next sync and will remain visible for 30 days.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+        <a href="#submit-rent" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-600 border border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+          Host Flat (Owners/Brokers)
+        </a>
+        <a href="#submit-looking" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-100 border-2 border-slate-900 font-mono text-xs font-bold uppercase text-slate-950 rounded transition-all">
+          Post Request (Looking for Flat)
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- DISCLAIMER -->
+  <footer class="border-t-2 border-slate-900 bg-slate-100 py-12 px-4 text-center mt-20">
+    <div class="max-w-2xl mx-auto flex flex-col items-center gap-3">
+      <span class="text-xl">🛡</span>
+      <h4 class="font-display font-bold text-slate-950 text-sm">Community Board Disclaimer</h4>
+      <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
+        This board is a community-driven initiative organized by residents of Lotus Zing. Listings are submitted by independent owners, tenants, and local brokers. The administrators do not verify identity, ownership, or licensing. Please perform your own due diligence, verify ownership papers, and sign proper agreements before transferring any money or deposit.
+      </p>
+      <span class="font-mono text-[10px] text-slate-400 uppercase tracking-widest mt-2">
+        Lotus Zing Society, Sector 168, Noida, UP, India
+      </span>
+    </div>
+  </footer>
+
+  <!-- CORE JAVASCRIPT LOGIC -->
+  <script>
+    // Application state
+    let activeTab = 'rent';
+    let rentListings = [];
+    let lookingListings = [];
+    
+    // Configs
+    const RENT_CSV_URL = "";
+    const LOOKING_CSV_URL = "";
+
+    // State baseline date: 2026-07-02 for age logic
+    const BASELINE_DATE = new Date("2026-07-02T12:00:00-07:00");
+
+    // Dynamic state filters
+    let rentFilters = { search: '', bhk: 'All', sort: 'newest', maxRent: 50000, ownerOnly: false };
+    let lookingFilters = { search: '', bhk: 'All', sort: 'newest' };
+
+    // Fallback Mock Data embedded directly inside the static HTML for extreme resilience
+    const LOCAL_RENT_FALLBACK = [
+      {
+        id: "r1",
+        timestamp: "2026-07-02",
+        towerFlat: "Tower 3, Flat 1402",
+        bhkType: "3 BHK",
+        furnishing: "Fully Furnished",
+        monthlyRent: 32000,
+        securityDeposit: 60000,
+        availableFrom: "Immediate",
+        preferredTenant: "Family",
+        parking: "Yes",
+        listedBy: "Owner",
+        posterName: "Amit Sharma",
+        contactNumber: "+919810234567",
+        notes: "High floor flat with beautiful view of the central park. Brand new premium woodwork in all bedrooms, modular kitchen with chimney, and energy-efficient water heaters installed."
+      },
+      {
+        id: "r2",
+        timestamp: "2026-07-01",
+        towerFlat: "Tower 7, Flat 204",
+        bhkType: "2 BHK",
+        furnishing: "Semi-Furnished",
+        monthlyRent: 24000,
+        securityDeposit: 48000,
+        availableFrom: "Immediate",
+        preferredTenant: "Any",
+        parking: "Yes",
+        listedBy: "Broker-Agent",
+        posterName: "Noida Housing Solutions",
+        contactNumber: "+918800123456",
+        notes: "Well-maintained pool-facing apartment. Wardrobes in both bedrooms, basic electrical fittings, geyser, and chimney included. Ready to move."
+      },
+      {
+        id: "r3",
+        timestamp: "2026-06-24",
+        towerFlat: "Tower 11, Flat 805",
+        bhkType: "1 BHK",
+        furnishing: "Semi-Furnished",
+        monthlyRent: 16500,
+        securityDeposit: 30000,
+        availableFrom: "2026-07-15",
+        preferredTenant: "Bachelors Women",
+        parking: "No",
+        listedBy: "Owner",
+        posterName: "Dr. Sunita Rao",
+        contactNumber: "+919958765432",
+        notes: "Quiet corner apartment, perfect for working professionals or college students. Wardrobe, lights, fans, and a small balcony with bird-netting."
+      },
+      {
+        id: "r4",
+        timestamp: "2026-06-06",
+        towerFlat: "Tower 2, Flat 1801",
+        bhkType: "3 BHK",
+        furnishing: "Unfurnished",
+        monthlyRent: 28000,
+        securityDeposit: 56000,
+        availableFrom: "2026-08-01",
+        preferredTenant: "Family",
+        parking: "Yes",
+        listedBy: "Owner",
+        posterName: "Rakesh Verma",
+        contactNumber: "+919312345678",
+        notes: "Spacious layout with 3 balconies. Freshly painted. Strictly for families who prefer long-term leases. No brokers please."
+      },
+      {
+        id: "r5",
+        timestamp: "2026-06-17",
+        towerFlat: "Tower 5, Flat 501",
+        bhkType: "Studio",
+        furnishing: "Fully Furnished",
+        monthlyRent: 12000,
+        securityDeposit: 20000,
+        availableFrom: "Immediate",
+        preferredTenant: "Bachelors Men",
+        parking: "No",
+        listedBy: "Broker-Agent",
+        posterName: "Singh Properties",
+        contactNumber: "+919711223344",
+        notes: "Excellent studio flat. Includes AC, double bed, smart TV, small fridge, and wardrobe. Ideal for single occupants."
+      }
+    ];
+
+    const LOCAL_LOOKING_FALLBACK = [
+      {
+        id: "l1",
+        timestamp: "2026-07-02",
+        preferredBhk: "2 BHK",
+        budget: 25000,
+        preferredMoveIn: "Immediate",
+        occupants: 3,
+        tenantType: "Family",
+        preferredArea: "Tower 5 or 6 preferred",
+        posterName: "Ananya & Rohit Sen",
+        contactNumber: "+919560123456",
+        notes: "Looking for a well-ventilated 2 BHK with a pool or central park view. Preferably semi-furnished."
+      },
+      {
+        id: "l2",
+        timestamp: "2026-07-01",
+        preferredBhk: "1 BHK",
+        budget: 15000,
+        preferredMoveIn: "2026-07-15",
+        occupants: 1,
+        tenantType: "Bachelors Men",
+        preferredArea: "Any tower, mid-floor",
+        posterName: "Mayank Joshi",
+        contactNumber: "+919899123456",
+        notes: "Software developer seeking flat. Minimal furniture like bed/wardrobe is fine."
+      },
+      {
+        id: "l3",
+        timestamp: "2026-06-20",
+        preferredBhk: "3 BHK",
+        budget: 30000,
+        preferredMoveIn: "Immediate",
+        occupants: 4,
+        tenantType: "Family",
+        preferredArea: "Tower 2, 3 or 4",
+        posterName: "Sanjay Singhal",
+        contactNumber: "+919911223344",
+        notes: "Need spacious layout, car parking is a must."
+      }
+    ];
+
+    // Expiry date calculative utility
+    function getDaysDiff(timestampStr) {
+      const listingDate = new Date(timestampStr);
+      const diffTime = BASELINE_DATE.getTime() - listingDate.getTime();
+      return diffTime / (1000 * 60 * 60 * 24);
+    }
+
+    function isNewListing(timestampStr) {
+      const diff = getDaysDiff(timestampStr);
+      return diff >= 0 && diff <= 2;
+    }
+
+    function getExpiryInfo(timestampStr) {
+      const diffDays = getDaysDiff(timestampStr);
+      const daysRemaining = Math.max(0, Math.ceil(30 - diffDays));
+      const isExpired = diffDays > 30;
+      const showWarning = daysRemaining <= 5 && !isExpired;
+      return { isExpired, daysRemaining, showWarning };
+    }
+
+    // Format currency
+    function formatCurrency(amount) {
+      return '₹' + Number(amount).toLocaleString('en-IN');
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      renderFilters();
+      fetchSheetData();
+    });
+
+    // switch Tab
+    function switchTab(tab) {
+      activeTab = tab;
+      
+      const tabRentBtn = document.getElementById('tab-rent-btn');
+      const tabLookingBtn = document.getElementById('tab-looking-btn');
+      
+      if (tab === 'rent') {
+        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none bg-amber-500 text-slate-950 border-b-0";
+        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none text-slate-600 hover:bg-slate-50";
+      } else {
+        tabRentBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base border-r-2 border-slate-900 focus:outline-none text-slate-600 hover:bg-slate-50";
+        tabLookingBtn.className = "flex-1 py-4 text-center font-display font-extrabold text-sm sm:text-base focus:outline-none bg-emerald-600 text-white border-b-0";
+      }
+      
+      renderFilters();
+      renderListings();
+    }
+
+    // Render Filters row dynamically based on Tab
+    function renderFilters() {
+      const container = document.getElementById('filters-container');
+      
+      if (activeTab === 'rent') {
+        container.innerHTML = `
+          <div class="border-2 border-slate-900 bg-white p-4 sm:p-5 rounded-lg shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-700">⚙</span>
+                <h3 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Ledger Filters</h3>
+              </div>
+              <span class="font-mono text-[10px] text-slate-400 uppercase">Rent Catalogue</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-4">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Search Term</label>
+                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Search flat, tower, name..." value="${rentFilters.search}" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-3 py-1.5 text-sm outline-none">
+              </div>
+              
+              <div class="md:col-span-3">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">BHK / Room Layout</label>
+                <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-2.5 py-1.5 text-sm outline-none">
+                  <option value="All" ${rentFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
+                  <option value="Studio" ${rentFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
+                  <option value="1 BHK" ${rentFilters.bhk === '1 BHK' ? 'selected' : ''}>1 BHK</option>
+                  <option value="2 BHK" ${rentFilters.bhk === '2 BHK' ? 'selected' : ''}>2 BHK</option>
+                  <option value="3 BHK" ${rentFilters.bhk === '3 BHK' ? 'selected' : ''}>3 BHK</option>
+                  <option value="4+ BHK" ${rentFilters.bhk === '4+ BHK' ? 'selected' : ''}>4+ BHK</option>
+                </select>
+              </div>
+              
+              <div class="md:col-span-3">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Order By</label>
+                <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-2.5 py-1.5 text-sm outline-none">
+                  <option value="newest" ${rentFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
+                  <option value="oldest" ${rentFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
+                  <option value="rent_asc" ${rentFilters.sort === 'rent_asc' ? 'selected' : ''}>Rent: Low to High</option>
+                  <option value="rent_desc" ${rentFilters.sort === 'rent_desc' ? 'selected' : ''}>Rent: High to Low</option>
+                </select>
+              </div>
+              
+              <div class="md:col-span-2">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1">Max Monthly Rent</label>
+                <div class="flex items-center gap-2 mt-1">
+                  <input type="range" min="5000" max="50000" step="1000" value="${rentFilters.maxRent}" oninput="updateFilter('maxRent', this.value)" class="w-full accent-slate-900 cursor-pointer h-1.5 bg-slate-200 rounded">
+                  <span class="font-mono text-xs text-slate-800 font-bold shrink-0">₹${rentFilters.maxRent >= 50000 ? '50k+' : (rentFilters.maxRent/1000) + 'k'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200">
+              <span class="text-xs text-slate-700">Only display listings directly posted by <strong>Property Owners</strong> (hide Brokers)</span>
+              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-amber-500' : 'bg-slate-300'}" id="owner-toggle-btn">
+                <div class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${rentFilters.ownerOnly ? 'translate-x-6' : 'translate-x-0'}"></div>
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="border-2 border-slate-900 bg-white p-4 sm:p-5 rounded-lg shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-700">⚙</span>
+                <h3 class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Ledger Filters</h3>
+              </div>
+              <span class="font-mono text-[10px] text-slate-400 uppercase">Tenant Requests</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-5">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Search Term</label>
+                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Search preferred area, poster name..." value="${lookingFilters.search}" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-3 py-1.5 text-sm outline-none">
+              </div>
+              
+              <div class="md:col-span-3">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Preferred BHK / Layout</label>
+                <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-2.5 py-1.5 text-sm outline-none">
+                  <option value="All" ${lookingFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
+                  <option value="Studio" ${lookingFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
+                  <option value="1 BHK" ${lookingFilters.bhk === '1 BHK' ? 'selected' : ''}>1 BHK</option>
+                  <option value="2 BHK" ${lookingFilters.bhk === '2 BHK' ? 'selected' : ''}>2 BHK</option>
+                  <option value="3 BHK" ${lookingFilters.bhk === '3 BHK' ? 'selected' : ''}>3 BHK</option>
+                  <option value="4+ BHK" ${lookingFilters.bhk === '4+ BHK' ? 'selected' : ''}>4+ BHK</option>
+                </select>
+              </div>
+              
+              <div class="md:col-span-4">
+                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Order By</label>
+                <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-900 rounded px-2.5 py-1.5 text-sm outline-none">
+                  <option value="newest" ${lookingFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
+                  <option value="oldest" ${lookingFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
+                  <option value="budget_asc" ${lookingFilters.sort === 'budget_asc' ? 'selected' : ''}>Budget: Low to High</option>
+                  <option value="budget_desc" ${lookingFilters.sort === 'budget_desc' ? 'selected' : ''}>Budget: High to Low</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Filter value reactive update
+    function updateFilter(key, value) {
+      if (activeTab === 'rent') {
+        rentFilters[key] = value;
+      } else {
+        lookingFilters[key] = value;
+      }
+      renderListings();
+    }
+
+    function toggleOwnerOnly() {
+      rentFilters.ownerOnly = !rentFilters.ownerOnly;
+      renderFilters();
+      renderListings();
+    }
+
+    // CSV parsing state-machine
+    function parseCSV(text) {
+      let result = [];
+      let row = [""];
+      let insideQuote = false;
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+        let nextChar = text[i+1];
+        if (char === '"') {
+          if (insideQuote && nextChar === '"') {
+            row[row.length - 1] += '"';
+            i++;
+          } else {
+            insideQuote = !insideQuote;
+          }
+        } else if (char === ',' && !insideQuote) {
+          row.push("");
+        } else if ((char === '\r' || char === '\n') && !insideQuote) {
+          if (char === '\r' && nextChar === '\n') i++;
+          result.push(row);
+          row = [""];
+        } else {
+          row[row.length - 1] += char;
+        }
+      }
+      if (row.length > 1 || row[0] !== "") {
+        result.push(row);
+      }
+      return result.filter(r => r.length > 0 && r.some(c => c.trim() !== ""));
+    }
+
+    // Map Headers fuzzy matching
+    function mapHeaders(headers) {
+      const mapping = {};
+      headers.forEach((header, index) => {
+        const h = header.toLowerCase().trim();
+        if (h.includes("tower") || h.includes("flat") || h.includes("unit")) mapping["towerFlat"] = index;
+        else if (h.includes("bhk") || h.includes("room type") || h.includes("room")) {
+          mapping["bhkType"] = index;
+          mapping["preferredBhk"] = index;
+        }
+        else if (h.includes("furnish")) mapping["furnishing"] = index;
+        else if (h.includes("rent") || h.includes("price") || h.includes("monthly")) mapping["monthlyRent"] = index;
+        else if (h.includes("deposit") || h.includes("security")) mapping["securityDeposit"] = index;
+        else if (h.includes("available from") || h.includes("from")) mapping["availableFrom"] = index;
+        else if (h.includes("tenant") || h.includes("tenant type")) {
+          mapping["preferredTenant"] = index;
+          mapping["tenantType"] = index;
+        }
+        else if (h.includes("parking")) mapping["parking"] = index;
+        else if (h.includes("listed") || h.includes("by") || h.includes("role")) mapping["listedBy"] = index;
+        else if (h.includes("name") || h.includes("poster")) mapping["posterName"] = index;
+        else if (h.includes("contact") || h.includes("phone") || h.includes("number") || h.includes("mobile")) mapping["contactNumber"] = index;
+        else if (h.includes("notes") || h.includes("comment") || h.includes("desc") || h.includes("free text")) mapping["notes"] = index;
+        else if (h.includes("budget") || h.includes("max")) mapping["budget"] = index;
+        else if (h.includes("move") || h.includes("move-in")) mapping["preferredMoveIn"] = index;
+        else if (h.includes("occupants") || h.includes("people")) mapping["occupants"] = index;
+        else if (h.includes("area") || h.includes("preferred tower")) mapping["preferredArea"] = index;
+        else if (h.includes("timestamp") || h.includes("time")) mapping["timestamp"] = index;
+      });
+      return mapping;
+    }
+
+    // Async Fetch Sheet data
+    async function fetchSheetData() {
+      if (!RENT_CSV_URL || !LOOKING_CSV_URL || RENT_CSV_URL.startsWith("#")) {
+        console.log("No valid CSV URLs configured. Loading local fallback.");
+        useLocalFallback();
+        return;
+      }
+
+      const loader = document.getElementById('loader-state');
+      const errorDiv = document.getElementById('error-state');
+      const grid = document.getElementById('listings-grid');
+
+      loader.classList.remove('hidden');
+      errorDiv.classList.add('hidden');
+      grid.innerHTML = '';
+
+      try {
+        const [rentRes, lookingRes] = await Promise.all([
+          fetch(RENT_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); }),
+          fetch(LOOKING_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); })
+        ]);
+
+        // Process Rent Listings
+        const rentRows = parseCSV(rentRes);
+        if (rentRows.length > 1) {
+          const mapping = mapHeaders(rentRows[0]);
+          rentListings = rentRows.slice(1).map((row, idx) => {
+            const getVal = (k) => { const i = mapping[k]; return i !== undefined && i < row.length ? row[i].trim() : ''; };
+            const rent = parseInt(getVal("monthlyRent").replace(/[^0-9]/g, ""), 10) || 0;
+            const dep = parseInt(getVal("securityDeposit").replace(/[^0-9]/g, ""), 10) || 0;
+            return {
+              id: 'rc-' + idx,
+              timestamp: getVal("timestamp") || "2026-07-02",
+              towerFlat: getVal("towerFlat") || "Unknown Unit",
+              bhkType: getVal("bhkType") || "2 BHK",
+              furnishing: getVal("furnishing") || "Semi-Furnished",
+              monthlyRent: rent,
+              securityDeposit: dep,
+              availableFrom: getVal("availableFrom") || "Immediate",
+              preferredTenant: getVal("preferredTenant") || "Any",
+              parking: getVal("parking") || "Yes",
+              listedBy: getVal("listedBy") || "Owner",
+              posterName: getVal("posterName") || "Resident",
+              contactNumber: getVal("contactNumber") || "",
+              notes: getVal("notes") || ""
+            };
+          });
+        }
+
+        // Process Looking Listings
+        const lookingRows = parseCSV(lookingRes);
+        if (lookingRows.length > 1) {
+          const mapping = mapHeaders(lookingRows[0]);
+          lookingListings = lookingRows.slice(1).map((row, idx) => {
+            const getVal = (k) => { const i = mapping[k]; return i !== undefined && i < row.length ? row[i].trim() : ''; };
+            const budget = parseInt(getVal("budget").replace(/[^0-9]/g, ""), 10) || 0;
+            const occ = parseInt(getVal("occupants").replace(/[^0-9]/g, ""), 10) || 1;
+            return {
+              id: 'lc-' + idx,
+              timestamp: getVal("timestamp") || "2026-07-02",
+              preferredBhk: getVal("preferredBhk") || "2 BHK",
+              budget: budget,
+              preferredMoveIn: getVal("preferredMoveIn") || "Immediate",
+              occupants: occ,
+              tenantType: getVal("tenantType") || "Family",
+              preferredArea: getVal("preferredArea") || "Any",
+              posterName: getVal("posterName") || "Resident",
+              contactNumber: getVal("contactNumber") || "",
+              notes: getVal("notes") || ""
+            };
+          });
+        }
+
+        loader.classList.add('hidden');
+        renderListings();
+
+      } catch (err) {
+        console.error("Failed to connect to published sheets:", err);
+        loader.classList.add('hidden');
+        errorDiv.classList.remove('hidden');
+      }
+    }
+
+    function useLocalFallback() {
+      document.getElementById('error-state').classList.add('hidden');
+      document.getElementById('loader-state').classList.add('hidden');
+      rentListings = [...LOCAL_RENT_FALLBACK];
+      lookingListings = [...LOCAL_LOOKING_FALLBACK];
+      renderListings();
+    }
+
+    // Share Rent Whatsapp Text Helper
+    function shareRentWhatsapp(idx) {
+      const item = rentListings[idx];
+      const text = `*🏠 Flat Available for Rent | Lotus Zing, Noida*
+  
+• *Unit*: ${item.towerFlat}
+• *BHK*: ${item.bhkType} (${item.furnishing})
+• *Monthly Rent*: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo
+• *Security Deposit*: ₹${item.securityDeposit.toLocaleString('en-IN')}
+• *Available From*: ${item.availableFrom}
+• *Preferred Tenant*: ${item.preferredTenant}
+• *Parking*: ${item.parking}
+• *Listed By*: ${item.listedBy}
+• *Contact*: ‪${item.posterName}‬ (‪‪${item.contactNumber}‬)
+
+${item.notes ? `*Notes*: _${item.notes}_
+` : ""}
+_Shared via Lotus Zing Noticeboard_
+👉 See full board: ${window.location.href}`;
+
+      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    function shareLookingWhatsapp(idx) {
+      const item = lookingListings[idx];
+      const text = `*🔍 Looking for Flat / Room | Lotus Zing, Noida*
+
+• *BHK Preferred*: ${item.preferredBhk}
+• *Budget*: Up to ₹${item.budget.toLocaleString('en-IN')}/mo
+• *Move-In Date*: ${item.preferredMoveIn}
+• *Tenant Type*: ${item.tenantType}
+• *Occupants*: ${item.occupants}
+• *Preferred Area*: ${item.preferredArea || "Any"}
+• *Contact*: ‪${item.posterName}‬ (‪‪${item.contactNumber}‬)
+
+${item.notes ? `*Notes*: _${item.notes}_
+` : ""}
+_Shared via Lotus Zing Noticeboard_
+👉 See full board: ${window.location.href}`;
+
+      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    // Render Listings
+    function renderListings() {
+      const grid = document.getElementById('listings-grid');
+      grid.innerHTML = '';
+
+      if (activeTab === 'rent') {
+        const query = rentFilters.search.toLowerCase().trim();
+        
+        let filtered = rentListings.filter(item => {
+          // Exclude expired (30 days age limit)
+          const { isExpired } = getExpiryInfo(item.timestamp);
+          if (isExpired) return false;
+
+          // Search matching
+          const matchSearch = item.towerFlat.toLowerCase().includes(query) || 
+                              item.notes.toLowerCase().includes(query) || 
+                              item.posterName.toLowerCase().includes(query) ||
+                              item.bhkType.toLowerCase().includes(query);
+          
+          // BHK matching
+          const matchBhk = rentFilters.bhk === 'All' || item.bhkType.toLowerCase() === rentFilters.bhk.toLowerCase();
+          
+          // Max Rent matching
+          const matchRent = item.monthlyRent <= rentFilters.maxRent;
+
+          // Owner Only
+          const matchOwner = !rentFilters.ownerOnly || item.listedBy.toLowerCase().includes("owner");
+
+          return matchSearch && matchBhk && matchRent && matchOwner;
+        });
+
+        // Sorting
+        filtered.sort((a, b) => {
+          if (rentFilters.sort === 'newest') return new Date(b.timestamp) - new Date(a.timestamp);
+          if (rentFilters.sort === 'oldest') return new Date(a.timestamp) - new Date(b.timestamp);
+          if (rentFilters.sort === 'rent_asc') return a.monthlyRent - b.monthlyRent;
+          if (rentFilters.sort === 'rent_desc') return b.monthlyRent - a.monthlyRent;
+          return 0;
+        });
+
+        if (filtered.length === 0) {
+          renderEmptyState('No flats match your filters. Try clearing your search parameters or submit a flat listing.');
+          return;
+        }
+
+        filtered.forEach((item, originalIndex) => {
+          const indexInList = rentListings.findIndex(r => r.id === item.id);
+          const isNew = isNewListing(item.timestamp);
+          const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
+          const isOwner = item.listedBy.toLowerCase().includes("owner");
+
+          const card = document.createElement('div');
+          card.className = "border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.innerHTML = `
+            <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-amber-500 bg-amber-50 text-amber-800">${item.bhkType}</span>
+                <span class="font-mono text-[11px] text-slate-500 uppercase">${item.furnishing}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${isNew ? '<span class="bg-amber-400 text-slate-950 font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-slate-900 rounded shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">NEW</span>' : ''}
+                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
+              </div>
+            </div>
+            <div class="p-4 flex-1 space-y-4">
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  <h4 class="font-display font-bold text-lg text-slate-900 leading-tight">${item.towerFlat}</h4>
+                  <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase mt-1 ${isOwner ? "text-emerald-700" : "text-slate-500"}">
+                    ${isOwner ? '🛡 ' : ''}${item.listedBy}
+                  </span>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="block font-mono text-xl font-bold text-slate-900">${formatCurrency(item.monthlyRent)}<span class="text-[10px] text-slate-500 font-normal">/mo</span></span>
+                  <span class="block font-mono text-[10px] text-slate-500 mt-0.5">Dep: ${formatCurrency(item.securityDeposit)}</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-2 border-y border-slate-200 py-3 font-mono text-xs text-slate-600">
+                <div>
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Available From</span>
+                  <span class="font-bold text-slate-900">${item.availableFrom}</span>
+                </div>
+                <div>
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Preferred Tenant</span>
+                  <span class="font-bold text-slate-900 truncate block">${item.preferredTenant}</span>
+                </div>
+                <div class="mt-1">
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Parking Space</span>
+                  <span class="font-bold text-slate-900">${item.parking}</span>
+                </div>
+                <div class="mt-1">
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Posted On</span>
+                  <span class="font-medium text-slate-500">${item.timestamp}</span>
+                </div>
+              </div>
+              ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
+            </div>
+            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-2 gap-2 mt-auto">
+              <a href="tel:${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Owner</a>
+              <button onclick="shareRentWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-amber-600 bg-amber-500 hover:bg-amber-600 py-2 rounded text-xs font-mono font-bold text-slate-950 shadow-[2px_2px_0px_0px_rgba(217,119,6,1)]">📢 Share Group</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } else {
+        const query = lookingFilters.search.toLowerCase().trim();
+        
+        let filtered = lookingListings.filter(item => {
+          // Exclude expired (30 days age limit)
+          const { isExpired } = getExpiryInfo(item.timestamp);
+          if (isExpired) return false;
+
+          // Search matching
+          const matchSearch = item.posterName.toLowerCase().includes(query) || 
+                              item.notes.toLowerCase().includes(query) || 
+                              item.preferredArea.toLowerCase().includes(query) ||
+                              item.preferredBhk.toLowerCase().includes(query);
+          
+          // BHK matching
+          const matchBhk = lookingFilters.bhk === 'All' || item.preferredBhk.toLowerCase() === lookingFilters.bhk.toLowerCase();
+
+          return matchSearch && matchBhk;
+        });
+
+        // Sorting
+        filtered.sort((a, b) => {
+          if (lookingFilters.sort === 'newest') return new Date(b.timestamp) - new Date(a.timestamp);
+          if (lookingFilters.sort === 'oldest') return new Date(a.timestamp) - new Date(b.timestamp);
+          if (lookingFilters.sort === 'budget_asc') return a.budget - b.budget;
+          if (lookingFilters.sort === 'budget_desc') return b.budget - a.budget;
+          return 0;
+        });
+
+        if (filtered.length === 0) {
+          renderEmptyState('No tenant requests match your filters. Try adjusting your parameters.');
+          return;
+        }
+
+        filtered.forEach((item, originalIndex) => {
+          const indexInList = lookingListings.findIndex(l => l.id === item.id);
+          const isNew = isNewListing(item.timestamp);
+          const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
+
+          const card = document.createElement('div');
+          card.className = "border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.innerHTML = `
+            <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border border-emerald-600 bg-emerald-50 text-emerald-800">${item.preferredBhk} Layout</span>
+                <span class="font-mono text-[11px] text-slate-500 uppercase">${item.tenantType}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${isNew ? '<span class="bg-emerald-500 text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-slate-900 rounded">NEW</span>' : ''}
+                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
+              </div>
+            </div>
+            <div class="p-4 flex-1 space-y-4">
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  <h4 class="font-display font-bold text-lg text-slate-900 leading-tight">👤 ${item.posterName}</h4>
+                  ${item.preferredArea ? `<p class="text-xs text-slate-500 font-sans mt-1">📍 ${item.preferredArea}</p>` : ''}
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="block font-mono text-lg font-bold text-slate-900">Max ${formatCurrency(item.budget)}/mo</span>
+                  <span class="block font-mono text-[10px] text-slate-500 mt-0.5">Budget Target</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-2 border-y border-slate-200 py-3 font-mono text-xs text-slate-600">
+                <div>
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Move-In Target</span>
+                  <span class="font-bold text-slate-900">${item.preferredMoveIn}</span>
+                </div>
+                <div>
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Occupants</span>
+                  <span class="font-bold text-slate-900">${item.occupants} Person(s)</span>
+                </div>
+                <div class="mt-1">
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Preferred Area</span>
+                  <span class="font-bold text-slate-900 truncate block">${item.preferredArea || "Any Tower"}</span>
+                </div>
+                <div class="mt-1">
+                  <span class="block text-[9px] uppercase font-bold text-slate-400">Requested On</span>
+                  <span class="font-medium text-slate-500">${item.timestamp}</span>
+                </div>
+              </div>
+              ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
+            </div>
+            <div class="border-t-2 border-slate-900 bg-slate-50 p-3 grid grid-cols-2 gap-2 mt-auto">
+              <a href="tel:‪${item.contactNumber}" class="flex items-center justify-center gap-1.5 border-2 border-slate-900 bg-white hover:bg-slate-100 py-2 rounded text-xs font-mono font-bold text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">📞 Call Contact</a>
+              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex items-center justify-center gap-1.5 border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-xs font-mono font-bold text-white shadow-[2px_2px_0px_0px_rgba(4,120,87,1)]">📢 Share Group</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+    }
+
+    // Render Empty State inside Grid
+    function renderEmptyState(message) {
+      const grid = document.getElementById('listings-grid');
+      grid.innerHTML = `
+        <div class="col-span-full border-2 border-dashed border-slate-300 rounded-xl bg-white p-12 text-center max-w-md mx-auto my-6 space-y-4">
+          <span class="text-3xl">📭</span>
+          <h3 class="font-display font-bold text-slate-800 text-lg">No Listings Found</h3>
+          <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
+          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Reset All Filters</button>
+        </div>
+      `;
+    }
+
+    function resetFiltersAndReload() {
+      rentFilters = { search: '', bhk: 'All', sort: 'newest', maxRent: 50000, ownerOnly: false };
+      lookingFilters = { search: '', bhk: 'All', sort: 'newest' };
+      renderFilters();
+      renderListings();
+    }
+  </script>
+</body>
+</html>
