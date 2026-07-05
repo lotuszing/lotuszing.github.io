@@ -42,9 +42,8 @@
     }
     body {
       background:
-        radial-gradient(circle at top left, rgba(161, 98, 7, 0.11), transparent 28rem),
-        radial-gradient(circle at top right, rgba(49, 92, 72, 0.10), transparent 24rem),
-        linear-gradient(180deg, #fffdf7 0%, var(--paper) 18rem, #f1eee8 100%);
+        radial-gradient(circle at top right, rgba(49, 92, 72, 0.07), transparent 22rem),
+        linear-gradient(180deg, #fffdf7 0%, #fafaf9 22rem, #f7f2e8 100%);
       color: var(--ink);
       touch-action: manipulation;
     }
@@ -107,18 +106,6 @@
     }
     .join-group-pulse {
       animation: joinPulse 1.8s ease-in-out infinite;
-    }
-    .live-banner {
-      position: relative;
-      overflow: hidden;
-    }
-    .live-banner::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(217, 185, 114, 0.24), transparent);
-      animation: bannerScan 3.8s ease-in-out infinite;
-      pointer-events: none;
     }
     .live-header {
       position: relative;
@@ -200,20 +187,11 @@
 </head>
 <body class="font-sans antialiased text-[#0c0a09] bg-[#fafaf9] min-h-screen pb-12">
 
-  <!-- TOP ALERT BANNER -->
-  <div class="live-banner bg-[#0c0a09] px-4 py-2 text-center text-[10px] sm:text-xs font-mono text-[#e7d7b1] uppercase tracking-[0.2em] flex items-center justify-center gap-2 border-b border-[#1c1917]">
-    <span class="green-light"></span>
-    Lotus Zing Society, Sector 168, Noida — Community Housing Ledger
-  </div>
-
   <!-- HEADER -->
   <header class="live-header border-b border-[#d6d3d1] bg-transparent">
     <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
-          <span class="pop-in inline-block text-[10px] sm:text-xs font-mono font-bold tracking-[0.2em] text-[#57534e] uppercase bg-[#f4e8d2] border border-[#dcc9aa] px-2 py-1 rounded-full">
-            Community Board
-          </span>
           <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#0c0a09] leading-tight">
             Lotus Zing Flat & Room Board
           </h1>
@@ -262,7 +240,7 @@
     
     <!-- NAVIGATION TABS -->
     <div class="sticky top-0 z-20 flex border border-[#d6d3d1] mb-5 sm:mb-8 overflow-hidden rounded-2xl bg-[#fffdf7]/95 backdrop-blur">
-      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none transition-all bg-[#a16207] text-white border-b-0">
+      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none transition-all bg-[#315c48] text-white border-b-0">
         Rent
       </button>
       <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none transition-all text-[#57534e] hover:bg-[#f7f2e8]">
@@ -283,7 +261,7 @@
     </div>
 
     <!-- FAILURE FLOW STATE -->
-    <div id="error-state" class="hidden border-2 border-rose-900 bg-rose-50 p-6 rounded-lg max-w-lg mx-auto my-8 text-center space-y-4">
+    <div id="error-state" class="hidden border border-rose-200 bg-rose-50 p-5 rounded-2xl max-w-lg mx-auto my-8 text-center space-y-3">
       <span class="font-mono text-lg font-bold text-rose-900">!</span>
       <h3 class="font-display font-extrabold text-rose-950 text-lg">Live Connection Interrupted</h3>
       <p class="text-xs text-rose-800 font-sans leading-relaxed">
@@ -302,18 +280,18 @@
     </div>
 
     <!-- SECONDARY CTA ROW -->
-    <div class="mt-10 sm:mt-16 border border-[#1c1917] bg-[#0c0a09] p-5 sm:p-8 rounded-2xl text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-sm">
-      <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
+    <div class="mt-10 sm:mt-16 border border-[#d6d3d1] bg-[#fffdf7] p-5 sm:p-8 rounded-2xl text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-sm">
+      <h3 class="font-display font-extrabold text-[#0c0a09] text-xl sm:text-2xl tracking-tight">
         Add your post
       </h3>
-      <p class="text-sm text-slate-300 max-w-xl mx-auto font-sans">
+      <p class="text-sm text-[#57534e] max-w-xl mx-auto font-sans">
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#a16207] hover:bg-[#854d0e] border border-[#713f12] font-mono text-xs font-bold uppercase text-white rounded-xl transition-all">
           List flat
         </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#fffdf7] hover:bg-[#eef4ee] border border-[#d6d3d1] font-mono text-xs font-bold uppercase text-[#0c0a09] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#eef4ee] hover:bg-[#e3ece2] border border-[#315c48] font-mono text-xs font-bold uppercase text-[#17382b] rounded-xl transition-all">
           Post request
         </a>
       </div>
@@ -553,7 +531,7 @@
       const tabLookingBtn = document.getElementById('tab-looking-btn');
       
       if (tab === 'rent') {
-        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none bg-[#a16207] text-white border-b-0";
+        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none bg-[#315c48] text-white border-b-0";
         tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none text-[#57534e] hover:bg-[#f7f2e8]";
       } else {
         tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#d6d3d1] focus:outline-none text-[#57534e] hover:bg-[#f7f2e8]";
