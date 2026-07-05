@@ -46,6 +46,40 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+    @keyframes bannerScan {
+      0% { transform: translateX(-120%); opacity: 0; }
+      20%, 70% { opacity: 0.7; }
+      100% { transform: translateX(120%); opacity: 0; }
+    }
+    @keyframes greenBlink {
+      0%, 100% {
+        background: #34d399;
+        box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45), 0 0 14px rgba(16, 185, 129, 0.9);
+        transform: scale(1);
+      }
+      45% {
+        background: #ecfdf5;
+        box-shadow: 0 0 0 5px rgba(52, 211, 153, 0), 0 0 4px rgba(16, 185, 129, 0.45);
+        transform: scale(0.86);
+      }
+    }
+    @keyframes heroPop {
+      0% { opacity: 0; transform: translateY(14px) scale(0.96); }
+      70% { opacity: 1; transform: translateY(-2px) scale(1.012); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes radarGlow {
+      0%, 100% { transform: translate3d(-2%, -1%, 0) rotate(0deg); opacity: 0.18; }
+      50% { transform: translate3d(3%, 2%, 0) rotate(4deg); opacity: 0.32; }
+    }
+    @keyframes cardFloat {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -3px; }
+    }
+    @keyframes sparkleSweep {
+      0% { transform: translateX(-180%) rotate(18deg); }
+      100% { transform: translateX(180%) rotate(18deg); }
+    }
     @keyframes joinPulse {
       0%, 100% {
         box-shadow: 2px 2px 0 0 rgba(4, 120, 87, 1), 0 0 0 0 rgba(16, 185, 129, 0.45);
@@ -57,31 +91,124 @@
     .join-group-pulse {
       animation: joinPulse 1.8s ease-in-out infinite;
     }
+    .live-banner {
+      position: relative;
+      overflow: hidden;
+    }
+    .live-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.25), transparent);
+      animation: bannerScan 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .live-header {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .live-header::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(52, 211, 153, 0.26), transparent 24%),
+        radial-gradient(circle at 8% 0%, rgba(245, 158, 11, 0.18), transparent 26%),
+        linear-gradient(115deg, transparent 0 45%, rgba(16, 185, 129, 0.09) 46% 48%, transparent 49%);
+      animation: radarGlow 5.5s ease-in-out infinite;
+      z-index: 0;
+    }
+    .pop-in {
+      animation: heroPop 520ms cubic-bezier(0.2, 0.9, 0.2, 1.15) both;
+    }
+    .pop-delay-1 { animation-delay: 70ms; }
+    .pop-delay-2 { animation-delay: 140ms; }
+    .pop-delay-3 { animation-delay: 210ms; }
+    .pop-delay-4 { animation-delay: 280ms; }
+    .green-light {
+      width: 0.55rem;
+      height: 0.55rem;
+      border: 1px solid rgba(6, 95, 70, 0.65);
+      border-radius: 999px;
+      display: inline-block;
+      background: #34d399;
+      animation: greenBlink 1.35s ease-in-out infinite;
+    }
+    .signal-rack {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(6, 95, 70, 0.35);
+      background: rgba(236, 253, 245, 0.9);
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+    }
+    .signal-rack .green-light:nth-child(2) { animation-delay: 180ms; }
+    .signal-rack .green-light:nth-child(3) { animation-delay: 360ms; }
+    .live-card {
+      overflow: hidden;
+      animation: heroPop 560ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards, cardFloat 3.4s ease-in-out infinite 900ms;
+    }
+    .live-card::after {
+      content: "";
+      position: absolute;
+      top: -45%;
+      left: -65%;
+      width: 40%;
+      height: 190%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+      transform: rotate(18deg);
+      animation: sparkleSweep 4.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .live-dot-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .listing-pop {
+      animation: heroPop 430ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards;
+      animation-delay: calc(var(--pop-index, 0) * 42ms);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body class="font-sans antialiased text-slate-900 bg-[#fcfbf9] min-h-screen pb-12">
 
   <!-- TOP ALERT BANNER -->
-  <div class="bg-slate-900 px-4 py-2 text-center text-xs font-mono text-amber-400 uppercase tracking-widest flex items-center justify-center gap-2 border-b border-slate-950">
-    <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+  <div class="live-banner bg-slate-900 px-4 py-2 text-center text-xs font-mono text-amber-400 uppercase tracking-widest flex items-center justify-center gap-2 border-b border-slate-950">
+    <span class="green-light"></span>
     Lotus Zing Society, Sector 168, Noida — Community Housing Ledger
   </div>
 
   <!-- HEADER -->
-  <header class="border-b-2 border-slate-900 bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+  <header class="live-header border-b-2 border-slate-900 bg-white">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:py-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-7 space-y-4">
-          <span class="inline-block text-xs font-mono font-bold tracking-widest text-slate-500 uppercase bg-slate-100 border border-slate-300 px-2 py-1 rounded">
+          <span class="pop-in inline-block text-xs font-mono font-bold tracking-widest text-slate-500 uppercase bg-slate-100 border border-slate-300 px-2 py-1 rounded">
             NOTICE BOARD EXTENSION
           </span>
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-slate-900 leading-tight">
             Lotus Zing Flat & Room Directory
           </h1>
-          <p class="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+          <p class="pop-in pop-delay-2 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
             An open, neighborhood-first board to view flats available for rent and posts from residents searching for their next home inside Lotus Zing. Directly linked from our WhatsApp group noticeboard.
           </p>
-          <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-500 pt-2">
+          <div class="pop-in pop-delay-3 flex flex-wrap gap-4 text-xs font-mono text-slate-500 pt-2">
+            <span class="signal-rack" aria-label="Live board signal">
+              <span class="green-light"></span>
+              <span class="green-light"></span>
+              <span class="green-light"></span>
+            </span>
             <a href="https://lotuszing.github.io/listings/" class="flex items-center gap-1.5 border border-slate-900 bg-white text-slate-900 px-2.5 py-1 rounded font-bold hover:bg-slate-100">
               Listings home
             </a>
@@ -89,6 +216,7 @@
               Sync pending
             </span>
             <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse flex items-center gap-1.5 border-2 border-emerald-800 bg-emerald-500 text-white px-3 py-1.5 rounded font-bold hover:bg-emerald-600">
+              <span class="green-light"></span>
               Join WhatsApp group
             </a>
           </div>
@@ -96,9 +224,9 @@
 
         <div class="lg:col-span-5 flex flex-col gap-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 group relative flex flex-col items-start justify-between p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 rounded-lg shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
-                <span class="bg-amber-500 text-slate-950 text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Host Flat</span>
+                <span class="live-dot-label bg-amber-500 text-slate-950 text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900"><span class="green-light"></span>Host Flat</span>
                 <span class="text-amber-600 text-xl font-bold font-mono">＋</span>
               </div>
               <div>
@@ -107,9 +235,9 @@
               </div>
             </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 group relative flex flex-col items-start justify-between p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-600 rounded-lg shadow-[4px_4px_0px_0px_rgba(5,150,105,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-left">
               <div class="flex justify-between items-center w-full mb-4">
-                <span class="bg-emerald-600 text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900">Tenant Search</span>
+                <span class="live-dot-label bg-emerald-600 text-white text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border border-slate-900"><span class="green-light"></span>Tenant Search</span>
                 <span class="text-emerald-700 text-xl font-bold font-mono">＋</span>
               </div>
               <div>
@@ -874,7 +1002,8 @@ _Shared via Lotus Zing Noticeboard_
           const isOwner = item.listedBy.toLowerCase().includes("owner");
 
           const card = document.createElement('div');
-          card.className = "border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.className = "listing-pop border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.style.setProperty("--pop-index", originalIndex % 9);
           card.innerHTML = `
             <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
@@ -968,7 +1097,8 @@ _Shared via Lotus Zing Noticeboard_
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
 
           const card = document.createElement('div');
-          card.className = "border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.className = "listing-pop border-2 border-slate-900 bg-white rounded-lg overflow-hidden shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex flex-col h-full";
+          card.style.setProperty("--pop-index", originalIndex % 9);
           card.innerHTML = `
             <div class="border-b-2 border-slate-900 bg-slate-50 px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
               <div class="flex items-center gap-2">
