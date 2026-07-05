@@ -239,8 +239,8 @@
       }).format(new Date());
     }
 
-    // State baseline date: 2026-07-02 for age logic
-    const BASELINE_DATE = new Date("2026-07-02T12:00:00-07:00");
+    // Use current visitor time for expiry so 30-day badges stay accurate.
+    const BASELINE_DATE = new Date();
 
     // Dynamic state filters
     let rentFilters = { search: '', bhk: 'All', sort: 'newest', maxRent: 50000, ownerOnly: false };
@@ -373,8 +373,15 @@
     ];
 
     // Expiry date calculative utility
+    function parseListingDate(timestampStr) {
+      if (!timestampStr) return new Date();
+      const normalized = String(timestampStr).trim().replace(" ", "T");
+      const parsed = new Date(normalized);
+      return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+    }
+
     function getDaysDiff(timestampStr) {
-      const listingDate = new Date(timestampStr);
+      const listingDate = parseListingDate(timestampStr);
       const diffTime = BASELINE_DATE.getTime() - listingDate.getTime();
       return diffTime / (1000 * 60 * 60 * 24);
     }
@@ -606,7 +613,7 @@
         else if (h.includes("move") || h.includes("move-in")) setOnce("preferredMoveIn", index);
         else if (h.includes("occupants") || h.includes("people")) setOnce("occupants", index);
         else if (h.includes("area")) setOnce("preferredArea", index);
-        else if (h.includes("timestamp") || h.includes("time")) setOnce("timestamp", index);
+        else if (h.includes("timestamp") || h.includes("submitted") || h.includes("time")) setOnce("timestamp", index);
       });
       return mapping;
     }
