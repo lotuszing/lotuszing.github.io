@@ -210,6 +210,10 @@
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
 
+    function hasSheetConfig() {
+      return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
+    }
+
     // State baseline date: 2026-07-02 for age logic
     const BASELINE_DATE = new Date("2026-07-02T12:00:00-07:00");
 
@@ -630,7 +634,7 @@
 
     // Async Fetch Sheet data
     async function fetchSheetData() {
-      if (!COMBINED_CSV_URL && (!RENT_CSV_URL || !LOOKING_CSV_URL || RENT_CSV_URL.startsWith("#"))) {
+      if (!hasSheetConfig()) {
         renderSetupPending();
         return;
       }
@@ -767,6 +771,11 @@ _Shared via Lotus Zing Noticeboard_
     function renderListings() {
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = '';
+
+      if (!hasSheetConfig() && rentListings.length === 0 && lookingListings.length === 0) {
+        renderSetupPending();
+        return;
+      }
 
       if (activeTab === 'rent') {
         const query = rentFilters.search.toLowerCase().trim();
