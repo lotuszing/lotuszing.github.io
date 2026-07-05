@@ -47,6 +47,18 @@
       color: var(--ink);
       touch-action: manipulation;
     }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(12, 10, 9, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(12, 10, 9, 0.025) 1px, transparent 1px);
+      background-size: 24px 24px, 24px 24px;
+      mask-image: linear-gradient(to bottom, black, transparent 72%);
+    }
     /* Custom thin scrollbars for ledger vibe */
     ::-webkit-scrollbar {
       width: 6px;
@@ -139,6 +151,55 @@
       background: #9cb48f;
       animation: greenBlink 1.35s ease-in-out infinite;
     }
+    .notice-stamp {
+      border: 1px solid rgba(23, 56, 43, 0.22);
+      color: rgba(23, 56, 43, 0.58);
+      transform: rotate(-2deg);
+    }
+    .action-ticket {
+      position: relative;
+      min-height: 58px;
+      align-items: center;
+      justify-content: flex-start;
+      border-radius: 16px;
+      padding: 0.75rem 0.85rem;
+      text-align: left;
+    }
+    .action-ticket::before {
+      content: "";
+      width: 0.5rem;
+      align-self: stretch;
+      border-radius: 999px;
+      margin-right: 0.65rem;
+      background: currentColor;
+      opacity: 0.6;
+    }
+    .action-ticket small {
+      display: block;
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.72;
+    }
+    .action-ticket strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.98rem;
+      line-height: 1.1;
+    }
+    .expiry-slip {
+      position: relative;
+    }
+    .expiry-slip::after {
+      content: "";
+      position: absolute;
+      inset: 0.55rem auto 0.55rem 0;
+      width: 3px;
+      border-radius: 999px;
+      background: #a16207;
+      opacity: 0.55;
+    }
     .signal-rack {
       display: inline-flex;
       align-items: center;
@@ -192,6 +253,9 @@
     <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
+          <span class="notice-stamp inline-flex w-fit px-2.5 py-1 rounded-md font-mono text-[10px] uppercase tracking-[0.18em]">
+            Resident-run
+          </span>
           <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#0c0a09] leading-tight">
             Lotus Zing Flat & Room Board
           </h1>
@@ -199,10 +263,10 @@
             Live rent listings and tenant requests from the Lotus Zing community.
           </p>
           <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-mono text-[#57534e] pt-1 sm:pt-2">
-            <span id="sync-status" class="min-h-9 inline-flex items-center gap-1.5 border border-[#d6d3d1] bg-[#f7f2e8] px-3 py-1 rounded-full">
+            <span id="sync-status" class="min-h-9 inline-flex items-center gap-1.5 border border-[#d6d3d1] bg-[#f7f2e8] px-3 py-1 rounded-xl">
               Pending
             </span>
-            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-9 inline-flex items-center gap-1.5 border border-[#17382b] bg-[#315c48] text-white px-3 py-1.5 rounded-full font-bold hover:bg-[#254938]">
+            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-9 inline-flex items-center gap-1.5 border border-[#17382b] bg-[#315c48] text-white px-3 py-1.5 rounded-xl font-bold hover:bg-[#254938]">
               <span class="green-light"></span>
               WhatsApp group
             </a>
@@ -211,19 +275,23 @@
 
         <div class="lg:col-span-5 flex flex-col gap-3 sm:gap-4">
           <div class="grid grid-cols-2 gap-2 sm:gap-3">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-3 min-h-12 flex items-center justify-center gap-2 bg-[#fff8e8] hover:bg-[#f4e8d2] border border-[#d8b071] rounded-full shadow-sm transition-all text-center">
-              <span class="font-mono text-base font-bold text-[#713f12]">+</span>
-              <span class="font-mono text-xs sm:text-sm font-bold uppercase text-[#0c0a09]">List flat</span>
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket live-card pop-delay-3 flex bg-[#fff8e8] hover:bg-[#f4e8d2] border border-[#d8b071] shadow-sm transition-all text-[#a16207]">
+              <span>
+                <small>Owner / Broker</small>
+                <strong>List flat</strong>
+              </span>
             </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="live-card pop-delay-4 min-h-12 flex items-center justify-center gap-2 bg-[#eef4ee] hover:bg-[#e4ece1] border border-[#b7c7b6] rounded-full shadow-sm transition-all text-center">
-              <span class="font-mono text-base font-bold text-[#17382b]">+</span>
-              <span class="font-mono text-xs sm:text-sm font-bold uppercase text-[#0c0a09]">Find room</span>
+            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket live-card pop-delay-4 flex bg-[#eef4ee] hover:bg-[#e4ece1] border border-[#b7c7b6] shadow-sm transition-all text-[#315c48]">
+              <span>
+                <small>Tenant</small>
+                <strong>Find room</strong>
+              </span>
             </a>
           </div>
 
-          <div class="border border-[#dcc9aa] bg-[#fff8e8]/85 p-3 rounded-2xl flex gap-3">
-            <div class="space-y-1">
+          <div class="expiry-slip border border-[#dcc9aa] bg-[#fff8e8]/85 p-3 pl-4 rounded-2xl flex gap-3">
+            <div class="space-y-0.5">
               <h4 class="font-mono text-xs uppercase font-bold text-[#0c0a09] tracking-wider">30-Day Expiry</h4>
               <p class="text-xs text-[#57534e] leading-relaxed">
                 Posts auto-expire after <strong class="text-[#0c0a09] font-semibold">30 days</strong>. Re-submit to stay visible.
@@ -339,7 +407,7 @@
         live: "border-[#b7c7b6] bg-[#eef4ee] text-[#17382b]",
         error: "border-rose-200 bg-rose-50 text-rose-700"
       };
-      status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded ${palette[mode] || palette.idle}`;
+      status.className = `flex items-center gap-1.5 border px-2.5 py-1 rounded-xl ${palette[mode] || palette.idle}`;
       status.textContent = text;
     }
 
@@ -878,7 +946,7 @@
     // Share Rent Whatsapp Text Helper
     function shareRentWhatsapp(idx) {
       const item = rentListings[idx];
-      const text = `*🏠 Flat Available for Rent | Lotus Zing, Noida*
+      const text = `*Flat Available for Rent | Lotus Zing, Noida*
   
 • *Unit*: ${item.towerFlat}
 • *BHK*: ${item.bhkType} (${item.furnishing})
@@ -893,14 +961,14 @@
 ${item.notes ? `*Notes*: _${item.notes}_
 ` : ""}
 _Shared via Lotus Zing Noticeboard_
-👉 See full board: ${window.location.href}`;
+See full board: ${window.location.href}`;
 
       window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
     }
 
     function shareLookingWhatsapp(idx) {
       const item = lookingListings[idx];
-      const text = `*🔍 Looking for Flat / Room | Lotus Zing, Noida*
+      const text = `*Looking for Flat / Room | Lotus Zing, Noida*
 
 • *BHK Preferred*: ${item.preferredBhk}
 • *Budget*: Up to ₹${item.budget.toLocaleString('en-IN')}/mo
@@ -913,7 +981,7 @@ _Shared via Lotus Zing Noticeboard_
 ${item.notes ? `*Notes*: _${item.notes}_
 ` : ""}
 _Shared via Lotus Zing Noticeboard_
-👉 See full board: ${window.location.href}`;
+See full board: ${window.location.href}`;
 
       window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
     }
@@ -985,7 +1053,7 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               <div class="flex items-center gap-1.5">
                 ${isNew ? '<span class="bg-[#a16207] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#713f12] rounded-full">NEW</span>' : ''}
-                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
+                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
             <div class="p-3 sm:p-4 flex-1 space-y-3 sm:space-y-4">
@@ -1080,7 +1148,7 @@ _Shared via Lotus Zing Noticeboard_
               </div>
               <div class="flex items-center gap-1.5">
                 ${isNew ? '<span class="bg-[#315c48] text-white font-mono text-[10px] uppercase font-extrabold px-2 py-0.5 border border-[#17382b] rounded-full">NEW</span>' : ''}
-                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">⚠ Expires in ${daysRemaining}d</span>` : ''}
+                ${showWarning ? `<span class="bg-rose-50 text-rose-700 border border-rose-300 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">Expires in ${daysRemaining}d</span>` : ''}
               </div>
             </div>
             <div class="p-3 sm:p-4 flex-1 space-y-3 sm:space-y-4">
