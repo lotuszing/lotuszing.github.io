@@ -408,12 +408,17 @@
     // Configs
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t";
+    const SITE_URL = "https://lotuszing.github.io/listings/";
     const COMBINED_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
 
     function hasSheetConfig() {
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
+    }
+
+    function cleanPhoneNumber(value) {
+      return String(value || "").replace(/[^\d+]/g, "");
     }
 
     function setSyncStatus(text, mode = "idle") {
@@ -978,7 +983,7 @@
 ${item.notes ? `*Notes*: _${item.notes}_
 ` : ""}
 _Shared via Lotus Zing Noticeboard_
-See full board: ${window.location.href}`;
+See full board: ${SITE_URL}`;
 
       window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
     }
@@ -998,7 +1003,7 @@ See full board: ${window.location.href}`;
 ${item.notes ? `*Notes*: _${item.notes}_
 ` : ""}
 _Shared via Lotus Zing Noticeboard_
-See full board: ${window.location.href}`;
+See full board: ${SITE_URL}`;
 
       window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
     }
@@ -1058,6 +1063,10 @@ See full board: ${window.location.href}`;
           const isNew = isNewListing(item.timestamp);
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
           const isOwner = item.listedBy.toLowerCase().includes("owner");
+          const phone = cleanPhoneNumber(item.contactNumber);
+          const callAction = phone
+            ? `<a href="tel:${phone}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>`
+            : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">No phone</span>`;
 
           const card = document.createElement('div');
           card.className = "listing-pop border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
@@ -1107,7 +1116,7 @@ See full board: ${window.location.href}`;
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
             <div class="border-t border-[#BBD7F2] bg-[#FFF8D6] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
-              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
+              ${callAction}
               <button onclick="shareRentWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#003E73] bg-[#0058A3] hover:bg-[#003E73] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
               <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</a>
             </div>
@@ -1153,6 +1162,10 @@ See full board: ${window.location.href}`;
           const indexInList = lookingListings.findIndex(l => l.id === item.id);
           const isNew = isNewListing(item.timestamp);
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
+          const phone = cleanPhoneNumber(item.contactNumber);
+          const callAction = phone
+            ? `<a href="tel:${phone}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>`
+            : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">No phone</span>`;
 
           const card = document.createElement('div');
           card.className = "listing-pop border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
@@ -1200,7 +1213,7 @@ See full board: ${window.location.href}`;
               ${item.notes ? `<div class="bg-slate-50 p-2.5 rounded border border-slate-200"><p class="text-xs text-slate-600 font-sans italic leading-relaxed line-clamp-3">"${item.notes}"</p></div>` : ''}
             </div>
             <div class="border-t border-[#BBD7F2] bg-[#EAF4FF] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
-              <a href="tel:${item.contactNumber}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>
+              ${callAction}
               <button onclick="shareLookingWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#003E73] bg-[#0058A3] hover:bg-[#003E73] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
               <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</a>
             </div>
