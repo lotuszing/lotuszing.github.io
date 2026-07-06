@@ -543,7 +543,7 @@
         preferredMoveIn: "Immediate",
         occupants: 3,
         tenantType: "Family",
-        preferredArea: "Tower 5 or 6 preferred",
+        preferredArea: "Tower 5, Tower 6",
         posterName: "Ananya & Rohit Sen",
         contactNumber: "+919560123456",
         notes: "Looking for a well-ventilated 2 BHK with a pool or central park view. Preferably semi-furnished."
@@ -556,7 +556,7 @@
         preferredMoveIn: "2026-07-15",
         occupants: 1,
         tenantType: "Bachelors Men",
-        preferredArea: "Any tower, mid-floor",
+        preferredArea: "Tower 1, Tower 2, Tower 3, Tower 4, Tower 5, Tower 6, Tower 15, Tower 16",
         posterName: "Mayank Joshi",
         contactNumber: "+919899123456",
         notes: "Software developer seeking flat. Minimal furniture like bed/wardrobe is fine."
@@ -569,7 +569,7 @@
         preferredMoveIn: "Immediate",
         occupants: 4,
         tenantType: "Family",
-        preferredArea: "Tower 2, 3 or 4",
+        preferredArea: "Tower 2, Tower 3, Tower 4",
         posterName: "Sanjay Singhal",
         contactNumber: "+919911223344",
         notes: "Need spacious layout, car parking is a must."
@@ -852,6 +852,7 @@
       const getVal = (key) => getRowValue(row, mapping, key);
       const budget = parseInt(getVal("budget").replace(/[^0-9]/g, ""), 10) || 0;
       const occ = parseInt(getVal("occupants").replace(/[^0-9]/g, ""), 10) || 1;
+      const preferredArea = formatPreferredArea(getVal("preferredArea"));
       return {
         id: 'lc-' + idx,
         timestamp: getVal("timestamp") || "2026-07-02",
@@ -860,11 +861,30 @@
         preferredMoveIn: getVal("preferredMoveIn") || "Immediate",
         occupants: occ,
         tenantType: getVal("tenantType") || "Family",
-        preferredArea: getVal("preferredArea") || "Any",
+        preferredArea: preferredArea || "Any allowed tower",
         posterName: getVal("posterName") || "Resident",
         contactNumber: getVal("contactNumber") || "",
         notes: getVal("notes") || ""
       };
+    }
+
+    function formatPreferredArea(value) {
+      const allowed = new Set(["1", "2", "3", "4", "5", "6", "15", "16"]);
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      if (/any/i.test(raw)) return "Any allowed tower";
+
+      const towers = [];
+      const seen = new Set();
+      const matches = raw.match(/\b(?:1[56]|[1-6])\b/g) || [];
+      matches.forEach((tower) => {
+        if (allowed.has(tower) && !seen.has(tower)) {
+          seen.add(tower);
+          towers.push(`Tower ${tower}`);
+        }
+      });
+
+      return towers.length ? towers.join(", ") : raw;
     }
 
     // Async Fetch Sheet data
@@ -1204,7 +1224,8 @@ See full board: ${SITE_URL}`;
                 </div>
                 <div class="mt-1">
                   <span class="block text-[9px] uppercase font-bold text-slate-400">Preferred Area</span>
-                  <span class="font-bold text-slate-900 truncate block">${item.preferredArea || "Any Tower"}</span>
+                  <span class="font-bold text-slate-900 truncate block">${item.preferredArea || "Any allowed tower"}</span>
+                  <span class="block text-[9px] text-slate-400">Towers 1-6, 15, 16</span>
                 </div>
                 <div class="mt-1">
                   <span class="block text-[9px] uppercase font-bold text-slate-400">Requested On</span>
