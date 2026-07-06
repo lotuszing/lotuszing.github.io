@@ -422,6 +422,16 @@
       return String(value || "").replace(/[^\d+]/g, "");
     }
 
+    function whatsappPhoneNumber(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      return digits.length === 10 ? `91${digits}` : digits;
+    }
+
+    function whatsappPosterUrl(phone, text) {
+      const number = whatsappPhoneNumber(phone);
+      return number ? `https://wa.me/${number}?text=${encodeURIComponent(text)}` : "";
+    }
+
     function setSyncStatus(text, mode = "idle") {
       const status = document.getElementById("sync-status");
       if (!status) return;
@@ -1085,9 +1095,13 @@ See full board: ${SITE_URL}`;
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
           const isOwner = item.listedBy.toLowerCase().includes("owner");
           const phone = cleanPhoneNumber(item.contactNumber);
+          const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, saw your flat listing on Lotus Zing board.`);
           const callAction = phone
             ? `<a href="tel:${phone}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>`
             : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">No phone</span>`;
+          const whatsappAction = whatsappUrl
+            ? `<a href="${whatsappUrl}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#128C7E] bg-[#25D366] hover:bg-[#20BD5A] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">WA</a>`
+            : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">WA</span>`;
 
           const card = document.createElement('div');
           card.className = "listing-pop border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
@@ -1138,8 +1152,8 @@ See full board: ${SITE_URL}`;
             </div>
             <div class="border-t border-[#BBD7F2] bg-[#FFF8D6] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
               ${callAction}
-              <button onclick="shareRentWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#003E73] bg-[#0058A3] hover:bg-[#003E73] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</a>
+              ${whatsappAction}
+              <button onclick="shareRentWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</button>
             </div>
           `;
           grid.appendChild(card);
@@ -1184,9 +1198,13 @@ See full board: ${SITE_URL}`;
           const isNew = isNewListing(item.timestamp);
           const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
           const phone = cleanPhoneNumber(item.contactNumber);
+          const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, saw your tenant request on Lotus Zing board.`);
           const callAction = phone
             ? `<a href="tel:${phone}" class="flex min-h-11 items-center justify-center border border-[#BBD7F2] bg-white hover:bg-[#EAF4FF] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-900">Call</a>`
             : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">No phone</span>`;
+          const whatsappAction = whatsappUrl
+            ? `<a href="${whatsappUrl}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#128C7E] bg-[#25D366] hover:bg-[#20BD5A] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">WA</a>`
+            : `<span class="flex min-h-11 items-center justify-center border border-slate-200 bg-slate-50 px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-slate-400">WA</span>`;
 
           const card = document.createElement('div');
           card.className = "listing-pop border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full";
@@ -1236,8 +1254,8 @@ See full board: ${SITE_URL}`;
             </div>
             <div class="border-t border-[#BBD7F2] bg-[#EAF4FF] p-2 sm:p-3 grid grid-cols-3 gap-1.5 sm:gap-2 mt-auto">
               ${callAction}
-              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#003E73] bg-[#0058A3] hover:bg-[#003E73] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-white">Share</button>
-              <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</a>
+              ${whatsappAction}
+              <button onclick="shareLookingWhatsapp(${indexInList})" class="flex min-h-11 items-center justify-center border border-[#B88700] bg-[#FFDA1A] hover:bg-[#FFEF99] px-1 py-2 rounded-xl text-[11px] sm:text-xs font-mono font-bold text-[#071B3A]">Group</button>
             </div>
           `;
           grid.appendChild(card);
