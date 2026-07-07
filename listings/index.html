@@ -689,7 +689,7 @@
     .listing-footer {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.28rem;
+      gap: 0.36rem;
       padding: 0;
       border-top: 0;
       background: transparent;
@@ -723,12 +723,12 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 1.52rem;
-      padding: 0.28rem 0.36rem;
-      border-radius: 0.5rem;
+      min-height: 2rem;
+      padding: 0.42rem 0.52rem;
+      border-radius: 0.62rem;
       border: 1px solid transparent;
       font-family: "Archivo", sans-serif;
-      font-size: 0.5rem;
+      font-size: 0.62rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
@@ -1291,9 +1291,14 @@
 
 • *Flat*: ${item.bhkType} at ${item.towerFlat}
 • *Rent*: ${formatCurrency(item.monthlyRent)}/mo
-• *Question*: Is it still available?
-• *Join community*: ${WHATSAPP_GROUP_URL}
-• *Portal*: ${SITE_URL}`);
+
+Is it still available? Happy to connect and discuss.
+
+You can also join the Lotus Zing WhatsApp community here:
+${WHATSAPP_GROUP_URL}
+
+Listings portal:
+${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
@@ -1356,9 +1361,14 @@
 
 • *Request*: ${item.preferredBhk}
 • *Budget*: ${formatCurrency(item.budget)}/mo
-• *Question*: Can we connect?
-• *Join community*: ${WHATSAPP_GROUP_URL}
-• *Portal*: ${SITE_URL}`);
+
+Can we connect if you know of a suitable option?
+
+You can also join the Lotus Zing WhatsApp community here:
+${WHATSAPP_GROUP_URL}
+
+Listings portal:
+${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
