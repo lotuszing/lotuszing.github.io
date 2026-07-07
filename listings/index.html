@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="deploy-version" content="2026-07-06-final-links">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://docs.google.com https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
   
   <!-- Font Imports -->
@@ -1291,7 +1293,7 @@
         </div>
 
         <div class="header-actions grid grid-cols-2">
-          <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="action-ticket community-ticket live-card pop-delay-2 col-span-2 flex border shadow-sm">
+          <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener noreferrer" class="action-ticket community-ticket live-card pop-delay-2 col-span-2 flex border shadow-sm">
             <span>
               <small>WhatsApp</small>
               <strong>
@@ -1305,14 +1307,14 @@
             </span>
           </a>
 
-          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket post-ticket live-card pop-delay-3 flex border shadow-sm">
+          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="action-ticket post-ticket live-card pop-delay-3 flex border shadow-sm">
             <span>
               <small>Owner / Broker</small>
               <strong>Post</strong>
             </span>
           </a>
 
-          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket find-ticket live-card pop-delay-4 flex border shadow-sm">
+          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="action-ticket find-ticket live-card pop-delay-4 flex border shadow-sm">
             <span>
               <small>Tenant</small>
               <strong>Find</strong>
@@ -1378,10 +1380,10 @@
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
           List flat
         </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
           Post request
         </a>
       </div>
@@ -1640,6 +1642,11 @@
       })[char]);
     }
 
+    function openSafe(url) {
+      const win = window.open(url, '_blank', 'noopener,noreferrer');
+      if (win) win.opener = null;
+    }
+
     function safeParseDate(value) {
       if (!value) return null;
       const normalized = String(value).trim().replace(" ", "T");
@@ -1742,7 +1749,7 @@ ${SITE_URL}`);
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" target="_blank" rel="noopener" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
+        ? `<a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
 
       const card = document.createElement('div');
@@ -1812,7 +1819,7 @@ ${SITE_URL}`);
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" target="_blank" rel="noopener" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
+        ? `<a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
       const preferredArea = item.preferredArea || "Any allowed tower";
 
@@ -1920,7 +1927,7 @@ ${SITE_URL}`);
             <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
               <div class="md:col-span-4">
                 <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Search</label>
-                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Flat, tower, name..." value="${rentFilters.search}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
+                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Flat, tower, name..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
               </div>
               
               <div class="md:col-span-3">
@@ -1975,7 +1982,7 @@ ${SITE_URL}`);
             <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
               <div class="md:col-span-5">
                 <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Search</label>
-                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Area, name..." value="${lookingFilters.search}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
+                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Area, name..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
               </div>
               
               <div class="md:col-span-3">
@@ -2251,8 +2258,8 @@ ${SITE_URL}`);
             Form is live. Listings show after sheet link is added.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
+            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
           </div>
         </div>
       `;
@@ -2269,7 +2276,7 @@ Contact: ${item.posterName} ${item.contactNumber}
 Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
 ${SITE_URL}`;
 
-      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+      openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(text));
     }
 
     function shareLookingWhatsapp(idx) {
@@ -2282,7 +2289,7 @@ Contact: ${item.posterName} ${item.contactNumber}
 Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
 ${SITE_URL}`;
 
-      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+      openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(text));
     }
 
     // Render Listings
