@@ -1287,10 +1287,13 @@
       const preferredTenant = formatDisplayText(item.preferredTenant);
       const parking = formatDisplayText(item.parking);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your ${item.bhkType} listing at ${item.towerFlat} on the Lotus Zing resident portal. Is it still available?
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your listing on the *Lotus Zing resident portal*.
 
-Join the Lotus Zing WhatsApp community: ${WHATSAPP_GROUP_URL}
-View listings: ${SITE_URL}`);
+• *Flat*: ${item.bhkType} at ${item.towerFlat}
+• *Rent*: ${formatCurrency(item.monthlyRent)}/mo
+• *Question*: Is it still available?
+• *Join community*: ${WHATSAPP_GROUP_URL}
+• *Portal*: ${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
@@ -1349,10 +1352,13 @@ View listings: ${SITE_URL}`);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
       const tenantType = formatDisplayText(item.tenantType);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your ${item.preferredBhk} request on the Lotus Zing resident portal. Can we connect?
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your request on the *Lotus Zing resident portal*.
 
-Join the Lotus Zing WhatsApp community: ${WHATSAPP_GROUP_URL}
-View listings: ${SITE_URL}`);
+• *Request*: ${item.preferredBhk}
+• *Budget*: ${formatCurrency(item.budget)}/mo
+• *Question*: Can we connect?
+• *Join community*: ${WHATSAPP_GROUP_URL}
+• *Portal*: ${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
