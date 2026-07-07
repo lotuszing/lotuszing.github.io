@@ -35,16 +35,16 @@
       --moss: #0058A3;
       --moss-deep: #003E73;
       --moss-soft: #EAF4FF;
-      --clay: #FFDA1A;
-      --clay-deep: #B88700;
-      --clay-soft: #FFF8D6;
+      --clay: #EAF4FF;
+      --clay-deep: #0058A3;
+      --clay-soft: #F4F9FF;
       --line: #BBD7F2;
       --muted: #48617D;
     }
     body {
       background:
         radial-gradient(circle at 96% 3%, rgba(0, 88, 163, 0.16), transparent 16rem),
-        radial-gradient(circle at 0% 10%, rgba(255, 218, 26, 0.22), transparent 17rem),
+        radial-gradient(circle at 0% 10%, rgba(0, 194, 168, 0.16), transparent 17rem),
         linear-gradient(180deg, #F8FBFF 0%, #EAF4FF 24rem, #F8FBFF 100%);
       color: var(--ink);
       touch-action: manipulation;
@@ -63,7 +63,7 @@
     }
     body.theme-night {
       background:
-        radial-gradient(circle at 96% 3%, rgba(255, 218, 26, 0.14), transparent 16rem),
+        radial-gradient(circle at 96% 3%, rgba(255, 92, 77, 0.14), transparent 16rem),
         radial-gradient(circle at 0% 10%, rgba(0, 88, 163, 0.34), transparent 17rem),
         linear-gradient(180deg, #07111f 0%, #0b2038 26rem, #081522 100%);
       color: #EAF4FF;
@@ -84,7 +84,7 @@
     body.theme-night .listing-card-header {
       border-color: rgba(109, 157, 204, 0.48) !important;
       background:
-        radial-gradient(circle at 100% 0%, rgba(255, 218, 26, 0.08), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(0, 194, 168, 0.08), transparent 24%),
         linear-gradient(180deg, rgba(13, 31, 52, 0.98) 0%, rgba(8, 21, 34, 0.98) 100%) !important;
       color: #EAF4FF;
     }
@@ -124,32 +124,6 @@
     body.theme-night .board-tab {
       color: #AFC5DC;
     }
-    body.theme-night .theme-toggle {
-      background: rgba(234, 244, 255, 0.08);
-      border-color: rgba(109, 157, 204, 0.46);
-      color: #F8FBFF;
-    }
-    .theme-toggle {
-      min-height: 2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      border: 1px solid #BBD7F2;
-      border-radius: 999px;
-      background: #FFFFFF;
-      color: #0058A3;
-      padding: 0.35rem 0.72rem;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(12, 68, 120, 0.07);
-    }
-    .theme-toggle:hover {
-      background: #EAF4FF;
-    }
     /* Custom thin scrollbars for ledger vibe */
     ::-webkit-scrollbar {
       width: 6px;
@@ -172,13 +146,13 @@
     }
     @keyframes greenBlink {
       0%, 100% {
-        background: #FFDA1A;
-        box-shadow: 0 0 0 0 rgba(255, 218, 26, 0.38), 0 0 12px rgba(0, 88, 163, 0.32);
+        background: #EAF4FF;
+        box-shadow: 0 0 0 0 rgba(0, 194, 168, 0.38), 0 0 12px rgba(0, 88, 163, 0.32);
         transform: scale(1);
       }
       45% {
         background: #F8FBFF;
-        box-shadow: 0 0 0 5px rgba(255, 218, 26, 0), 0 0 4px rgba(0, 88, 163, 0.28);
+        box-shadow: 0 0 0 5px rgba(0, 194, 168, 0), 0 0 4px rgba(0, 88, 163, 0.28);
         transform: scale(0.86);
       }
     }
@@ -201,10 +175,10 @@
     }
     @keyframes joinPulse {
       0%, 100% {
-        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 0 rgba(255, 218, 26, 0.34);
+        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 0 rgba(0, 194, 168, 0.34);
       }
       50% {
-        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 6px rgba(255, 218, 26, 0);
+        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 6px rgba(0, 194, 168, 0);
       }
     }
     .join-group-pulse {
@@ -221,7 +195,7 @@
       inset: -20%;
       background:
         radial-gradient(circle at 82% 18%, rgba(0, 88, 163, 0.12), transparent 24%),
-        radial-gradient(circle at 8% 0%, rgba(255, 218, 26, 0.18), transparent 26%),
+        radial-gradient(circle at 8% 0%, rgba(0, 194, 168, 0.16), transparent 26%),
         linear-gradient(115deg, transparent 0 45%, rgba(0, 88, 163, 0.05) 46% 48%, transparent 49%);
       animation: radarGlow 5.5s ease-in-out infinite;
       z-index: 0;
@@ -239,7 +213,7 @@
       border: 1px solid rgba(0, 62, 115, 0.7);
       border-radius: 999px;
       display: inline-block;
-      background: #FFDA1A;
+      background: #EAF4FF;
       animation: greenBlink 1.35s ease-in-out infinite;
     }
     .notice-stamp {
@@ -257,7 +231,7 @@
       min-height: 1.4rem;
       padding: 0.1rem 0.8rem;
       border-radius: 999px;
-      background: #FFDA1A;
+      background: #EAF4FF;
       color: #0058A3;
       font-weight: 800;
     }
@@ -775,6 +749,460 @@
       box-shadow: none;
       pointer-events: none;
     }
+    /* Professional marketplace header: vibrant, restrained, product-grade */
+    body {
+      background:
+        radial-gradient(circle at 12% -8%, rgba(0, 178, 163, 0.18), transparent 18rem),
+        radial-gradient(circle at 88% -4%, rgba(255, 94, 87, 0.12), transparent 18rem),
+        linear-gradient(180deg, #F4FAFF 0%, #F8FBFF 40%, #FFFFFF 100%);
+    }
+    .live-header {
+      border-bottom: 0;
+      background:
+        radial-gradient(circle at 12% 4%, rgba(0, 178, 163, 0.35), transparent 20rem),
+        radial-gradient(circle at 92% 0%, rgba(255, 94, 87, 0.24), transparent 18rem),
+        linear-gradient(135deg, #06152A 0%, #082D4D 48%, #005E92 100%);
+      color: #FFFFFF;
+      box-shadow: 0 18px 44px rgba(7, 27, 58, 0.18);
+    }
+    .live-header::before {
+      opacity: 0.28;
+      background:
+        linear-gradient(118deg, transparent 0 38%, rgba(255, 255, 255, 0.12) 39% 40%, transparent 41%),
+        linear-gradient(118deg, transparent 0 56%, rgba(255, 255, 255, 0.08) 57% 58%, transparent 59%);
+    }
+    .hero-panel {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 1.35rem;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 20px 52px rgba(3, 13, 28, 0.16);
+      padding: 0.85rem;
+    }
+    .notice-stamp {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      padding: 0.18rem;
+      transform: none;
+      box-shadow: none;
+    }
+    .notice-stamp span {
+      background: #FFFFFF;
+      color: #071B3A;
+      min-height: 1.55rem;
+      padding: 0.14rem 0.78rem;
+      letter-spacing: 0.11em;
+    }
+    .live-header h1,
+    .live-header h4 {
+      color: #FFFFFF !important;
+    }
+    .live-header p,
+    .live-header small {
+      color: rgba(255, 255, 255, 0.74) !important;
+    }
+    #sync-status {
+      border-radius: 999px !important;
+      box-shadow: none;
+    }
+    #sync-status {
+      background: rgba(255, 255, 255, 0.11) !important;
+      border-color: rgba(255, 255, 255, 0.20) !important;
+      color: #FFFFFF !important;
+    }
+    .community-link {
+      background: #00B2A3 !important;
+      border-color: #0AD4C1 !important;
+      color: #031E2A !important;
+      border-radius: 999px !important;
+      box-shadow: 0 10px 22px rgba(0, 178, 163, 0.20) !important;
+      transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 260ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .community-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0, 178, 163, 0.26) !important;
+    }
+    .community-ticket {
+      background: #00B2A3 !important;
+      border-color: #0AD4C1 !important;
+      color: #031E2A !important;
+    }
+    .community-ticket::before {
+      background: #FFFFFF;
+    }
+    .community-ticket small,
+    .community-ticket strong {
+      color: #031E2A !important;
+    }
+    .action-ticket {
+      border-radius: 999px;
+      border-width: 1px;
+      min-height: 42px;
+      padding: 0.45rem 0.72rem;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        0 8px 18px rgba(3, 13, 28, 0.10);
+      transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 260ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .action-ticket::before {
+      width: 0.34rem;
+      margin-right: 0.45rem;
+      opacity: 1;
+    }
+    .action-ticket:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 18px 34px rgba(3, 13, 28, 0.18);
+    }
+    .action-ticket small {
+      display: none;
+    }
+    .action-ticket strong {
+      font-size: 0.92rem;
+      line-height: 1;
+    }
+    .refresh-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      margin-top: 0.55rem;
+      color: rgba(255, 255, 255, 0.78);
+      font-family: "DM Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .refresh-counter::before {
+      content: "";
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 999px;
+      background: #00B2A3;
+      box-shadow: 0 0 0 3px rgba(0, 178, 163, 0.18);
+    }
+    .post-ticket {
+      background: #FFFFFF !important;
+      border-color: rgba(255, 255, 255, 0.72) !important;
+      color: #06152A !important;
+    }
+    .post-ticket small {
+      color: rgba(6, 21, 42, 0.62) !important;
+    }
+    .post-ticket strong {
+      color: #06152A !important;
+    }
+    .post-ticket::before {
+      background: #FF5E57;
+    }
+    .find-ticket {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba(255, 255, 255, 0.24) !important;
+      color: #FFFFFF !important;
+    }
+    .find-ticket::before {
+      background: #00B2A3;
+    }
+    .find-ticket strong,
+    .find-ticket small,
+    .expiry-slip strong {
+      color: #FFFFFF !important;
+    }
+    .expiry-slip {
+      background: rgba(255, 255, 255, 0.10) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      border-radius: 1.15rem !important;
+      box-shadow: none;
+    }
+    .expiry-slip::after {
+      background: #FF5E57;
+      opacity: 1;
+    }
+    /* Slim app masthead override: keep top professional and low-height */
+    .live-header {
+      border-bottom: 1px solid #D9E8F7;
+      background:
+        linear-gradient(90deg, rgba(0, 178, 163, 0.10), transparent 34%),
+        linear-gradient(180deg, #FFFFFF 0%, #F7FBFF 100%) !important;
+      color: #071B3A;
+      box-shadow: 0 8px 22px rgba(10, 52, 94, 0.06);
+    }
+    .live-header::before {
+      content: none;
+    }
+    .hero-panel {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+    .live-header h1 {
+      color: #071B3A !important;
+      font-size: clamp(1.9rem, 8.4vw, 2.85rem) !important;
+      letter-spacing: -0.055em;
+      line-height: 0.96;
+    }
+    .refresh-counter {
+      margin-top: 0.5rem;
+      color: #48617D;
+      font-size: 0.66rem;
+      letter-spacing: 0.08em;
+    }
+    .refresh-counter::before {
+      width: 0.38rem;
+      height: 0.38rem;
+      background: #00A58F;
+      box-shadow: 0 0 0 3px rgba(0, 165, 143, 0.13);
+    }
+    .header-subcopy {
+      margin-top: 0.72rem;
+      max-width: 34rem;
+      color: #5D7087 !important;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+    .live-header .header-subcopy {
+      color: #5D7087 !important;
+    }
+    .home-brand-link {
+      color: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .home-brand-link:focus-visible {
+      outline: 3px solid rgba(0, 88, 163, 0.28);
+      outline-offset: 3px;
+      border-radius: 0.25rem;
+    }
+    .live-header .refresh-counter {
+      color: #48617D !important;
+    }
+    .action-ticket {
+      min-height: 34px;
+      padding: 0.34rem 0.55rem;
+      border-radius: 0.85rem;
+      justify-content: center;
+      box-shadow: none;
+    }
+    .header-actions {
+      margin-top: 1.18rem;
+      gap: 0.8rem;
+    }
+    .action-ticket::before {
+      content: none;
+    }
+    .action-ticket strong {
+      font-size: 0.82rem;
+      letter-spacing: 0;
+    }
+    .community-ticket {
+      background: #00A58F !important;
+      border-color: #00A58F !important;
+      color: #FFFFFF !important;
+    }
+    .community-ticket strong {
+      color: #FFFFFF !important;
+    }
+    .wa-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.12rem;
+      height: 1.12rem;
+      margin-right: 0.42rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .wa-icon svg {
+      width: 0.82rem;
+      height: 0.82rem;
+      fill: currentColor;
+    }
+    .post-ticket {
+      background: #071B3A !important;
+      border-color: #071B3A !important;
+      color: #FFFFFF !important;
+    }
+    .post-ticket strong {
+      color: #FFFFFF !important;
+    }
+    .find-ticket {
+      background: #EAF4FF !important;
+      border-color: #BBD7F2 !important;
+      color: #0058A3 !important;
+    }
+    .find-ticket strong {
+      color: #0058A3 !important;
+    }
+    /* Visibility pass: keep all small/muted labels readable on pale blue panels. */
+    .text-slate-400 {
+      color: #64748B !important;
+    }
+    .listing-kicker,
+    .listing-detail span,
+    .listing-stat-label {
+      color: #60758E !important;
+    }
+    /* Collapsed density pass: cards should scan like listings, not full detail panels. */
+    .listing-card:not(.is-expanded) .listing-card-header {
+      padding: 0.34rem 0.48rem 0.3rem;
+      gap: 0.22rem;
+    }
+    .listing-card:not(.is-expanded) .listing-card-body {
+      gap: 0.24rem;
+      padding: 0.34rem 0.48rem 0.42rem;
+    }
+    .listing-card:not(.is-expanded) .listing-title {
+      margin-top: 0.1rem;
+      font-size: 0.82rem;
+      line-height: 1;
+    }
+    .listing-card:not(.is-expanded) .listing-kicker {
+      font-size: 0.45rem;
+      letter-spacing: 0.08em;
+    }
+    .listing-card:not(.is-expanded) .listing-subhead {
+      gap: 0.2rem;
+    }
+    .listing-card:not(.is-expanded) .listing-poster {
+      font-size: 0.54rem;
+    }
+    .listing-card:not(.is-expanded) .listing-price-value {
+      font-size: 0.94rem;
+    }
+    .listing-card:not(.is-expanded) .listing-price-meta {
+      margin-top: 0.02rem;
+      font-size: 0.46rem;
+    }
+    .listing-card:not(.is-expanded) .listing-chip-primary,
+    .listing-card:not(.is-expanded) .listing-chip-secondary {
+      min-height: 1.02rem;
+      padding-top: 0.08rem;
+      padding-bottom: 0.08rem;
+    }
+    .listing-card:not(.is-expanded) .listing-collapse-toggle {
+      min-height: 1.28rem;
+      font-size: 0.48rem;
+      border-radius: 0.42rem;
+    }
+    .listing-card:not(.is-expanded)::after {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+    #listings-grid {
+      gap: 0.72rem;
+    }
+    .sticky {
+      margin-top: 0.55rem;
+      padding: 0.25rem;
+      border-radius: 999px !important;
+      border-color: rgba(187, 215, 242, 0.98) !important;
+      box-shadow: 0 12px 26px rgba(15, 43, 75, 0.10);
+    }
+    .board-tab {
+      border-radius: 999px;
+      border-left: 0 !important;
+    }
+    .board-tab.is-active {
+      background: #071B3A;
+      color: #FFFFFF;
+      box-shadow: 0 8px 18px rgba(7, 27, 58, 0.18);
+    }
+    details {
+      border-radius: 18px !important;
+      box-shadow: 0 10px 22px rgba(15, 43, 75, 0.08);
+    }
+    summary {
+      background: linear-gradient(90deg, #FFFFFF 0%, #EAF4FF 100%);
+    }
+    .listing-card {
+      border-color: rgba(220, 229, 238, 0.98);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, #FFFFFF 0%, #FBFDFF 100%);
+      box-shadow:
+        0 10px 22px rgba(15, 43, 75, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    }
+    .listing-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 88, 163, 0.28);
+      box-shadow:
+        0 16px 30px rgba(15, 43, 75, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    }
+    .listing-card-header {
+      border-bottom: 1px solid rgba(226, 234, 242, 0.95);
+      background:
+        linear-gradient(110deg, #F4F9FF 0%, #FFFFFF 58%, #EAF4FF 100%);
+    }
+    .listing-chip-primary {
+      background: #071B3A;
+      border-color: #071B3A;
+      color: #FFFFFF;
+    }
+    .listing-chip-secondary,
+    .listing-role-badge {
+      background: #F3F8FD;
+      border-color: #D7E7F6;
+      color: #48617D;
+    }
+    .listing-price-value {
+      color: #071B3A;
+    }
+    .listing-price-meta {
+      color: #168268;
+      font-weight: 800;
+    }
+    .listing-collapse-toggle {
+      background: #F1F8FF;
+      border-color: #D5E8FA;
+      color: #0058A3;
+    }
+    .listing-collapse-toggle:hover {
+      background: #E4F2FF;
+    }
+    .listing-cta {
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+    .listing-cta--call {
+      background: #FFFFFF;
+      border-color: #D8E6F4;
+    }
+    .listing-cta--wa {
+      background: #168268;
+      border-color: #168268;
+    }
+    .listing-cta--group {
+      background: #071B3A;
+      border-color: #071B3A;
+      color: #FFFFFF;
+    }
+    body.theme-night .listing-card,
+    body.theme-night .listing-card-header,
+    body.theme-night details,
+    body.theme-night .sticky {
+      background:
+        linear-gradient(180deg, rgba(13, 31, 52, 0.98) 0%, rgba(8, 21, 34, 0.98) 100%) !important;
+    }
+    body.theme-night .board-tab.is-active,
+    body.theme-night .listing-cta--group,
+    body.theme-night .listing-chip-primary {
+      background: #EAF4FF !important;
+      border-color: #EAF4FF !important;
+      color: #071B3A !important;
+    }
+
     @media (max-width: 1120px) {
       .listing-title-row {
         grid-template-columns: 1fr;
@@ -815,59 +1243,47 @@
 
   <!-- HEADER -->
   <header class="live-header border-b border-[#BBD7F2] bg-transparent">
-    <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-2.5 lg:gap-4 items-start">
-        <div class="lg:col-span-7 space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="notice-stamp inline-flex w-fit font-sans text-[10px] uppercase tracking-[0.16em]">
-              <span>LZ</span>
-            </span>
-            <div class="flex items-center gap-2">
-              <button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to night theme">Day</button>
-              <span id="sync-status" class="min-h-8 inline-flex items-center gap-1.5 border border-[#BBD7F2] bg-[#FFF8D6] px-3 py-1 rounded-xl text-[10px] sm:text-xs font-sans text-[#48617D]">
-                Checking
-              </span>
-            </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-5 py-4 sm:py-5">
+      <div class="hero-panel">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
+              <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing listings home">Lotus Zing</a>
+            </h1>
+            <span id="refresh-counter" class="refresh-counter">Live sync</span>
+            <p class="header-subcopy">Find flats, post availability, and connect through the resident community.</p>
           </div>
-          <h1 class="pop-in pop-delay-1 text-xl sm:text-2xl md:text-3xl font-display font-extrabold tracking-tight text-[#071B3A] leading-tight">
-            Flat & Room Board
-          </h1>
-          <p class="pop-in pop-delay-2 text-xs sm:text-sm text-[#48617D] max-w-2xl leading-relaxed">
-            Live rent listings and tenant requests from residents.
-          </p>
-          <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-sans text-[#48617D]">
-            <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-8 inline-flex items-center gap-1.5 border border-[#003E73] bg-[#0058A3] text-white px-2.5 py-1 rounded-lg font-bold hover:bg-[#003E73]">
-              <span class="green-light"></span>
-              WhatsApp group
-            </a>
-          </div>
+          <span id="sync-status" hidden>Checking</span>
         </div>
 
-        <div class="lg:col-span-5 flex flex-col gap-2">
-          <div class="grid grid-cols-2 gap-2">
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket live-card pop-delay-3 flex bg-[#FFF8D6] hover:bg-[#FFEF99] border border-[#FFDA1A] shadow-sm transition-all text-[#071B3A]">
-              <span>
-                <small>Owner / Broker</small>
-                <strong>List flat</strong>
-              </span>
-            </a>
+        <div class="header-actions grid grid-cols-2">
+          <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="action-ticket community-ticket live-card pop-delay-2 col-span-2 flex border shadow-sm">
+            <span>
+              <small>WhatsApp</small>
+              <strong>
+                <span class="wa-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="img" focusable="false">
+                    <path d="M12 3.8a8 8 0 0 0-6.9 12l-.8 3.3 3.4-.8A8 8 0 1 0 12 3.8Zm4.3 11.5c-.2.5-1 1-1.5 1.1-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.4 0 .6l-.4.6c-.1.1-.3.3-.1.6.2.3.7 1.1 1.4 1.7 1 .9 1.8 1.1 2.1 1.2.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.1.1.7-.1 1.2Z"/>
+                  </svg>
+                </span>
+                Join community
+              </strong>
+            </span>
+          </a>
 
-            <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket live-card pop-delay-4 flex bg-[#FFFFFF] hover:bg-[#EAF4FF] border border-[#BBD7F2] shadow-sm transition-all text-[#0058A3]">
-              <span>
-                <small>Tenant</small>
-                <strong>Find room</strong>
-              </span>
-            </a>
-          </div>
+          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket post-ticket live-card pop-delay-3 flex border shadow-sm">
+            <span>
+              <small>Owner / Broker</small>
+              <strong>Post</strong>
+            </span>
+          </a>
 
-          <div class="expiry-slip border border-[#BBD7F2] bg-[#FFFFFF]/85 p-2 pl-4 rounded-lg flex gap-3">
-            <div class="space-y-0.5">
-              <h4 class="font-sans text-[10px] uppercase font-bold text-[#071B3A] tracking-[0.08em]">30-Day Expiry</h4>
-              <p class="text-[11px] text-[#48617D] leading-snug">
-                Posts auto-expire after <strong class="text-[#071B3A] font-semibold">30 days</strong>. Re-submit to stay visible.
-              </p>
-            </div>
-          </div>
+          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket find-ticket live-card pop-delay-4 flex border shadow-sm">
+            <span>
+              <small>Tenant</small>
+              <strong>Find</strong>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -893,7 +1309,7 @@
 
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
-      <div class="inline-block w-6 h-6 border-4 border-[#FFDA1A] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
+      <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
       <h3 class="font-display font-bold text-slate-800 text-base">Loading listings...</h3>
       <p class="text-xs text-slate-500 font-sans mt-1 uppercase tracking-[0.08em]">Syncing sheet</p>
     </div>
@@ -926,7 +1342,7 @@
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#FFDA1A] hover:bg-[#FFEF99] border border-[#B88700] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
           List flat
         </a>
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
@@ -990,31 +1406,18 @@
     const cardCtaGroup = `${cardCtaBase} listing-cta--group`;
     const cardCtaDisabled = `${cardCtaBase} listing-cta--disabled`;
 
-    function applyTheme(theme) {
-      const isNight = theme === "night";
-      document.body.classList.toggle("theme-night", isNight);
-      const toggle = document.getElementById("theme-toggle");
-      if (!toggle) return;
-      toggle.textContent = isNight ? "Night" : "Day";
-      toggle.setAttribute("aria-label", isNight ? "Switch to day theme" : "Switch to night theme");
-    }
-
-    function toggleTheme() {
-      const nextTheme = document.body.classList.contains("theme-night") ? "day" : "night";
-      localStorage.setItem("lz-theme", nextTheme);
-      applyTheme(nextTheme);
-    }
-
     function setSyncStatus(text, mode = "idle") {
       const status = document.getElementById("sync-status");
+      const counter = document.getElementById("refresh-counter");
       if (!status) return;
-      const palette = {
-        idle: "border-[#BBD7F2] bg-[#FFF8D6] text-[#48617D]",
-        live: "border-[#BBD7F2] bg-[#EAF4FF] text-[#0058A3]",
-        error: "border-rose-200 bg-rose-50 text-rose-700"
-      };
-      status.className = `min-h-8 inline-flex items-center gap-1.5 border px-3 py-1 rounded-xl text-[10px] sm:text-xs font-sans ${palette[mode] || palette.idle}`;
+      status.hidden = true;
       status.textContent = text;
+      if (counter) {
+        counter.textContent = text
+          .replace(/^Preview data\s+/i, "Refreshed ")
+          .replace(/^Updated\s+/i, "Refreshed ")
+          .replace(/^No sheet\s+/i, "Offline ");
+      }
     }
 
     function syncTimeLabel() {
@@ -1425,7 +1828,7 @@ ${SITE_URL}`);
 
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
-      applyTheme(localStorage.getItem("lz-theme") || "day");
+      document.body.classList.remove("theme-night");
       renderFilters();
       fetchSheetData();
     });
@@ -1798,7 +2201,7 @@ ${SITE_URL}`);
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
-        <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-[#FFF8D6] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
+        <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-[#EAF4FF] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Pending</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
@@ -1806,7 +2209,7 @@ ${SITE_URL}`);
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#FFDA1A] hover:bg-[#FFEF99] text-[#071B3A] font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#B88700]">Join group</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
           </div>
         </div>
       `;
