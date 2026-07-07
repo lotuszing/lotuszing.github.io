@@ -669,9 +669,14 @@
       background: transparent;
     }
     .board-tab {
+      position: relative;
       flex: 1;
-      padding: 0.55rem 0.75rem;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.62rem 0.78rem;
+      text-align: left;
       font-family: "Space Grotesk", sans-serif;
       font-size: 0.78rem;
       font-weight: 800;
@@ -682,16 +687,44 @@
       transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
     }
     .board-tab + .board-tab {
-      border-left: 1px solid rgba(187, 215, 242, 0.92);
+      border-left: 0;
     }
     .board-tab:hover {
       background: #EAF4FF;
       color: #0058A3;
     }
     .board-tab.is-active {
-      background: linear-gradient(180deg, #0b63b6 0%, #084a86 100%);
+      background: linear-gradient(180deg, #071B3A 0%, #0A3560 100%);
       color: #ffffff;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 18px rgba(7, 27, 58, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+    .board-tab-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .board-tab-label::before {
+      content: "";
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0.38;
+    }
+    .board-tab-count {
+      min-width: 1.38rem;
+      padding: 0.1rem 0.34rem;
+      border-radius: 999px;
+      background: rgba(0, 88, 163, 0.10);
+      color: #0058A3;
+      font-family: "DM Mono", ui-monospace, monospace;
+      font-size: 0.58rem;
+      font-weight: 800;
+      text-align: center;
+    }
+    .board-tab.is-active .board-tab-count {
+      background: rgba(255, 255, 255, 0.16);
+      color: #FFFFFF;
     }
     .listing-cta {
       display: inline-flex;
@@ -925,10 +958,11 @@
     .live-header {
       border-bottom: 1px solid #D9E8F7;
       background:
-        linear-gradient(90deg, rgba(0, 178, 163, 0.10), transparent 34%),
-        linear-gradient(180deg, #FFFFFF 0%, #F7FBFF 100%) !important;
+        radial-gradient(circle at 12% 12%, rgba(0, 178, 163, 0.18), transparent 9.5rem),
+        radial-gradient(circle at 92% 0%, rgba(0, 88, 163, 0.11), transparent 11rem),
+        linear-gradient(135deg, #F1FAFF 0%, #FFFFFF 48%, #EAF4FF 100%) !important;
       color: #071B3A;
-      box-shadow: 0 8px 22px rgba(10, 52, 94, 0.06);
+      box-shadow: 0 10px 26px rgba(10, 52, 94, 0.07);
     }
     .live-header::before {
       content: none;
@@ -1293,12 +1327,14 @@
   <main class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
     
     <!-- NAVIGATION TABS -->
-    <div class="sticky top-0 z-20 flex border border-[#BBD7F2] mb-2.5 overflow-hidden rounded-lg bg-[#FFFFFF]/95 backdrop-blur">
+    <div class="sticky top-0 z-20 flex gap-1.5 border border-[#BBD7F2] mb-2.5 overflow-hidden rounded-2xl bg-[#FFFFFF]/95 p-1.5 backdrop-blur">
       <button onclick="switchTab('rent')" id="tab-rent-btn" class="board-tab is-active">
-        Flats
+        <span class="board-tab-label">Flats</span>
+        <span id="rent-count" class="board-tab-count">0</span>
       </button>
       <button onclick="switchTab('looking')" id="tab-looking-btn" class="board-tab">
-        Requests
+        <span class="board-tab-label">Requests</span>
+        <span id="looking-count" class="board-tab-count">0</span>
       </button>
     </div>
 
@@ -1852,6 +1888,13 @@ ${SITE_URL}`);
       renderListings();
     }
 
+    function updateTabCounts() {
+      const rentCount = document.getElementById('rent-count');
+      const lookingCount = document.getElementById('looking-count');
+      if (rentCount) rentCount.textContent = rentListings.length;
+      if (lookingCount) lookingCount.textContent = lookingListings.length;
+    }
+
     function toggleListingCard(button) {
       const card = button.closest('.listing-card');
       if (!card) return;
@@ -2246,6 +2289,7 @@ ${SITE_URL}`;
     function renderListings() {
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = '';
+      updateTabCounts();
 
       if (!hasSheetConfig() && rentListings.length === 0 && lookingListings.length === 0) {
         renderSetupPending();
