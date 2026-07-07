@@ -174,26 +174,26 @@
     }
     .action-ticket {
       position: relative;
-      min-height: 58px;
+      min-height: 48px;
       align-items: center;
       justify-content: flex-start;
-      border-radius: 16px;
-      padding: 0.75rem 0.85rem;
+      border-radius: 13px;
+      padding: 0.55rem 0.65rem;
       text-align: left;
     }
     .action-ticket::before {
       content: "";
-      width: 0.5rem;
+      width: 0.36rem;
       align-self: stretch;
       border-radius: 999px;
-      margin-right: 0.65rem;
+      margin-right: 0.5rem;
       background: currentColor;
       opacity: 0.6;
     }
     .action-ticket small {
       display: block;
       font-family: 'DM Mono', ui-monospace, monospace;
-      font-size: 0.58rem;
+      font-size: 0.52rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       opacity: 0.72;
@@ -201,7 +201,7 @@
     .action-ticket strong {
       display: block;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.98rem;
+      font-size: 0.86rem;
       line-height: 1.1;
     }
     .expiry-slip {
@@ -229,10 +229,10 @@
     .signal-rack .green-light:nth-child(3) { animation-delay: 360ms; }
     .live-card {
       overflow: hidden;
-      animation: heroPop 560ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards, cardFloat 3.4s ease-in-out infinite 900ms;
+      animation: heroPop 360ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards;
     }
     .live-card::after {
-      content: "";
+      content: none;
       position: absolute;
       top: -45%;
       left: -65%;
@@ -256,13 +256,13 @@
       position: relative;
       isolation: isolate;
       border: 1px solid rgba(168, 197, 223, 0.88);
-      border-radius: 1.75rem;
+      border-radius: 1rem;
       overflow: hidden;
       background:
         radial-gradient(circle at 100% 0%, rgba(0, 88, 163, 0.08), transparent 24%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 251, 255, 0.98) 100%);
       box-shadow:
-        0 18px 44px rgba(8, 52, 93, 0.12),
+        0 8px 18px rgba(8, 52, 93, 0.09),
         inset 0 1px 0 rgba(255, 255, 255, 0.92);
       transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     }
@@ -271,10 +271,10 @@
       z-index: 1;
     }
     .listing-card::before {
-      content: "";
+      content: none;
       position: absolute;
       inset: 0 0 auto 0;
-      height: 6.25rem;
+      height: 4.15rem;
       background: linear-gradient(108deg, rgba(244, 249, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 52%, rgba(235, 243, 252, 0.96) 100%);
       border-bottom: 1px solid rgba(184, 207, 231, 0.92);
       z-index: 0;
@@ -284,34 +284,36 @@
       position: absolute;
       right: -1.5rem;
       bottom: -1.75rem;
-      width: 8rem;
-      height: 8rem;
+      width: 5.5rem;
+      height: 5.5rem;
       border-radius: 999px;
       background: radial-gradient(circle, rgba(0, 88, 163, 0.12), rgba(0, 88, 163, 0));
       pointer-events: none;
       z-index: 0;
     }
     .listing-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       border-color: rgba(0, 88, 163, 0.34);
       box-shadow:
-        0 24px 52px rgba(8, 52, 93, 0.16),
+        0 12px 24px rgba(8, 52, 93, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.92);
     }
     .listing-card-header {
       display: flex;
       flex-wrap: wrap;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      gap: 0.8rem;
-      padding: 1rem 1rem 0.9rem;
+      gap: 0.45rem;
+      padding: 0.58rem 0.66rem 0.46rem;
+      border-bottom: 1px solid rgba(184, 207, 231, 0.72);
+      background: linear-gradient(108deg, rgba(244, 249, 255, 0.98) 0%, rgba(255, 255, 255, 0.96) 100%);
     }
     .listing-card-body {
       display: flex;
       flex: 1;
       flex-direction: column;
-      gap: 1rem;
-      padding: 0 1rem 1rem;
+      gap: 0.48rem;
+      padding: 0.56rem 0.66rem 0.62rem;
     }
     .listing-token-row,
     .listing-badge-row,
@@ -319,33 +321,33 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.38rem;
     }
     .listing-chip-primary {
       display: inline-flex;
       align-items: center;
-      min-height: 2rem;
-      padding: 0.36rem 0.95rem;
+      min-height: 1.45rem;
+      padding: 0.22rem 0.58rem;
       border-radius: 999px;
       border: 1px solid #0b4f8a;
       background: linear-gradient(180deg, #0b63b6 0%, #084a86 100%);
       color: #ffffff;
       font-family: "Archivo", sans-serif;
-      font-size: 0.84rem;
+      font-size: 0.66rem;
       font-weight: 800;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
     .listing-chip-secondary {
       display: inline-flex;
       align-items: center;
-      min-height: 2rem;
-      padding: 0.34rem 0.8rem;
+      min-height: 1.45rem;
+      padding: 0.2rem 0.52rem;
       border-radius: 999px;
       border: 1px solid rgba(187, 215, 242, 0.95);
       background: rgba(233, 242, 250, 0.92);
       color: #49647f;
       font-family: "Archivo", sans-serif;
-      font-size: 0.74rem;
+      font-size: 0.58rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -353,11 +355,11 @@
     .listing-status-badge {
       display: inline-flex;
       align-items: center;
-      min-height: 1.9rem;
-      padding: 0.3rem 0.75rem;
+      min-height: 1.4rem;
+      padding: 0.18rem 0.48rem;
       border-radius: 999px;
       font-family: "Archivo", sans-serif;
-      font-size: 0.68rem;
+      font-size: 0.54rem;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -374,37 +376,38 @@
       color: #a3382f;
     }
     .listing-title-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 1rem;
-      align-items: flex-start;
+      display: block;
     }
     .listing-kicker {
       display: block;
       font-family: "Archivo", sans-serif;
-      font-size: 0.67rem;
+      font-size: 0.56rem;
       font-weight: 700;
       letter-spacing: 0.09em;
       text-transform: uppercase;
       color: #8193AA;
     }
+    .listing-kicker .listing-status-badge {
+      margin-left: 0.28rem;
+      vertical-align: middle;
+    }
     .listing-title {
-      margin-top: 0.25rem;
+      margin-top: 0.18rem;
       font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(1.35rem, 2vw, 1.95rem);
+      font-size: clamp(0.92rem, 1.1vw, 1.05rem);
       font-weight: 800;
-      line-height: 1.02;
+      line-height: 1.08;
       color: #102033;
       text-wrap: balance;
     }
     .listing-role-badge {
       display: inline-flex;
       align-items: center;
-      min-height: 1.75rem;
-      padding: 0.25rem 0.65rem;
+      min-height: 1.32rem;
+      padding: 0.16rem 0.42rem;
       border-radius: 999px;
       font-family: "Archivo", sans-serif;
-      font-size: 0.68rem;
+      font-size: 0.52rem;
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -421,22 +424,23 @@
       color: #52657D;
     }
     .listing-poster {
-      font-size: 0.86rem;
+      font-size: 0.68rem;
       color: #5D7087;
     }
     .listing-price-panel {
-      min-width: 10.5rem;
-      padding: 0.95rem 1rem 0.9rem;
-      border-radius: 1.2rem;
-      border: 1px solid rgba(187, 215, 242, 0.98);
-      background: linear-gradient(180deg, #ffffff 0%, #eef5fb 100%);
+      min-width: auto;
+      padding: 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
       color: #102033;
-      box-shadow: 0 10px 24px rgba(11, 27, 52, 0.08);
+      box-shadow: none;
+      text-align: right;
     }
     .listing-price-label {
-      display: block;
+      display: none;
       font-family: "Archivo", sans-serif;
-      font-size: 0.66rem;
+      font-size: 0.54rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -444,9 +448,9 @@
     }
     .listing-price-value {
       display: block;
-      margin-top: 0.42rem;
+      margin-top: 0;
       font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(1.65rem, 3vw, 2.5rem);
+      font-size: clamp(1.02rem, 1.35vw, 1.24rem);
       font-weight: 800;
       line-height: 0.94;
       letter-spacing: -0.04em;
@@ -454,25 +458,57 @@
     }
     .listing-price-unit {
       margin-left: 0.25rem;
-      font-size: 0.84rem;
+      font-size: 0.68rem;
       font-weight: 600;
       color: #5d7087;
     }
     .listing-price-meta {
       display: block;
-      margin-top: 0.55rem;
-      font-size: 0.84rem;
+      margin-top: 0.14rem;
+      font-size: 0.58rem;
       color: #5d7087;
+    }
+    .listing-detail-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.28rem 0.55rem;
+      padding: 0.48rem 0;
+      border-top: 1px solid rgba(216, 228, 240, 0.9);
+      border-bottom: 1px solid rgba(216, 228, 240, 0.9);
+    }
+    .listing-detail {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 0.28rem;
+      font-size: 0.68rem;
+      line-height: 1.25;
+      color: #102033;
+    }
+    .listing-detail span {
+      flex: 0 0 auto;
+      font-size: 0.54rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #8193AA;
+    }
+    .listing-detail strong {
+      min-width: 0;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .listing-stat-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.72rem;
+      gap: 0.38rem;
     }
     .listing-stat {
-      min-height: 5.4rem;
-      padding: 0.9rem 0.95rem;
-      border-radius: 1rem;
+      min-height: 0;
+      padding: 0.48rem 0.58rem;
+      border-radius: 0.68rem;
       border: 1px solid rgba(216, 228, 240, 0.98);
       background: rgba(255, 255, 255, 0.84);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
@@ -480,7 +516,7 @@
     .listing-stat-label {
       display: block;
       font-family: "Archivo", sans-serif;
-      font-size: 0.66rem;
+      font-size: 0.52rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -488,8 +524,8 @@
     }
     .listing-stat-value {
       display: block;
-      margin-top: 0.48rem;
-      font-size: 0.98rem;
+      margin-top: 0.22rem;
+      font-size: 0.74rem;
       font-weight: 700;
       line-height: 1.2;
       color: #102033;
@@ -497,37 +533,41 @@
     }
     .listing-stat-helper {
       display: block;
-      margin-top: 0.45rem;
-      font-size: 0.75rem;
-      line-height: 1.35;
+      margin-top: 0.22rem;
+      font-size: 0.6rem;
+      line-height: 1.25;
       color: #5D7087;
     }
     .listing-note {
-      padding: 0.95rem 1rem;
-      border-radius: 1.05rem;
-      border: 1px solid rgba(216, 228, 240, 0.98);
-      background: linear-gradient(180deg, #f9fbfd 0%, #f1f6fa 100%);
+      padding: 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
     }
     .listing-note-label {
-      display: block;
+      display: none;
       font-family: "Archivo", sans-serif;
-      font-size: 0.66rem;
+      font-size: 0.52rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #64809b;
     }
     .listing-note-copy {
-      margin-top: 0.45rem;
-      font-size: 0.84rem;
-      line-height: 1.55;
+      margin-top: 0;
+      font-size: 0.64rem;
+      line-height: 1.3;
       color: #4f6378;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .listing-footer {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.7rem;
-      padding: 0.95rem 1rem 1rem;
+      gap: 0.36rem;
+      padding: 0.46rem 0.66rem 0.56rem;
       border-top: 1px solid rgba(183, 207, 231, 0.96);
       background: linear-gradient(180deg, rgba(234, 244, 255, 0.42) 0%, rgba(255, 255, 255, 0.92) 100%);
     }
@@ -535,12 +575,12 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 3rem;
-      padding: 0.8rem 0.9rem;
-      border-radius: 1rem;
+      min-height: 1.82rem;
+      padding: 0.34rem 0.42rem;
+      border-radius: 0.62rem;
       border: 1px solid transparent;
       font-family: "Archivo", sans-serif;
-      font-size: 0.92rem;
+      font-size: 0.57rem;
       font-weight: 700;
       letter-spacing: 0.01em;
       transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
@@ -587,16 +627,7 @@
       box-shadow: none;
       pointer-events: none;
     }
-    @media (max-width: 520px) {
-      .listing-card-header,
-      .listing-card-body,
-      .listing-footer {
-        padding-left: 0.9rem;
-        padding-right: 0.9rem;
-      }
-      .listing-card-body {
-        padding-bottom: 0.9rem;
-      }
+    @media (max-width: 1120px) {
       .listing-title-row {
         grid-template-columns: 1fr;
       }
@@ -604,7 +635,21 @@
         min-width: 0;
         width: 100%;
       }
+    }
+    @media (max-width: 640px) {
+      .listing-card-header,
+      .listing-card-body,
       .listing-footer {
+        padding-left: 0.78rem;
+        padding-right: 0.78rem;
+      }
+      .listing-card-body {
+        padding-bottom: 0.78rem;
+      }
+      .listing-footer {
+        grid-template-columns: 1fr;
+      }
+      .listing-stat-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -622,8 +667,8 @@
 
   <!-- HEADER -->
   <header class="live-header border-b border-[#BBD7F2] bg-transparent">
-    <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
+    <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
           <div class="flex items-center justify-between gap-2">
             <span class="notice-stamp inline-flex w-fit font-sans text-[10px] uppercase tracking-[0.16em]">
@@ -633,10 +678,10 @@
               Checking
             </span>
           </div>
-          <h1 class="pop-in pop-delay-1 text-2xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-[#071B3A] leading-tight">
+          <h1 class="pop-in pop-delay-1 text-2xl sm:text-3xl md:text-4xl font-display font-extrabold tracking-tight text-[#071B3A] leading-tight">
             Flat & Room Board
           </h1>
-          <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#48617D] max-w-2xl leading-relaxed">
+          <p class="pop-in pop-delay-2 text-xs sm:text-sm text-[#48617D] max-w-2xl leading-relaxed">
             Live rent listings and tenant requests from residents.
           </p>
           <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-sans text-[#48617D] pt-1 sm:pt-2">
@@ -647,7 +692,7 @@
           </div>
         </div>
 
-        <div class="lg:col-span-5 flex flex-col gap-3 sm:gap-4">
+        <div class="lg:col-span-5 flex flex-col gap-2 sm:gap-3">
           <div class="grid grid-cols-2 gap-2 sm:gap-3">
             <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="action-ticket live-card pop-delay-3 flex bg-[#FFF8D6] hover:bg-[#FFEF99] border border-[#FFDA1A] shadow-sm transition-all text-[#071B3A]">
               <span>
@@ -664,7 +709,7 @@
             </a>
           </div>
 
-          <div class="expiry-slip border border-[#BBD7F2] bg-[#FFFFFF]/85 p-3 pl-4 rounded-2xl flex gap-3">
+          <div class="expiry-slip border border-[#BBD7F2] bg-[#FFFFFF]/85 p-2.5 pl-4 rounded-xl flex gap-3">
             <div class="space-y-0.5">
               <h4 class="font-sans text-xs uppercase font-bold text-[#071B3A] tracking-[0.08em]">30-Day Expiry</h4>
               <p class="text-xs text-[#48617D] leading-relaxed">
@@ -678,20 +723,20 @@
   </header>
 
   <!-- MAIN APP AREA -->
-  <main class="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-8">
+  <main class="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-5">
     
     <!-- NAVIGATION TABS -->
-    <div class="sticky top-0 z-20 flex border border-[#BBD7F2] mb-5 sm:mb-8 overflow-hidden rounded-2xl bg-[#FFFFFF]/95 backdrop-blur">
-      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#BBD7F2] focus:outline-none transition-all bg-[#0058A3] text-white border-b-0">
+    <div class="sticky top-0 z-20 flex border border-[#BBD7F2] mb-3 sm:mb-4 overflow-hidden rounded-xl bg-[#FFFFFF]/95 backdrop-blur">
+      <button onclick="switchTab('rent')" id="tab-rent-btn" class="flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm border-r border-[#BBD7F2] focus:outline-none transition-all bg-[#0058A3] text-white border-b-0">
         Rent
       </button>
-      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none transition-all text-[#48617D] hover:bg-[#EAF4FF]">
+      <button onclick="switchTab('looking')" id="tab-looking-btn" class="flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm focus:outline-none transition-all text-[#48617D] hover:bg-[#EAF4FF]">
         Looking
       </button>
     </div>
 
     <!-- FILTER BOARD CONTAINER -->
-    <div id="filters-container" class="mb-8">
+    <div id="filters-container" class="mb-4">
       <!-- DYNAMIC FILTERS LOADED BY JS -->
     </div>
 
@@ -717,16 +762,16 @@
     </div>
 
     <!-- LISTINGS CONTAINER GRID -->
-    <div id="listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
       <!-- CARDS RENDERED BY JS -->
     </div>
 
     <!-- SECONDARY CTA ROW -->
-    <div class="mt-10 sm:mt-16 border border-[#BBD7F2] bg-[#071B3A] p-5 sm:p-8 rounded-2xl text-center space-y-4 sm:space-y-6 max-w-3xl mx-auto shadow-sm">
-      <h3 class="font-display font-extrabold text-white text-xl sm:text-2xl tracking-tight">
+    <div class="mt-8 sm:mt-10 border border-[#BBD7F2] bg-[#071B3A] p-4 sm:p-5 rounded-2xl text-center space-y-3 max-w-3xl mx-auto shadow-sm">
+      <h3 class="font-display font-extrabold text-white text-lg sm:text-xl tracking-tight">
         Add your post
       </h3>
-      <p class="text-sm text-slate-300 max-w-xl mx-auto font-sans">
+      <p class="text-xs text-slate-300 max-w-xl mx-auto font-sans">
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
@@ -1093,49 +1138,35 @@
             <span class="listing-chip-primary">${escapeHtml(item.bhkType)}</span>
             <span class="listing-chip-secondary">${escapeHtml(furnishing)}</span>
           </div>
-          <div class="listing-badge-row">${renderStatusBadges(isNew, showWarning, daysRemaining)}</div>
+          <div class="listing-price-panel">
+            <span class="listing-price-label">Monthly rent</span>
+            <span class="listing-price-value">${formatCurrency(item.monthlyRent)}<span class="listing-price-unit">/mo</span></span>
+            <span class="listing-price-meta">Dep ${formatCurrency(item.securityDeposit)}</span>
+          </div>
         </div>
         <div class="listing-card-body">
           <div class="listing-title-row">
             <div>
-              <span class="listing-kicker">Available apartment</span>
+              <span class="listing-kicker">Available apartment ${renderStatusBadges(isNew, showWarning, daysRemaining)}</span>
               <h4 class="listing-title">${escapeHtml(item.towerFlat)}</h4>
               <div class="listing-subhead">
                 <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
                 <span class="listing-poster">Posted by ${escapeHtml(item.posterName)}</span>
               </div>
             </div>
-            <div class="listing-price-panel">
-              <span class="listing-price-label">Monthly rent</span>
-              <span class="listing-price-value">${formatCurrency(item.monthlyRent)}<span class="listing-price-unit">/mo</span></span>
-              <span class="listing-price-meta">Deposit ${formatCurrency(item.securityDeposit)}</span>
-            </div>
           </div>
-          <div class="listing-stat-grid">
-            <div class="listing-stat">
-              <span class="listing-stat-label">Available from</span>
-              <span class="listing-stat-value">${escapeHtml(formatDateOnly(item.availableFrom, "Immediate"))}</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Preferred tenant</span>
-              <span class="listing-stat-value">${escapeHtml(preferredTenant)}</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Parking</span>
-              <span class="listing-stat-value">${escapeHtml(parking)}</span>
-              <span class="listing-stat-helper">${item.parking.toLowerCase() === "yes" ? "Parking included" : "No parking slot mentioned"}</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Posted on</span>
-              <span class="listing-stat-value">${escapeHtml(formatDateTime(item.timestamp))}</span>
-            </div>
+          <div class="listing-detail-list">
+            <div class="listing-detail"><span>From</span><strong>${escapeHtml(formatDateOnly(item.availableFrom, "Immediate"))}</strong></div>
+            <div class="listing-detail"><span>Tenant</span><strong>${escapeHtml(preferredTenant)}</strong></div>
+            <div class="listing-detail"><span>Parking</span><strong>${escapeHtml(parking)}</strong></div>
+            <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
           </div>
           ${renderNotesPanel(item.notes)}
         </div>
         <div class="listing-footer">
           ${callAction}
           ${whatsappAction}
-          <button onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing to group">Share Group</button>
+          <button onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">Share</button>
         </div>
       `;
       return card;
@@ -1164,49 +1195,35 @@
             <span class="listing-chip-primary">${escapeHtml(item.preferredBhk)}</span>
             <span class="listing-chip-secondary">${escapeHtml(tenantType)}</span>
           </div>
-          <div class="listing-badge-row">${renderStatusBadges(isNew, showWarning, daysRemaining)}</div>
+          <div class="listing-price-panel">
+            <span class="listing-price-label">Target budget</span>
+            <span class="listing-price-value">${formatCurrency(item.budget)}<span class="listing-price-unit">/mo</span></span>
+            <span class="listing-price-meta">${escapeHtml(formatOccupantsLabel(item.occupants))}</span>
+          </div>
         </div>
         <div class="listing-card-body">
           <div class="listing-title-row">
             <div>
-              <span class="listing-kicker">Tenant request</span>
+              <span class="listing-kicker">Tenant request ${renderStatusBadges(isNew, showWarning, daysRemaining)}</span>
               <h4 class="listing-title">${escapeHtml(item.posterName)}</h4>
               <div class="listing-subhead">
                 <span class="listing-role-badge listing-role-owner">Looking to move</span>
                 <span class="listing-poster">${escapeHtml(preferredArea)}</span>
               </div>
             </div>
-            <div class="listing-price-panel">
-              <span class="listing-price-label">Target budget</span>
-              <span class="listing-price-value">${formatCurrency(item.budget)}<span class="listing-price-unit">/mo</span></span>
-              <span class="listing-price-meta">Flexible for the right match</span>
-            </div>
           </div>
-          <div class="listing-stat-grid">
-            <div class="listing-stat">
-              <span class="listing-stat-label">Move-in</span>
-              <span class="listing-stat-value">${escapeHtml(formatDateOnly(item.preferredMoveIn, "Immediate"))}</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Occupants</span>
-              <span class="listing-stat-value">${escapeHtml(formatOccupantsLabel(item.occupants))}</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Preferred area</span>
-              <span class="listing-stat-value">${escapeHtml(preferredArea)}</span>
-              <span class="listing-stat-helper">Towers 1-6, 15, 16</span>
-            </div>
-            <div class="listing-stat">
-              <span class="listing-stat-label">Requested on</span>
-              <span class="listing-stat-value">${escapeHtml(formatDateTime(item.timestamp))}</span>
-            </div>
+          <div class="listing-detail-list">
+            <div class="listing-detail"><span>Move</span><strong>${escapeHtml(formatDateOnly(item.preferredMoveIn, "Immediate"))}</strong></div>
+            <div class="listing-detail"><span>People</span><strong>${escapeHtml(formatOccupantsLabel(item.occupants))}</strong></div>
+            <div class="listing-detail"><span>Area</span><strong>${escapeHtml(preferredArea)}</strong></div>
+            <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
           </div>
           ${renderNotesPanel(item.notes)}
         </div>
         <div class="listing-footer">
           ${callAction}
           ${whatsappAction}
-          <button onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request to group">Share Group</button>
+          <button onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">Share</button>
         </div>
       `;
       return card;
@@ -1226,11 +1243,11 @@
       const tabLookingBtn = document.getElementById('tab-looking-btn');
       
       if (tab === 'rent') {
-        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#BBD7F2] focus:outline-none bg-[#0058A3] text-white border-b-0";
-        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none text-[#48617D] hover:bg-[#EAF4FF]";
+        tabRentBtn.className = "flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm border-r border-[#BBD7F2] focus:outline-none bg-[#0058A3] text-white border-b-0";
+        tabLookingBtn.className = "flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm focus:outline-none text-[#48617D] hover:bg-[#EAF4FF]";
       } else {
-        tabRentBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base border-r border-[#BBD7F2] focus:outline-none text-[#48617D] hover:bg-[#EAF4FF]";
-        tabLookingBtn.className = "flex-1 py-3 sm:py-4 text-center font-display font-extrabold text-xs sm:text-base focus:outline-none bg-[#0058A3] text-white border-b-0";
+        tabRentBtn.className = "flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm border-r border-[#BBD7F2] focus:outline-none text-[#48617D] hover:bg-[#EAF4FF]";
+        tabLookingBtn.className = "flex-1 py-2.5 sm:py-3 text-center font-display font-extrabold text-xs sm:text-sm focus:outline-none bg-[#0058A3] text-white border-b-0";
       }
       
       renderFilters();
@@ -1556,8 +1573,10 @@
       } catch (err) {
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
-        setSyncStatus(`Sync failed ${syncTimeLabel()}`, "error");
-        errorDiv.classList.remove('hidden');
+        setSyncStatus(`Preview data ${syncTimeLabel()}`, "idle");
+        rentListings = [...LOCAL_RENT_FALLBACK];
+        lookingListings = [...LOCAL_LOOKING_FALLBACK];
+        renderListings();
       }
     }
 
