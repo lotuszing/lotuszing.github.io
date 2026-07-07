@@ -259,7 +259,7 @@
       border-radius: 1.75rem;
       overflow: hidden;
       background:
-        radial-gradient(circle at 100% 0%, rgba(255, 218, 26, 0.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(0, 88, 163, 0.08), transparent 24%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 251, 255, 0.98) 100%);
       box-shadow:
         0 18px 44px rgba(8, 52, 93, 0.12),
@@ -275,7 +275,7 @@
       position: absolute;
       inset: 0 0 auto 0;
       height: 6.25rem;
-      background: linear-gradient(108deg, rgba(255, 248, 214, 0.98) 0%, rgba(255, 255, 255, 0.92) 52%, rgba(234, 244, 255, 0.92) 100%);
+      background: linear-gradient(108deg, rgba(244, 249, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 52%, rgba(235, 243, 252, 0.96) 100%);
       border-bottom: 1px solid rgba(184, 207, 231, 0.92);
       z-index: 0;
     }
@@ -327,13 +327,13 @@
       min-height: 2rem;
       padding: 0.36rem 0.95rem;
       border-radius: 999px;
-      border: 1px solid #b88700;
-      background: linear-gradient(180deg, #ffe76f 0%, #ffd21f 100%);
-      color: #071B3A;
-      font-family: "Space Grotesk", sans-serif;
+      border: 1px solid #0b4f8a;
+      background: linear-gradient(180deg, #0b63b6 0%, #084a86 100%);
+      color: #ffffff;
+      font-family: "Archivo", sans-serif;
       font-size: 0.84rem;
       font-weight: 800;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
     .listing-chip-secondary {
       display: inline-flex;
@@ -342,12 +342,12 @@
       padding: 0.34rem 0.8rem;
       border-radius: 999px;
       border: 1px solid rgba(187, 215, 242, 0.95);
-      background: rgba(255, 255, 255, 0.82);
-      color: #5D7087;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.68rem;
+      background: rgba(233, 242, 250, 0.92);
+      color: #49647f;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.74rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
     }
     .listing-status-badge {
@@ -356,17 +356,17 @@
       min-height: 1.9rem;
       padding: 0.3rem 0.75rem;
       border-radius: 999px;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.64rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       border: 1px solid transparent;
     }
     .listing-status-badge--new {
-      background: #0058A3;
-      border-color: #003E73;
-      color: #ffffff;
+      background: #fff4cf;
+      border-color: #efcf62;
+      color: #7b5b00;
     }
     .listing-status-badge--warning {
       background: #fff3f2;
@@ -381,10 +381,10 @@
     }
     .listing-kicker {
       display: block;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.66rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.67rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       color: #8193AA;
     }
@@ -403,10 +403,10 @@
       min-height: 1.75rem;
       padding: 0.25rem 0.65rem;
       border-radius: 999px;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.62rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       border: 1px solid transparent;
     }
@@ -421,25 +421,26 @@
       color: #52657D;
     }
     .listing-poster {
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       color: #5D7087;
     }
     .listing-price-panel {
       min-width: 10.5rem;
       padding: 0.95rem 1rem 0.9rem;
       border-radius: 1.2rem;
-      background: linear-gradient(180deg, #0B1B34 0%, #143158 100%);
-      color: #ffffff;
-      box-shadow: 0 14px 28px rgba(11, 27, 52, 0.18);
+      border: 1px solid rgba(187, 215, 242, 0.98);
+      background: linear-gradient(180deg, #ffffff 0%, #eef5fb 100%);
+      color: #102033;
+      box-shadow: 0 10px 24px rgba(11, 27, 52, 0.08);
     }
     .listing-price-label {
       display: block;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.62rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.66rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(234, 244, 255, 0.74);
+      color: #5d7087;
     }
     .listing-price-value {
       display: block;
@@ -449,19 +450,19 @@
       font-weight: 800;
       line-height: 0.94;
       letter-spacing: -0.04em;
-      color: #ffffff;
+      color: #102033;
     }
     .listing-price-unit {
       margin-left: 0.25rem;
       font-size: 0.84rem;
       font-weight: 600;
-      color: rgba(234, 244, 255, 0.72);
+      color: #5d7087;
     }
     .listing-price-meta {
       display: block;
       margin-top: 0.55rem;
       font-size: 0.84rem;
-      color: rgba(234, 244, 255, 0.78);
+      color: #5d7087;
     }
     .listing-stat-grid {
       display: grid;
@@ -478,10 +479,10 @@
     }
     .listing-stat-label {
       display: block;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.62rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.66rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #8193AA;
     }
@@ -504,23 +505,23 @@
     .listing-note {
       padding: 0.95rem 1rem;
       border-radius: 1.05rem;
-      border: 1px solid rgba(255, 218, 26, 0.52);
-      background: linear-gradient(180deg, #fffdf4 0%, #fff9df 100%);
+      border: 1px solid rgba(216, 228, 240, 0.98);
+      background: linear-gradient(180deg, #f9fbfd 0%, #f1f6fa 100%);
     }
     .listing-note-label {
       display: block;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.62rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.66rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #8a6a00;
+      color: #64809b;
     }
     .listing-note-copy {
       margin-top: 0.45rem;
       font-size: 0.84rem;
       line-height: 1.55;
-      color: #4A5568;
+      color: #4f6378;
     }
     .listing-footer {
       display: grid;
@@ -538,12 +539,13 @@
       padding: 0.8rem 0.9rem;
       border-radius: 1rem;
       border: 1px solid transparent;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 0.95rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.92rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.01em;
       transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
       outline: none;
+      text-transform: uppercase;
     }
     .listing-cta:hover {
       transform: translateY(-1px);
@@ -561,13 +563,13 @@
       background: #F4F8FC;
     }
     .listing-cta--wa {
-      background: linear-gradient(180deg, #26d467 0%, #1aae54 100%);
-      border-color: #168851;
+      background: linear-gradient(180deg, #1f8f78 0%, #176d5c 100%);
+      border-color: #14594d;
       color: #ffffff;
-      box-shadow: 0 10px 22px rgba(22, 136, 81, 0.24);
+      box-shadow: 0 10px 22px rgba(23, 109, 92, 0.18);
     }
     .listing-cta--wa:hover {
-      background: linear-gradient(180deg, #22c760 0%, #15984b 100%);
+      background: linear-gradient(180deg, #1b7f6a 0%, #145c4d 100%);
     }
     .listing-cta--group {
       background: linear-gradient(180deg, #0b63b6 0%, #094c8c 100%);
@@ -624,10 +626,10 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
         <div class="lg:col-span-7 space-y-3 sm:space-y-4">
           <div class="flex items-center justify-between gap-2">
-            <span class="notice-stamp inline-flex w-fit font-mono text-[10px] uppercase tracking-[0.16em]">
+            <span class="notice-stamp inline-flex w-fit font-sans text-[10px] uppercase tracking-[0.16em]">
               <span>LZ</span>
             </span>
-            <span id="sync-status" class="min-h-8 inline-flex items-center gap-1.5 border border-[#BBD7F2] bg-[#FFF8D6] px-3 py-1 rounded-xl text-[10px] sm:text-xs font-mono text-[#48617D]">
+            <span id="sync-status" class="min-h-8 inline-flex items-center gap-1.5 border border-[#BBD7F2] bg-[#FFF8D6] px-3 py-1 rounded-xl text-[10px] sm:text-xs font-sans text-[#48617D]">
               Checking
             </span>
           </div>
@@ -637,7 +639,7 @@
           <p class="pop-in pop-delay-2 text-sm sm:text-lg text-[#48617D] max-w-2xl leading-relaxed">
             Live rent listings and tenant requests from residents.
           </p>
-          <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-mono text-[#48617D] pt-1 sm:pt-2">
+          <div class="pop-in pop-delay-3 flex items-center gap-2 text-[11px] sm:text-xs font-sans text-[#48617D] pt-1 sm:pt-2">
             <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener" class="join-group-pulse min-h-9 inline-flex items-center gap-1.5 border border-[#003E73] bg-[#0058A3] text-white px-3 py-1.5 rounded-xl font-bold hover:bg-[#003E73]">
               <span class="green-light"></span>
               WhatsApp group
@@ -664,7 +666,7 @@
 
           <div class="expiry-slip border border-[#BBD7F2] bg-[#FFFFFF]/85 p-3 pl-4 rounded-2xl flex gap-3">
             <div class="space-y-0.5">
-              <h4 class="font-mono text-xs uppercase font-bold text-[#071B3A] tracking-wider">30-Day Expiry</h4>
+              <h4 class="font-sans text-xs uppercase font-bold text-[#071B3A] tracking-[0.08em]">30-Day Expiry</h4>
               <p class="text-xs text-[#48617D] leading-relaxed">
                 Posts auto-expire after <strong class="text-[#071B3A] font-semibold">30 days</strong>. Re-submit to stay visible.
               </p>
@@ -697,18 +699,18 @@
     <div id="loader-state" class="hidden py-16 text-center border-2 border-dashed border-slate-300 rounded-xl bg-white max-w-lg mx-auto my-8">
       <div class="inline-block w-8 h-8 border-4 border-[#FFDA1A] border-t-[#071B3A] rounded-full animate-spin mb-4"></div>
       <h3 class="font-display font-bold text-slate-800 text-lg">Loading listings...</h3>
-      <p class="text-xs text-slate-500 font-mono mt-1">Syncing sheet</p>
+      <p class="text-xs text-slate-500 font-sans mt-1 uppercase tracking-[0.08em]">Syncing sheet</p>
     </div>
 
     <!-- FAILURE FLOW STATE -->
     <div id="error-state" class="hidden border border-rose-200 bg-rose-50 p-5 rounded-2xl max-w-lg mx-auto my-8 text-center space-y-3">
-      <span class="font-mono text-lg font-bold text-rose-900">!</span>
+      <span class="font-display text-lg font-bold text-rose-900">!</span>
       <h3 class="font-display font-extrabold text-rose-950 text-lg">Live Connection Interrupted</h3>
       <p class="text-xs text-rose-800 font-sans leading-relaxed">
         Live sheet did not load. Try again.
       </p>
       <div class="pt-2 flex justify-center gap-3">
-        <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-mono text-xs font-bold rounded border border-slate-900">
+        <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-slate-900">
           Retry Fetching
         </button>
       </div>
@@ -728,10 +730,10 @@
         Use Tally. It appears after sheet sync.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#FFDA1A] hover:bg-[#FFEF99] border border-[#B88700] font-mono text-xs font-bold uppercase text-[#071B3A] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-[#FFDA1A] hover:bg-[#FFEF99] border border-[#B88700] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
           List flat
         </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-mono text-xs font-bold uppercase text-[#071B3A] rounded-xl transition-all">
+        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
           Post request
         </a>
       </div>
@@ -747,7 +749,7 @@
       <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
         Built by a resident to keep flat listings easy to share. Please verify ownership, broker terms, and agreement before payment.
       </p>
-      <span class="font-mono text-[10px] text-slate-400 uppercase tracking-widest mt-2">
+      <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.12em] mt-2">
         Sector 168, Noida, UP, India
       </span>
     </div>
@@ -800,7 +802,7 @@
         live: "border-[#BBD7F2] bg-[#EAF4FF] text-[#0058A3]",
         error: "border-rose-200 bg-rose-50 text-rose-700"
       };
-      status.className = `min-h-8 inline-flex items-center gap-1.5 border px-3 py-1 rounded-xl text-[10px] sm:text-xs font-mono ${palette[mode] || palette.idle}`;
+      status.className = `min-h-8 inline-flex items-center gap-1.5 border px-3 py-1 rounded-xl text-[10px] sm:text-xs font-sans ${palette[mode] || palette.idle}`;
       status.textContent = text;
     }
 
@@ -1033,6 +1035,20 @@
       return `${total} ${total === 1 ? "person" : "people"}`;
     }
 
+    function formatDisplayText(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      return raw
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .split(" ")
+        .map((word) => {
+          if (/^\d+[A-Za-z]*$/.test(word) || /^[A-Z]{2,}$/.test(word)) return word;
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(" ");
+    }
+
     function renderStatusBadges(isNew, showWarning, daysRemaining) {
       return `
         ${isNew ? '<span class="listing-status-badge listing-status-badge--new">New</span>' : ''}
@@ -1055,6 +1071,10 @@
       const isNew = isNewListing(item.timestamp);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
       const isOwner = item.listedBy.toLowerCase().includes("owner");
+      const furnishing = formatDisplayText(item.furnishing);
+      const listedBy = formatDisplayText(item.listedBy);
+      const preferredTenant = formatDisplayText(item.preferredTenant);
+      const parking = formatDisplayText(item.parking);
       const phone = cleanPhoneNumber(item.contactNumber);
       const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, saw your flat listing on Lotus Zing board.`);
       const callAction = phone
@@ -1071,7 +1091,7 @@
         <div class="listing-card-header">
           <div class="listing-token-row">
             <span class="listing-chip-primary">${escapeHtml(item.bhkType)}</span>
-            <span class="listing-chip-secondary">${escapeHtml(item.furnishing)}</span>
+            <span class="listing-chip-secondary">${escapeHtml(furnishing)}</span>
           </div>
           <div class="listing-badge-row">${renderStatusBadges(isNew, showWarning, daysRemaining)}</div>
         </div>
@@ -1081,7 +1101,7 @@
               <span class="listing-kicker">Available apartment</span>
               <h4 class="listing-title">${escapeHtml(item.towerFlat)}</h4>
               <div class="listing-subhead">
-                <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(item.listedBy)}</span>
+                <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
                 <span class="listing-poster">Posted by ${escapeHtml(item.posterName)}</span>
               </div>
             </div>
@@ -1098,11 +1118,11 @@
             </div>
             <div class="listing-stat">
               <span class="listing-stat-label">Preferred tenant</span>
-              <span class="listing-stat-value">${escapeHtml(item.preferredTenant)}</span>
+              <span class="listing-stat-value">${escapeHtml(preferredTenant)}</span>
             </div>
             <div class="listing-stat">
               <span class="listing-stat-label">Parking</span>
-              <span class="listing-stat-value">${escapeHtml(item.parking)}</span>
+              <span class="listing-stat-value">${escapeHtml(parking)}</span>
               <span class="listing-stat-helper">${item.parking.toLowerCase() === "yes" ? "Parking included" : "No parking slot mentioned"}</span>
             </div>
             <div class="listing-stat">
@@ -1124,6 +1144,7 @@
     function renderLookingCard(item, indexInList, popIndex) {
       const isNew = isNewListing(item.timestamp);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
+      const tenantType = formatDisplayText(item.tenantType);
       const phone = cleanPhoneNumber(item.contactNumber);
       const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, saw your tenant request on Lotus Zing board.`);
       const callAction = phone
@@ -1141,7 +1162,7 @@
         <div class="listing-card-header">
           <div class="listing-token-row">
             <span class="listing-chip-primary">${escapeHtml(item.preferredBhk)}</span>
-            <span class="listing-chip-secondary">${escapeHtml(item.tenantType)}</span>
+            <span class="listing-chip-secondary">${escapeHtml(tenantType)}</span>
           </div>
           <div class="listing-badge-row">${renderStatusBadges(isNew, showWarning, daysRemaining)}</div>
         </div>
@@ -1225,19 +1246,19 @@
         container.innerHTML = `
           <details ${filtersOpen ? "open" : ""} class="border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl shadow-sm overflow-hidden">
             <summary class="min-h-12 cursor-pointer list-none flex items-center justify-between px-4 py-3">
-              <span class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Filters</span>
-              <span class="font-mono text-[10px] text-slate-400 uppercase">Rent</span>
+              <span class="font-sans text-xs uppercase font-bold text-slate-900 tracking-[0.08em]">Filters</span>
+              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Rent</span>
             </summary>
             <div class="border-t border-slate-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
             
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
               <div class="md:col-span-4">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Search Term</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">Search Term</label>
                 <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Search flat, tower, name..." value="${rentFilters.search}" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-3 py-1.5 text-sm outline-none">
               </div>
               
               <div class="md:col-span-3">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">BHK / Room Layout</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">BHK / Room Layout</label>
                 <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1.5 text-sm outline-none">
                   <option value="All" ${rentFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
                   <option value="Studio" ${rentFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
@@ -1249,7 +1270,7 @@
               </div>
               
               <div class="md:col-span-3">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Order By</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">Order By</label>
                 <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1.5 text-sm outline-none">
                   <option value="newest" ${rentFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
                   <option value="oldest" ${rentFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
@@ -1259,10 +1280,10 @@
               </div>
               
               <div class="md:col-span-2">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1">Max Monthly Rent</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Max Monthly Rent</label>
                 <div class="flex items-center gap-2 mt-1">
                   <input type="range" min="5000" max="50000" step="1000" value="${rentFilters.maxRent}" oninput="updateFilter('maxRent', this.value)" class="w-full accent-[#0058A3] cursor-pointer h-1.5 bg-[#BBD7F2] rounded">
-                  <span class="font-mono text-xs text-slate-800 font-bold shrink-0">₹${rentFilters.maxRent >= 50000 ? '50k+' : (rentFilters.maxRent/1000) + 'k'}</span>
+                  <span class="font-sans text-xs text-slate-800 font-bold shrink-0">₹${rentFilters.maxRent >= 50000 ? '50k+' : (rentFilters.maxRent/1000) + 'k'}</span>
                 </div>
               </div>
             </div>
@@ -1280,19 +1301,19 @@
         container.innerHTML = `
           <details ${filtersOpen ? "open" : ""} class="border border-[#BBD7F2] bg-[#FFFFFF] rounded-2xl shadow-sm overflow-hidden">
             <summary class="min-h-12 cursor-pointer list-none flex items-center justify-between px-4 py-3">
-              <span class="font-mono text-xs uppercase font-bold text-slate-900 tracking-wider">Filters</span>
-              <span class="font-mono text-[10px] text-slate-400 uppercase">Looking</span>
+              <span class="font-sans text-xs uppercase font-bold text-slate-900 tracking-[0.08em]">Filters</span>
+              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Looking</span>
             </summary>
             <div class="border-t border-slate-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
             
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
               <div class="md:col-span-5">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Search Term</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">Search Term</label>
                 <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Search preferred area, poster name..." value="${lookingFilters.search}" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-3 py-1.5 text-sm outline-none">
               </div>
               
               <div class="md:col-span-3">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Preferred BHK / Layout</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">Preferred BHK / Layout</label>
                 <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1.5 text-sm outline-none">
                   <option value="All" ${lookingFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
                   <option value="Studio" ${lookingFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
@@ -1304,7 +1325,7 @@
               </div>
               
               <div class="md:col-span-4">
-                <label class="block text-[10px] font-mono uppercase font-bold text-slate-500 mb-1.5">Order By</label>
+                <label class="block text-[10px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1.5">Order By</label>
                 <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-[#F8FBFF] border-2 border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1.5 text-sm outline-none">
                   <option value="newest" ${lookingFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
                   <option value="oldest" ${lookingFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
@@ -1556,14 +1577,14 @@
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-[#FFF8D6] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
-          <span class="font-mono text-xs uppercase tracking-widest text-[#0058A3]">Pending</span>
+          <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Pending</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
             Form is live. Listings show after sheet link is added.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#FFDA1A] hover:bg-[#FFEF99] text-[#071B3A] font-mono text-xs font-bold rounded border border-[#B88700]">Join group</a>
+            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener" class="inline-flex justify-center px-4 py-2 bg-[#FFDA1A] hover:bg-[#FFEF99] text-[#071B3A] font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#B88700]">Join group</a>
           </div>
         </div>
       `;
@@ -1713,10 +1734,10 @@ See full board: ${SITE_URL}`;
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-white p-12 text-center max-w-md mx-auto my-6 space-y-4">
-          <span class="font-mono text-xs uppercase tracking-widest text-slate-400">Empty</span>
+          <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">Empty</span>
           <h3 class="font-display font-bold text-slate-800 text-lg">No matches</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
-          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Reset All Filters</button>
+          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Reset All Filters</button>
         </div>
       `;
     }
