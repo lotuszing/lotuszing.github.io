@@ -63,69 +63,6 @@
       background-size: 24px 24px, 24px 24px;
       mask-image: linear-gradient(to bottom, black, transparent 72%);
     }
-    body.theme-night {
-      background:
-        radial-gradient(circle at 96% 3%, rgba(255, 92, 77, 0.14), transparent 16rem),
-        radial-gradient(circle at 0% 10%, rgba(0, 88, 163, 0.34), transparent 17rem),
-        linear-gradient(180deg, #07111f 0%, #0b2038 26rem, #081522 100%);
-      color: #EAF4FF;
-    }
-    body.theme-night::before {
-      background-image:
-        linear-gradient(rgba(234, 244, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(234, 244, 255, 0.04) 1px, transparent 1px);
-    }
-    body.theme-night .live-header,
-    body.theme-night footer {
-      border-color: rgba(109, 157, 204, 0.45);
-    }
-    body.theme-night .listing-card,
-    body.theme-night .expiry-slip,
-    body.theme-night details,
-    body.theme-night .sticky,
-    body.theme-night .listing-card-header {
-      border-color: rgba(109, 157, 204, 0.48) !important;
-      background:
-        radial-gradient(circle at 100% 0%, rgba(0, 194, 168, 0.08), transparent 24%),
-        linear-gradient(180deg, rgba(13, 31, 52, 0.98) 0%, rgba(8, 21, 34, 0.98) 100%) !important;
-      color: #EAF4FF;
-    }
-    body.theme-night .listing-title,
-    body.theme-night .listing-price-value,
-    body.theme-night .listing-detail,
-    body.theme-night .listing-stat-value,
-    body.theme-night h1,
-    body.theme-night h3,
-    body.theme-night h4 {
-      color: #F8FBFF !important;
-    }
-    body.theme-night .listing-poster,
-    body.theme-night .listing-price-meta,
-    body.theme-night .listing-detail span,
-    body.theme-night .listing-kicker,
-    body.theme-night .listing-note-copy,
-    body.theme-night p,
-    body.theme-night .text-\[\#48617D\],
-    body.theme-night .text-slate-600,
-    body.theme-night .text-slate-400 {
-      color: #9DB4CC !important;
-    }
-    body.theme-night .listing-chip-secondary,
-    body.theme-night .listing-collapse-toggle,
-    body.theme-night .listing-cta--call {
-      background: rgba(234, 244, 255, 0.08);
-      border-color: rgba(109, 157, 204, 0.46);
-      color: #D7E8F8;
-    }
-    body.theme-night .listing-collapse-toggle:hover,
-    body.theme-night .listing-cta--call:hover,
-    body.theme-night .board-tab:hover {
-      background: rgba(0, 88, 163, 0.28);
-      color: #FFFFFF;
-    }
-    body.theme-night .board-tab {
-      color: #AFC5DC;
-    }
     /* Custom thin scrollbars for ledger vibe */
     ::-webkit-scrollbar {
       width: 6px;
@@ -140,11 +77,6 @@
     }
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
-    }
-    @keyframes bannerScan {
-      0% { transform: translateX(-120%); opacity: 0; }
-      20%, 70% { opacity: 0.7; }
-      100% { transform: translateX(120%); opacity: 0; }
     }
     @keyframes greenBlink {
       0%, 100% {
@@ -163,44 +95,10 @@
       70% { opacity: 1; transform: translateY(-2px) scale(1.012); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    @keyframes radarGlow {
-      0%, 100% { transform: translate3d(-2%, -1%, 0) rotate(0deg); opacity: 0.18; }
-      50% { transform: translate3d(3%, 2%, 0) rotate(4deg); opacity: 0.32; }
-    }
-    @keyframes cardFloat {
-      0%, 100% { translate: 0 0; }
-      50% { translate: 0 -3px; }
-    }
-    @keyframes sparkleSweep {
-      0% { transform: translateX(-180%) rotate(18deg); }
-      100% { transform: translateX(180%) rotate(18deg); }
-    }
-    @keyframes joinPulse {
-      0%, 100% {
-        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 0 rgba(0, 194, 168, 0.34);
-      }
-      50% {
-        box-shadow: 2px 2px 0 0 rgba(0, 62, 115, 1), 0 0 0 6px rgba(0, 194, 168, 0);
-      }
-    }
-    .join-group-pulse {
-      animation: joinPulse 1.8s ease-in-out infinite;
-    }
     .live-header {
       position: relative;
       overflow: hidden;
       isolation: isolate;
-    }
-    .live-header::before {
-      content: "";
-      position: absolute;
-      inset: -20%;
-      background:
-        radial-gradient(circle at 82% 18%, rgba(0, 88, 163, 0.12), transparent 24%),
-        radial-gradient(circle at 8% 0%, rgba(0, 194, 168, 0.16), transparent 26%),
-        linear-gradient(115deg, transparent 0 45%, rgba(0, 88, 163, 0.05) 46% 48%, transparent 49%);
-      animation: radarGlow 5.5s ease-in-out infinite;
-      z-index: 0;
     }
     .pop-in {
       animation: heroPop 520ms cubic-bezier(0.2, 0.9, 0.2, 1.15) both;
@@ -217,25 +115,6 @@
       display: inline-block;
       background: #EAF4FF;
       animation: greenBlink 1.35s ease-in-out infinite;
-    }
-    .notice-stamp {
-      border: 0;
-      background: #0058A3;
-      color: #0058A3;
-      padding: 0.24rem;
-      border-radius: 0.7rem;
-      transform: rotate(-1deg);
-      box-shadow: 0 6px 18px rgba(0, 62, 115, 0.12);
-    }
-    .notice-stamp span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 1.4rem;
-      padding: 0.1rem 0.8rem;
-      border-radius: 999px;
-      background: #EAF4FF;
-      color: #0058A3;
-      font-weight: 800;
     }
     .action-ticket {
       position: relative;
@@ -269,49 +148,9 @@
       font-size: 0.86rem;
       line-height: 1.1;
     }
-    .expiry-slip {
-      position: relative;
-    }
-    .expiry-slip::after {
-      content: "";
-      position: absolute;
-      inset: 0.55rem auto 0.55rem 0;
-      width: 3px;
-      border-radius: 999px;
-      background: #0058A3;
-      opacity: 0.55;
-    }
-    .signal-rack {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      border: 1px solid rgba(0, 88, 163, 0.22);
-      background: rgba(234, 244, 255, 0.92);
-      padding: 0.25rem 0.4rem;
-      border-radius: 999px;
-    }
-    .signal-rack .green-light:nth-child(2) { animation-delay: 180ms; }
-    .signal-rack .green-light:nth-child(3) { animation-delay: 360ms; }
     .live-card {
       overflow: hidden;
       animation: heroPop 360ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards;
-    }
-    .live-card::after {
-      content: none;
-      position: absolute;
-      top: -45%;
-      left: -65%;
-      width: 40%;
-      height: 190%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.86), transparent);
-      transform: rotate(18deg);
-      animation: sparkleSweep 4.2s ease-in-out infinite;
-      pointer-events: none;
-    }
-    .live-dot-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
     }
     .listing-pop {
       animation: heroPop 430ms cubic-bezier(0.2, 0.9, 0.2, 1.12) backwards;
@@ -816,21 +655,6 @@
         0 20px 52px rgba(3, 13, 28, 0.16);
       padding: 0.85rem;
     }
-    .notice-stamp {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #FFFFFF;
-      padding: 0.18rem;
-      transform: none;
-      box-shadow: none;
-    }
-    .notice-stamp span {
-      background: #FFFFFF;
-      color: #071B3A;
-      min-height: 1.55rem;
-      padding: 0.14rem 0.78rem;
-      letter-spacing: 0.11em;
-    }
     .live-header h1,
     .live-header h4 {
       color: #FFFFFF !important;
@@ -847,18 +671,6 @@
       background: rgba(255, 255, 255, 0.11) !important;
       border-color: rgba(255, 255, 255, 0.20) !important;
       color: #FFFFFF !important;
-    }
-    .community-link {
-      background: #00B2A3 !important;
-      border-color: #0AD4C1 !important;
-      color: #031E2A !important;
-      border-radius: 999px !important;
-      box-shadow: 0 10px 22px rgba(0, 178, 163, 0.20) !important;
-      transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 260ms cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    .community-link:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(0, 178, 163, 0.26) !important;
     }
     .community-ticket {
       background: #00B2A3 !important;
@@ -942,19 +754,8 @@
       background: #00B2A3;
     }
     .find-ticket strong,
-    .find-ticket small,
-    .expiry-slip strong {
+    .find-ticket small {
       color: #FFFFFF !important;
-    }
-    .expiry-slip {
-      background: rgba(255, 255, 255, 0.10) !important;
-      border-color: rgba(255, 255, 255, 0.18) !important;
-      border-radius: 1.15rem !important;
-      box-shadow: none;
-    }
-    .expiry-slip::after {
-      background: #FF5E57;
-      opacity: 1;
     }
     /* Slim app masthead override: keep top professional and low-height */
     .live-header {
@@ -1224,21 +1025,6 @@
       border-color: #071B3A;
       color: #FFFFFF;
     }
-    body.theme-night .listing-card,
-    body.theme-night .listing-card-header,
-    body.theme-night details,
-    body.theme-night .sticky {
-      background:
-        linear-gradient(180deg, rgba(13, 31, 52, 0.98) 0%, rgba(8, 21, 34, 0.98) 100%) !important;
-    }
-    body.theme-night .board-tab.is-active,
-    body.theme-night .listing-cta--group,
-    body.theme-night .listing-chip-primary {
-      background: #EAF4FF !important;
-      border-color: #EAF4FF !important;
-      color: #071B3A !important;
-    }
-
     @media (max-width: 1120px) {
       .listing-title-row {
         grid-template-columns: 1fr;
@@ -1871,7 +1657,6 @@ ${SITE_URL}`);
 
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
-      document.body.classList.remove("theme-night");
       renderFilters();
       fetchSheetData();
     });
@@ -2234,14 +2019,6 @@ ${SITE_URL}`);
         lookingListings = [...LOCAL_LOOKING_FALLBACK];
         renderListings();
       }
-    }
-
-    function useLocalFallback() {
-      document.getElementById('error-state').classList.add('hidden');
-      document.getElementById('loader-state').classList.add('hidden');
-      rentListings = [...LOCAL_RENT_FALLBACK];
-      lookingListings = [...LOCAL_LOOKING_FALLBACK];
-      renderListings();
     }
 
     function renderSetupPending() {
