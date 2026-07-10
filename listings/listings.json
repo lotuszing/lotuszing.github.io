@@ -1,15 +1,19 @@
 {
-  "generatedAt": "2026-07-10T05:17:43.165Z",
+  "generatedAt": "2026-07-10T05:36:15.578Z",
   "skippedRows": [
     {
       "row": 2,
       "type": "looking",
-      "reason": "invalid_or_out_of_range"
+      "reasons": [
+        "budget must be ₹5,000-₹1,50,000"
+      ]
     },
     {
       "row": 3,
       "type": "rent",
-      "reason": "invalid_or_incomplete"
+      "reasons": [
+        "add both tower and flat number"
+      ]
     }
   ],
   "rentListings": [

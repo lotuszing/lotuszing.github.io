@@ -191,27 +191,49 @@ function rowToLookingListing(row, mapping, idx) {
   };
 }
 
+function rentValidationReasons(item) {
+  const reasons = [];
+  if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasTowerAndUnit(item.towerFlat)) {
+    reasons.push("add both tower and flat number");
+  }
+  if (!numberInRange(item?.monthlyRent, LIMITS.rentMin, LIMITS.rentMax)) {
+    reasons.push(`rent must be ₹${LIMITS.rentMin.toLocaleString("en-IN")}-₹${LIMITS.rentMax.toLocaleString("en-IN")}`);
+  }
+  if (!numberInRange(item?.securityDeposit, LIMITS.depositMin, LIMITS.depositMax)) {
+    reasons.push(`deposit must be ₹${LIMITS.depositMin.toLocaleString("en-IN")}-₹${LIMITS.depositMax.toLocaleString("en-IN")}`);
+  }
+  if (!hasReasonableDate(item?.availableFrom)) {
+    reasons.push("available date looks invalid");
+  }
+  if (normalizePhoneDigits(item?.contactNumber).length !== 10) {
+    reasons.push("enter a valid 10-digit phone number");
+  }
+  return reasons;
+}
+
 function isValidRentListing(item) {
-  return Boolean(
-    item &&
-    item.towerFlat &&
-    item.towerFlat !== "Unknown Unit" &&
-    hasTowerAndUnit(item.towerFlat) &&
-    numberInRange(item.monthlyRent, LIMITS.rentMin, LIMITS.rentMax) &&
-    numberInRange(item.securityDeposit, LIMITS.depositMin, LIMITS.depositMax) &&
-    hasReasonableDate(item.availableFrom) &&
-    normalizePhoneDigits(item.contactNumber).length === 10
-  );
+  return rentValidationReasons(item).length === 0;
+}
+
+function lookingValidationReasons(item) {
+  const reasons = [];
+  if (!numberInRange(item?.budget, LIMITS.budgetMin, LIMITS.budgetMax)) {
+    reasons.push(`budget must be ₹${LIMITS.budgetMin.toLocaleString("en-IN")}-₹${LIMITS.budgetMax.toLocaleString("en-IN")}`);
+  }
+  if (!numberInRange(item?.occupants, LIMITS.occupantsMin, LIMITS.occupantsMax)) {
+    reasons.push(`occupants must be ${LIMITS.occupantsMin}-${LIMITS.occupantsMax}`);
+  }
+  if (!hasReasonableDate(item?.preferredMoveIn)) {
+    reasons.push("move-in date looks invalid");
+  }
+  if (normalizePhoneDigits(item?.contactNumber).length !== 10) {
+    reasons.push("enter a valid 10-digit phone number");
+  }
+  return reasons;
 }
 
 function isValidLookingListing(item) {
-  return Boolean(
-    item &&
-    numberInRange(item.budget, LIMITS.budgetMin, LIMITS.budgetMax) &&
-    numberInRange(item.occupants, LIMITS.occupantsMin, LIMITS.occupantsMax) &&
-    hasReasonableDate(item.preferredMoveIn) &&
-    normalizePhoneDigits(item.contactNumber).length === 10
-  );
+  return lookingValidationReasons(item).length === 0;
 }
 
 async function main() {
@@ -230,12 +252,12 @@ async function main() {
     if (listingType === "rent") {
       const listing = rowToRentListing(row, mapping, idx);
       if (isValidRentListing(listing)) rentListings.push(listing);
-      else skippedRows.push({ row: idx + 2, type: "rent", reason: "invalid_or_incomplete" });
+      else skippedRows.push({ row: idx + 2, type: "rent", reasons: rentValidationReasons(listing) });
     }
     if (listingType === "looking") {
       const listing = rowToLookingListing(row, mapping, idx);
       if (isValidLookingListing(listing)) lookingListings.push(listing);
-      else skippedRows.push({ row: idx + 2, type: "looking", reason: "invalid_or_out_of_range" });
+      else skippedRows.push({ row: idx + 2, type: "looking", reasons: lookingValidationReasons(listing) });
     }
   });
 

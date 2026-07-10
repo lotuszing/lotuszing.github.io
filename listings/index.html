@@ -950,6 +950,25 @@
       font-weight: 700;
       color: #51677f;
     }
+    .data-quality-notice {
+      margin: -0.1rem 0 0.75rem;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid #BBD7F2;
+      border-radius: 0.9rem;
+      background: rgba(234, 244, 255, 0.9);
+      color: #315776;
+      font-size: 0.74rem;
+      line-height: 1.45;
+    }
+    .data-quality-notice strong {
+      color: #071B3A;
+    }
+    .data-quality-notice a {
+      color: #0058A3;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.15rem;
+    }
     @media (max-width: 640px) {
       body {
         padding-bottom: 1.5rem;
@@ -1136,6 +1155,7 @@
     </div>
 
     <div id="result-summary" class="result-summary" aria-live="polite"></div>
+    <div id="data-quality-notice" class="data-quality-notice hidden" aria-live="polite"></div>
 
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
@@ -1204,6 +1224,7 @@
     let rentListings = [];
     let lookingListings = [];
     let lastDataUpdatedAt = "";
+    let skippedRows = [];
     let renderDebounceTimer = null;
     
     // Configs
@@ -1410,6 +1431,37 @@
         hasReasonableDate(item.preferredMoveIn) &&
         normalizePhoneDigits(item.contactNumber).length === 10
       );
+    }
+
+    function summarizeSkippedRows(rows) {
+      const reasonCounts = new Map();
+      rows.forEach((row) => {
+        const reasons = Array.isArray(row.reasons) && row.reasons.length ? row.reasons : [row.reason || "details need correction"];
+        reasons.forEach((reason) => {
+          reasonCounts.set(reason, (reasonCounts.get(reason) || 0) + 1);
+        });
+      });
+      return Array.from(reasonCounts.entries())
+        .map(([reason, count]) => `${count} ${count === 1 ? "post" : "posts"}: ${reason}`)
+        .slice(0, 4);
+    }
+
+    function renderDataQualityNotice() {
+      const notice = document.getElementById("data-quality-notice");
+      if (!notice) return;
+      if (!skippedRows.length) {
+        notice.classList.add("hidden");
+        notice.innerHTML = "";
+        return;
+      }
+      const lines = summarizeSkippedRows(skippedRows);
+      notice.innerHTML = `
+        <strong>${skippedRows.length} ${skippedRows.length === 1 ? "submission needs" : "submissions need"} correction.</strong>
+        ${escapeHtml(lines.join(" · "))}.
+        If this was yours, fix it in the form and submit again. Valid posts appear after cache refresh.
+        <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener noreferrer">Re-submit</a>
+      `;
+      notice.classList.remove("hidden");
     }
 
     function escapeHtml(value) {
@@ -2090,6 +2142,7 @@ ${SITE_URL}`);
       const rows = parseCSV(csvText);
       rentListings = [];
       lookingListings = [];
+      skippedRows = [];
       if (rows.length > 1) {
         const mapping = mapHeaders(rows[0]);
         rows.slice(1).forEach((row, idx) => {
@@ -2109,6 +2162,7 @@ ${SITE_URL}`);
     function applyListingsPayload(payload) {
       rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
       lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
+      skippedRows = Array.isArray(payload?.skippedRows) ? payload.skippedRows : [];
       lastDataUpdatedAt = payload?.generatedAt || "";
       cleanupListings();
     }
@@ -2207,6 +2261,8 @@ ${SITE_URL}`);
       document.getElementById('error-state').classList.add('hidden');
       document.getElementById('loader-state').classList.add('hidden');
       setResultSummary(0, "");
+      skippedRows = [];
+      renderDataQualityNotice();
       rentListings = [];
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
@@ -2294,6 +2350,7 @@ ${SITE_URL}`;
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = '';
       updateTabCounts();
+      renderDataQualityNotice();
 
       if (!hasSheetConfig() && rentListings.length === 0 && lookingListings.length === 0) {
         renderSetupPending();
