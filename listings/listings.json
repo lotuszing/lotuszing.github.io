@@ -1,38 +1,5 @@
 {
-  "generatedAt": "2026-07-10T21:45:35.216Z",
-  "rentListings": [
-    {
-      "id": "sheet-rent-xVNyZlv",
-      "timestamp": "2026-07-10 4:41:34",
-      "towerFlat": "Tower 6, 603",
-      "bhkType": "3 BHK",
-      "furnishing": "Fully furnished",
-      "monthlyRent": 25000,
-      "securityDeposit": 30000,
-      "availableFrom": "2026-10-21",
-      "preferredTenant": "Bachelors (Women)",
-      "parking": "Yes",
-      "listedBy": "Owner",
-      "posterName": "Shailansh Gaur",
-      "contactNumber": "919897359581",
-      "notes": ""
-    },
-    {
-      "id": "sheet-rent-KpBDLgX",
-      "timestamp": "2026-07-10 4:47:58",
-      "towerFlat": "Tower 7, 2301",
-      "bhkType": "3 BHK",
-      "furnishing": "Fully furnished",
-      "monthlyRent": 35000,
-      "securityDeposit": 30000,
-      "availableFrom": "2026-07-01",
-      "preferredTenant": "Any",
-      "parking": "Yes",
-      "listedBy": "Owner",
-      "posterName": "Devansh",
-      "contactNumber": "919458451695",
-      "notes": ""
-    }
-  ],
+  "generatedAt": "2026-07-10T22:11:24.020Z",
+  "rentListings": [],
   "lookingListings": []
 }
