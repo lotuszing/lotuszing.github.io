@@ -11,7 +11,7 @@
   <!-- Font Imports -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=DM+Mono:wght@500&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -1116,7 +1116,7 @@
               <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing listings home">Lotus Zing</a>
             </h1>
             <span id="refresh-counter" class="refresh-counter">Live sync</span>
-            <p class="header-subcopy">Tenants find flats. Owners find verified resident leads.</p>
+            <p class="header-subcopy">Tenants find flats. Owners find resident-posted requests.</p>
           </div>
           <span id="sync-status" hidden>Checking</span>
         </div>
@@ -1151,7 +1151,7 @@
         <span id="rent-count" class="board-tab-count">0</span>
       </button>
       <button onclick="switchTab('looking')" id="tab-looking-btn" class="board-tab">
-        <span class="board-tab-label">Tenants</span>
+        <span class="board-tab-label">Tenant Requests</span>
         <span id="looking-count" class="board-tab-count">0</span>
       </button>
     </div>
@@ -1219,7 +1219,7 @@
       <span class="green-light" aria-hidden="true"></span>
       <h4 class="font-display font-bold text-slate-950 text-sm">About this board</h4>
       <p class="text-xs text-slate-600 leading-relaxed max-w-lg">
-        Built by a resident to keep flat listings easy to share. Please verify ownership, broker terms, and agreement before payment.
+        Built by a resident to keep flat listings easy to share. Posts are public and may include phone numbers, so share only details you are comfortable publishing. Please verify ownership, broker terms, and agreement before payment.
       </p>
       <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.12em] mt-2">
         Sector 168, Noida, UP, India
@@ -1233,6 +1233,7 @@
     let activeTab = 'rent';
     let rentListings = [];
     let lookingListings = [];
+    let lastDataUpdatedAt = "";
     let renderDebounceTimer = null;
     
     // Configs
@@ -1442,6 +1443,17 @@
         day: "2-digit",
         month: "short",
         year: "numeric"
+      }).format(parsed);
+    }
+
+    function formatUpdatedLabel(value) {
+      const parsed = safeParseDate(value);
+      if (!parsed) return syncTimeLabel();
+      return new Intl.DateTimeFormat("en-IN", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
       }).format(parsed);
     }
 
@@ -1868,12 +1880,32 @@ ${SITE_URL}`);
       return `No flats${filterText} found. Try clearing one chip, or post your requirement so owners can contact you.`;
     }
 
+    function hasActiveRentFilters() {
+      return Boolean(
+        rentFilters.search.trim() ||
+        rentFilters.bhk !== "All" ||
+        rentFilters.budget !== "All" ||
+        rentFilters.tenant !== "All" ||
+        rentFilters.parking !== "All" ||
+        rentFilters.ownerOnly ||
+        rentFilters.availableNow
+      );
+    }
+
     function lookingEmptyMessage() {
       const parts = [];
       if (lookingFilters.bhk !== "All") parts.push(lookingFilters.bhk);
       if (lookingFilters.tenant !== "All") parts.push(lookingFilters.tenant === "family" ? "family" : "bachelors");
       const filterText = parts.length ? ` for ${parts.join(", ")}` : "";
       return `No tenant requests${filterText} found. Try another layout or list your flat so matching tenants can reach you.`;
+    }
+
+    function hasActiveLookingFilters() {
+      return Boolean(
+        lookingFilters.search.trim() ||
+        lookingFilters.bhk !== "All" ||
+        lookingFilters.tenant !== "All"
+      );
     }
 
     // CSV parsing state-machine
@@ -2043,6 +2075,7 @@ ${SITE_URL}`);
     function applyListingsPayload(payload) {
       rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings : [];
       lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings : [];
+      lastDataUpdatedAt = payload?.generatedAt || "";
       cleanupListings();
     }
 
@@ -2065,7 +2098,7 @@ ${SITE_URL}`);
         const payload = await fetchJsonWithTimeout(DATA_JSON_URL);
         applyListingsPayload(payload);
         loader.classList.add('hidden');
-        setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
+        setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
         renderedCache = true;
       } catch (err) {
@@ -2262,7 +2295,13 @@ ${SITE_URL}`;
         setResultSummary(filtered.length, filtered.length === 1 ? "flat" : "flats");
 
         if (filtered.length === 0) {
-          renderEmptyState(rentEmptyMessage());
+          if (rentListings.length === 0) {
+            renderEmptyState("No flats are live right now. Post your requirement so owners can contact you.", "No flats yet", "Board empty", false);
+          } else if (hasActiveRentFilters()) {
+            renderEmptyState(rentEmptyMessage(), "No matching flats", "Filtered", true);
+          } else {
+            renderEmptyState("No active flats right now. New posts auto-expire after 30 days to keep the board clean.", "No active flats", "Empty", false);
+          }
           return;
         }
 
@@ -2296,7 +2335,13 @@ ${SITE_URL}`;
         setResultSummary(filtered.length, filtered.length === 1 ? "tenant request" : "tenant requests");
 
         if (filtered.length === 0) {
-          renderEmptyState(lookingEmptyMessage());
+          if (lookingListings.length === 0) {
+            renderEmptyState("No tenant requests are live right now. List your flat, or invite tenants to post what they need.", "No requests yet", "Board empty", false);
+          } else if (hasActiveLookingFilters()) {
+            renderEmptyState(lookingEmptyMessage(), "No matching requests", "Filtered", true);
+          } else {
+            renderEmptyState("No active tenant requests right now. Requests auto-expire after 30 days to keep leads fresh.", "No active requests", "Empty", false);
+          }
           return;
         }
 
@@ -2307,14 +2352,14 @@ ${SITE_URL}`;
     }
 
     // Render Empty State inside Grid
-    function renderEmptyState(message) {
+    function renderEmptyState(message, title = "No matches", label = "Empty", showClear = true) {
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-white p-12 text-center max-w-md mx-auto my-6 space-y-4">
-          <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">Empty</span>
-          <h3 class="font-display font-bold text-slate-800 text-lg">No matches</h3>
+          <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">${escapeHtml(label)}</span>
+          <h3 class="font-display font-bold text-slate-800 text-lg">${escapeHtml(title)}</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
-          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>
+          ${showClear ? '<button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>' : ''}
         </div>
       `;
     }
