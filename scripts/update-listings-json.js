@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
+const CSV_URL = process.env.SHEET_CSV_URL;
 const OUT_FILE = path.join(__dirname, "..", "listings", "listings.json");
 const LIMITS = {
   rentMin: 5000,
@@ -237,6 +237,10 @@ function isValidLookingListing(item) {
 }
 
 async function main() {
+  if (!CSV_URL) {
+    throw new Error("Missing SHEET_CSV_URL. Add it as a GitHub Actions secret before running the sync.");
+  }
+
   const response = await fetch(`${CSV_URL}&v=${Date.now()}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`CSV fetch failed: ${response.status}`);
 
@@ -263,13 +267,15 @@ async function main() {
 
   const payload = {
     generatedAt: new Date().toISOString(),
-    skippedRows,
     rentListings,
     lookingListings
   };
 
   fs.writeFileSync(OUT_FILE, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(`Updated ${OUT_FILE}: ${rentListings.length} flats, ${lookingListings.length} tenant requests, ${skippedRows.length} skipped`);
+  if (skippedRows.length) {
+    console.log(`Skipped rows: ${JSON.stringify(skippedRows)}`);
+  }
 }
 
 main().catch((error) => {

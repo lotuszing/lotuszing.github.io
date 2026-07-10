@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
   
@@ -817,6 +817,27 @@
       text-decoration: none;
       display: inline-block;
     }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 0.68rem;
+      flex-wrap: wrap;
+    }
+    .brand-purpose {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.6rem;
+      padding: 0.28rem 0.62rem;
+      border: 1px solid #BBD7F2;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #0058A3;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transform: translateY(0.1rem);
+    }
     .home-brand-link:focus-visible {
       outline: 3px solid rgba(0, 88, 163, 0.28);
       outline-offset: 3px;
@@ -989,19 +1010,6 @@
       font-weight: 800;
       letter-spacing: 0.02em;
     }
-    .admin-debug {
-      margin: 0 0 0.8rem;
-      padding: 0.75rem 0.85rem;
-      border: 1px dashed #BBD7F2;
-      border-radius: 0.9rem;
-      background: rgba(255, 255, 255, 0.86);
-      color: #48617D;
-      font-size: 0.72rem;
-      line-height: 1.45;
-    }
-    .admin-debug strong {
-      color: #071B3A;
-    }
     @media (max-width: 640px) {
       body {
         padding-bottom: 1.5rem;
@@ -1138,11 +1146,14 @@
       <div class="hero-panel">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
-              <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing listings home">Lotus Zing</a>
-            </h1>
+            <div class="brand-row">
+              <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
+                <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing flat board home">Lotus Zing</a>
+              </h1>
+              <span class="brand-purpose">Flat Board</span>
+            </div>
             <span id="refresh-counter" class="refresh-counter">Checking cache</span>
-            <p class="header-subcopy">Tenants find flats. Owners find resident-posted requests. New posts usually appear within 10-20 min.</p>
+            <p class="header-subcopy">Resident flat listings and tenant requests, refreshed from verified form submissions.</p>
           </div>
           <span id="sync-status" hidden>Checking</span>
         </div>
@@ -1196,7 +1207,6 @@
       <button id="copy-digest-btn" type="button" onclick="copyCurrentDigest(this)" class="utility-action">Copy digest</button>
       <button id="copy-link-btn" type="button" onclick="copyCurrentViewLink(this)" class="utility-action">Copy view link</button>
     </div>
-    <div id="admin-debug" class="admin-debug hidden"></div>
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
       <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
@@ -1264,7 +1274,6 @@
     let rentListings = [];
     let lookingListings = [];
     let lastDataUpdatedAt = "";
-    let skippedRows = [];
     let renderDebounceTimer = null;
     
     // Configs
@@ -1272,12 +1281,7 @@
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t";
     const SITE_URL = "https://lotuszing.github.io/listings/";
     const DATA_JSON_URL = "./listings.json";
-    const COMBINED_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
-    const RENT_CSV_URL = "";
-    const LOOKING_CSV_URL = "";
-    const SHEET_CACHE_KEY = "lotus-zing-listings-csv-v1";
     const SHEET_TIMEOUT_MS = 8000;
-    const CLIENT_SHEET_REFRESH = false;
     const VALUE_LIMITS = {
       rentMin: 5000,
       rentMax: 150000,
@@ -1290,44 +1294,6 @@
       datePastDays: 120,
       dateFutureDays: 730
     };
-
-    function hasSheetConfig() {
-      return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
-    }
-
-    function sheetFetchUrl(url) {
-      const separator = url.includes("?") ? "&" : "?";
-      return `${url}${separator}v=${Date.now()}`;
-    }
-
-    function readSheetCache() {
-      try {
-        const cached = JSON.parse(localStorage.getItem(SHEET_CACHE_KEY) || "null");
-        return cached?.text ? cached : null;
-      } catch (err) {
-        return null;
-      }
-    }
-
-    function writeSheetCache(text) {
-      try {
-        localStorage.setItem(SHEET_CACHE_KEY, JSON.stringify({ text, savedAt: Date.now() }));
-      } catch (err) {
-        // Cache is a speed optimization only; ignore private-mode quota failures.
-      }
-    }
-
-    async function fetchTextWithTimeout(url) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
-      try {
-        const response = await fetch(url, { cache: "no-store", signal: controller.signal });
-        if (!response.ok) throw new Error(`Sheet fetch failed: ${response.status}`);
-        return await response.text();
-      } finally {
-        clearTimeout(timeout);
-      }
-    }
 
     async function fetchJsonWithTimeout(url) {
       const controller = new AbortController();
@@ -2248,122 +2214,30 @@ ${SITE_URL}`);
       return towers.length ? towers.join(", ") : raw;
     }
 
-    function applyCombinedCsv(csvText) {
-      const rows = parseCSV(csvText);
-      rentListings = [];
-      lookingListings = [];
-      skippedRows = [];
-      if (rows.length > 1) {
-        const mapping = mapHeaders(rows[0]);
-        rows.slice(1).forEach((row, idx) => {
-          const listingType = classifyListingRow(row, mapping);
-          if (listingType === "rent") {
-            const listing = rowToRentListing(row, mapping, idx);
-            if (isValidRentListing(listing)) rentListings.push(listing);
-          } else if (listingType === "looking") {
-            const listing = rowToLookingListing(row, mapping, idx);
-            if (isValidLookingListing(listing)) lookingListings.push(listing);
-          }
-        });
-      }
-      cleanupListings();
-    }
-
     function applyListingsPayload(payload) {
       rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
       lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
-      skippedRows = Array.isArray(payload?.skippedRows) ? payload.skippedRows : [];
       lastDataUpdatedAt = payload?.generatedAt || "";
       cleanupListings();
     }
 
-    // Async Fetch Sheet data
+    // Public clients only read the sanitized JSON cache. Raw Sheet access stays server-side.
     async function fetchSheetData() {
-      if (!hasSheetConfig()) {
-        setSyncStatus(`No sheet ${syncTimeLabel()}`, "idle");
-        renderSetupPending();
-        return;
-      }
-
       const loader = document.getElementById('loader-state');
       const errorDiv = document.getElementById('error-state');
-      const grid = document.getElementById('listings-grid');
-      const cachedSheet = COMBINED_CSV_URL ? readSheetCache() : null;
-      let renderedCache = false;
 
       errorDiv.classList.add('hidden');
+      loader.classList.remove('hidden');
       try {
         const payload = await fetchJsonWithTimeout(DATA_JSON_URL);
         applyListingsPayload(payload);
         loader.classList.add('hidden');
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
-        renderedCache = true;
       } catch (err) {
-        // Same-origin JSON is a performance cache; fall through to localStorage or sheet.
-      }
-
-      if (!renderedCache && cachedSheet) {
-        applyCombinedCsv(cachedSheet.text);
         loader.classList.add('hidden');
-        setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
-        renderListings();
-        renderedCache = true;
-      } else if (!renderedCache) {
-        loader.classList.remove('hidden');
-        grid.innerHTML = '';
-      }
-
-      if (!CLIENT_SHEET_REFRESH) {
-        if (!renderedCache) {
-          loader.classList.add('hidden');
-          renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
-        }
-        return;
-      }
-
-      try {
-        if (COMBINED_CSV_URL) {
-          const combinedCsv = await fetchTextWithTimeout(sheetFetchUrl(COMBINED_CSV_URL));
-          writeSheetCache(combinedCsv);
-          applyCombinedCsv(combinedCsv);
-          loader.classList.add('hidden');
-          setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
-          renderListings();
-          return;
-        }
-
-        const [rentRes, lookingRes] = await Promise.all([
-          fetchTextWithTimeout(sheetFetchUrl(RENT_CSV_URL)),
-          fetchTextWithTimeout(sheetFetchUrl(LOOKING_CSV_URL))
-        ]);
-
-        // Process Rent Listings
-        const rentRows = parseCSV(rentRes);
-        if (rentRows.length > 1) {
-          const mapping = mapHeaders(rentRows[0]);
-          rentListings = rentRows.slice(1).map((row, idx) => rowToRentListing(row, mapping, idx));
-        }
-
-        // Process Looking Listings
-        const lookingRows = parseCSV(lookingRes);
-        if (lookingRows.length > 1) {
-          const mapping = mapHeaders(lookingRows[0]);
-          lookingListings = lookingRows.slice(1).map((row, idx) => rowToLookingListing(row, mapping, idx));
-        }
-        cleanupListings();
-
-        loader.classList.add('hidden');
-        setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
-        renderListings();
-
-      } catch (err) {
-        console.error("Failed to connect to published sheets:", err);
-        loader.classList.add('hidden');
-        setSyncStatus(`Sheet unavailable ${syncTimeLabel()}`, "error");
-        if (!renderedCache) {
-          renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
-        }
+        setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
+        renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
       }
     }
 
@@ -2486,12 +2360,6 @@ ${SITE_URL}`;
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = '';
       updateTabCounts();
-      renderAdminDebug();
-
-      if (!hasSheetConfig() && rentListings.length === 0 && lookingListings.length === 0) {
-        renderSetupPending();
-        return;
-      }
 
       if (activeTab === 'rent') {
         let filtered = filteredRentListings();
@@ -2554,27 +2422,6 @@ ${SITE_URL}`;
       renderListings();
     }
 
-    function renderAdminDebug() {
-      const debug = document.getElementById("admin-debug");
-      if (!debug) return;
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("admin") !== "1") {
-        debug.classList.add("hidden");
-        debug.innerHTML = "";
-        return;
-      }
-      if (!skippedRows.length) {
-        debug.innerHTML = "<strong>Admin:</strong> no rejected rows in latest cache.";
-        debug.classList.remove("hidden");
-        return;
-      }
-      const lines = skippedRows.map((row) => {
-        const reasons = Array.isArray(row.reasons) ? row.reasons.join(", ") : (row.reason || "needs correction");
-        return `Row ${row.row} (${row.type}): ${reasons}`;
-      }).join("<br>");
-      debug.innerHTML = `<strong>Admin rejected rows:</strong><br>${escapeHtml(lines).replace(/&lt;br&gt;/g, "<br>")}`;
-      debug.classList.remove("hidden");
-    }
   </script>
 </body>
 </html>

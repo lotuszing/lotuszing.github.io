@@ -21,6 +21,8 @@ jobs:
           node-version: "20"
 
       - name: Generate listings JSON
+        env:
+          SHEET_CSV_URL: ${{ secrets.SHEET_CSV_URL }}
         run: node scripts/update-listings-json.js
 
       - name: Commit updated listings
