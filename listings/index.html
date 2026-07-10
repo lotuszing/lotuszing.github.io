@@ -6,6 +6,7 @@
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
   
   <!-- Font Imports -->
@@ -971,6 +972,36 @@
       font-size: 0.78rem;
       line-height: 1.48;
     }
+    .utility-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      margin: -0.2rem 0 0.75rem;
+    }
+    .utility-action {
+      min-height: 2rem;
+      padding: 0.38rem 0.68rem;
+      border: 1px solid #BBD7F2;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0058A3;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .admin-debug {
+      margin: 0 0 0.8rem;
+      padding: 0.75rem 0.85rem;
+      border: 1px dashed #BBD7F2;
+      border-radius: 0.9rem;
+      background: rgba(255, 255, 255, 0.86);
+      color: #48617D;
+      font-size: 0.72rem;
+      line-height: 1.45;
+    }
+    .admin-debug strong {
+      color: #071B3A;
+    }
     @media (max-width: 640px) {
       body {
         padding-bottom: 1.5rem;
@@ -1161,6 +1192,11 @@
       <strong>Post received. You can breathe.</strong>
       <p>If details are valid, it usually appears here within 10-20 min. If it does not show, check phone number, tower+flat, rent/budget range, and date, then submit again.</p>
     </div>
+    <div class="utility-actions">
+      <button id="copy-digest-btn" type="button" onclick="copyCurrentDigest(this)" class="utility-action">Copy digest</button>
+      <button id="copy-link-btn" type="button" onclick="copyCurrentViewLink(this)" class="utility-action">Copy view link</button>
+    </div>
+    <div id="admin-debug" class="admin-debug hidden"></div>
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
       <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
@@ -1228,6 +1264,7 @@
     let rentListings = [];
     let lookingListings = [];
     let lastDataUpdatedAt = "";
+    let skippedRows = [];
     let renderDebounceTimer = null;
     
     // Configs
@@ -1701,7 +1738,9 @@ ${SITE_URL}`);
 
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
+      hydrateStateFromUrl();
       renderSubmitReassurance();
+      updateActiveTabButtons();
       renderFilters();
       fetchSheetData();
     });
@@ -1719,17 +1758,69 @@ ${SITE_URL}`);
       
       const tabRentBtn = document.getElementById('tab-rent-btn');
       const tabLookingBtn = document.getElementById('tab-looking-btn');
-      
-      if (tab === 'rent') {
+      updateActiveTabButtons();
+      renderFilters();
+      syncUrlFromState();
+      renderListings();
+    }
+
+    function updateActiveTabButtons() {
+      const tabRentBtn = document.getElementById('tab-rent-btn');
+      const tabLookingBtn = document.getElementById('tab-looking-btn');
+      if (!tabRentBtn || !tabLookingBtn) return;
+      if (activeTab === 'rent') {
         tabRentBtn.className = "board-tab is-active";
         tabLookingBtn.className = "board-tab";
       } else {
         tabRentBtn.className = "board-tab";
         tabLookingBtn.className = "board-tab is-active";
       }
-      
-      renderFilters();
-      renderListings();
+    }
+
+    function hydrateStateFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      if (tab === "looking" || tab === "rent") activeTab = tab;
+
+      rentFilters.search = params.get("q") || rentFilters.search;
+      rentFilters.bhk = params.get("bhk") || rentFilters.bhk;
+      rentFilters.budget = params.get("budget") || rentFilters.budget;
+      rentFilters.tenant = params.get("tenant") || rentFilters.tenant;
+      rentFilters.parking = params.get("parking") || rentFilters.parking;
+      rentFilters.ownerOnly = params.get("owner") === "1";
+      rentFilters.availableNow = params.get("now") === "1";
+
+      lookingFilters.search = params.get("q") || lookingFilters.search;
+      lookingFilters.bhk = params.get("bhk") || lookingFilters.bhk;
+      lookingFilters.tenant = params.get("tenant") || lookingFilters.tenant;
+    }
+
+    function syncUrlFromState() {
+      const params = new URLSearchParams(window.location.search);
+      const admin = params.get("admin");
+      params.delete("tab");
+      params.delete("q");
+      params.delete("bhk");
+      params.delete("budget");
+      params.delete("tenant");
+      params.delete("parking");
+      params.delete("owner");
+      params.delete("now");
+
+      params.set("tab", activeTab);
+      const filters = activeTab === "rent" ? rentFilters : lookingFilters;
+      if (filters.search.trim()) params.set("q", filters.search.trim());
+      if (filters.bhk !== "All") params.set("bhk", filters.bhk);
+      if (filters.tenant !== "All") params.set("tenant", filters.tenant);
+      if (activeTab === "rent") {
+        if (rentFilters.budget !== "All") params.set("budget", rentFilters.budget);
+        if (rentFilters.parking !== "All") params.set("parking", rentFilters.parking);
+        if (rentFilters.ownerOnly) params.set("owner", "1");
+        if (rentFilters.availableNow) params.set("now", "1");
+      }
+      if (admin) params.set("admin", admin);
+      const query = params.toString();
+      history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
     }
 
     function updateTabCounts() {
@@ -1844,6 +1935,7 @@ ${SITE_URL}`);
       } else {
         lookingFilters[key] = value;
       }
+      syncUrlFromState();
       if (key === "search") {
         clearTimeout(renderDebounceTimer);
         renderDebounceTimer = setTimeout(renderListings, 150);
@@ -1855,12 +1947,14 @@ ${SITE_URL}`);
     function toggleOwnerOnly() {
       rentFilters.ownerOnly = !rentFilters.ownerOnly;
       renderFilters();
+      syncUrlFromState();
       renderListings();
     }
 
     function toggleAvailableNow() {
       rentFilters.availableNow = !rentFilters.availableNow;
       renderFilters();
+      syncUrlFromState();
       renderListings();
     }
 
@@ -1893,6 +1987,42 @@ ${SITE_URL}`);
 
     function newestFirst(a, b) {
       return new Date(b.timestamp) - new Date(a.timestamp);
+    }
+
+    function filteredRentListings() {
+      const query = rentFilters.search.toLowerCase().trim();
+      return rentListings.filter(item => {
+        const { isExpired } = getExpiryInfo(item.timestamp);
+        if (isExpired) return false;
+        const matchSearch = item.towerFlat.toLowerCase().includes(query) ||
+                            item.notes.toLowerCase().includes(query) ||
+                            item.posterName.toLowerCase().includes(query) ||
+                            item.bhkType.toLowerCase().includes(query);
+        const matchOwner = !rentFilters.ownerOnly || item.listedBy.toLowerCase().includes("owner");
+        const matchBhk = rentFilters.bhk === 'All' || item.bhkType.toLowerCase() === rentFilters.bhk.toLowerCase();
+        const matchAvailableNow = !rentFilters.availableNow || isAvailableNow(item.availableFrom);
+        const matchBudget = matchesBudgetBand(item.monthlyRent, rentFilters.budget);
+        const matchTenant = matchesTenantType(item.preferredTenant, rentFilters.tenant);
+        const matchParking = rentFilters.parking === "All" || item.parking.toLowerCase().includes("yes");
+        return matchSearch && matchBhk && matchOwner && matchAvailableNow && matchBudget && matchTenant && matchParking;
+      }).sort((a, b) => (rankRentListing(b) - rankRentListing(a)) || newestFirst(a, b));
+    }
+
+    function filteredLookingListings() {
+      const query = lookingFilters.search.toLowerCase().trim();
+      const queryDigits = query.replace(/[^\d]/g, "");
+      return lookingListings.filter(item => {
+        const { isExpired } = getExpiryInfo(item.timestamp);
+        if (isExpired) return false;
+        const matchSearch = item.posterName.toLowerCase().includes(query) ||
+                            item.notes.toLowerCase().includes(query) ||
+                            item.preferredArea.toLowerCase().includes(query) ||
+                            item.preferredBhk.toLowerCase().includes(query) ||
+                            (queryDigits && String(item.budget).includes(queryDigits));
+        const matchBhk = lookingFilters.bhk === 'All' || item.preferredBhk.toLowerCase() === lookingFilters.bhk.toLowerCase();
+        const matchTenant = matchesTenantType(item.tenantType, lookingFilters.tenant);
+        return matchSearch && matchBhk && matchTenant;
+      }).sort((a, b) => (rankLookingListing(b) - rankLookingListing(a)) || newestFirst(a, b));
     }
 
     function dedupeByNewest(items, keyFn) {
@@ -2122,6 +2252,7 @@ ${SITE_URL}`);
       const rows = parseCSV(csvText);
       rentListings = [];
       lookingListings = [];
+      skippedRows = [];
       if (rows.length > 1) {
         const mapping = mapHeaders(rows[0]);
         rows.slice(1).forEach((row, idx) => {
@@ -2141,6 +2272,7 @@ ${SITE_URL}`);
     function applyListingsPayload(payload) {
       rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
       lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
+      skippedRows = Array.isArray(payload?.skippedRows) ? payload.skippedRows : [];
       lastDataUpdatedAt = payload?.generatedAt || "";
       cleanupListings();
     }
@@ -2311,6 +2443,34 @@ ${SITE_URL}`;
       if (item) copyToClipboard(lookingShareText(item), button);
     }
 
+    function currentVisibleItems() {
+      return activeTab === "rent" ? filteredRentListings() : filteredLookingListings();
+    }
+
+    function currentDigestText() {
+      const items = currentVisibleItems().slice(0, 5);
+      const title = activeTab === "rent" ? "*Lotus Zing flats digest*" : "*Lotus Zing tenant requests digest*";
+      if (!items.length) {
+        return `${title}\nNo active matches right now.\n\n${window.location.href}`;
+      }
+      const lines = items.map((item, index) => {
+        if (activeTab === "rent") {
+          return `${index + 1}. ${item.bhkType} ${item.towerFlat} - ${formatCurrency(item.monthlyRent)}/mo - ${item.listedBy}`;
+        }
+        return `${index + 1}. ${item.preferredBhk} request - ${formatCurrency(item.budget)}/mo - ${item.preferredArea}`;
+      });
+      return `${title}\n${lines.join("\n")}\n\nOpen filtered view:\n${window.location.href}`;
+    }
+
+    function copyCurrentDigest(button) {
+      copyToClipboard(currentDigestText(), button);
+    }
+
+    function copyCurrentViewLink(button) {
+      syncUrlFromState();
+      copyToClipboard(window.location.href, button);
+    }
+
     function shareRentWhatsapp(idx) {
       const item = rentListings[idx];
       if (item) openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(rentShareText(item)));
@@ -2326,6 +2486,7 @@ ${SITE_URL}`;
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = '';
       updateTabCounts();
+      renderAdminDebug();
 
       if (!hasSheetConfig() && rentListings.length === 0 && lookingListings.length === 0) {
         renderSetupPending();
@@ -2333,31 +2494,7 @@ ${SITE_URL}`;
       }
 
       if (activeTab === 'rent') {
-        const query = rentFilters.search.toLowerCase().trim();
-        
-        let filtered = rentListings.filter(item => {
-          // Exclude expired (30 days age limit)
-          const { isExpired } = getExpiryInfo(item.timestamp);
-          if (isExpired) return false;
-
-          // Search matching
-          const matchSearch = item.towerFlat.toLowerCase().includes(query) || 
-                              item.notes.toLowerCase().includes(query) || 
-                              item.posterName.toLowerCase().includes(query) ||
-                              item.bhkType.toLowerCase().includes(query);
-          
-          // Owner Only
-          const matchOwner = !rentFilters.ownerOnly || item.listedBy.toLowerCase().includes("owner");
-          const matchBhk = rentFilters.bhk === 'All' || item.bhkType.toLowerCase() === rentFilters.bhk.toLowerCase();
-          const matchAvailableNow = !rentFilters.availableNow || isAvailableNow(item.availableFrom);
-          const matchBudget = matchesBudgetBand(item.monthlyRent, rentFilters.budget);
-          const matchTenant = matchesTenantType(item.preferredTenant, rentFilters.tenant);
-          const matchParking = rentFilters.parking === "All" || item.parking.toLowerCase().includes("yes");
-
-          return matchSearch && matchBhk && matchOwner && matchAvailableNow && matchBudget && matchTenant && matchParking;
-        });
-
-        filtered.sort((a, b) => (rankRentListing(b) - rankRentListing(a)) || newestFirst(a, b));
+        let filtered = filteredRentListings();
         setResultSummary(filtered.length, filtered.length === 1 ? "flat" : "flats");
 
         if (filtered.length === 0) {
@@ -2376,28 +2513,7 @@ ${SITE_URL}`;
         });
 
       } else {
-        const query = lookingFilters.search.toLowerCase().trim();
-        const queryDigits = query.replace(/[^\d]/g, "");
-        
-        let filtered = lookingListings.filter(item => {
-          // Exclude expired (30 days age limit)
-          const { isExpired } = getExpiryInfo(item.timestamp);
-          if (isExpired) return false;
-
-          // Search matching
-          const matchSearch = item.posterName.toLowerCase().includes(query) || 
-                              item.notes.toLowerCase().includes(query) || 
-                              item.preferredArea.toLowerCase().includes(query) ||
-                              item.preferredBhk.toLowerCase().includes(query) ||
-                              (queryDigits && String(item.budget).includes(queryDigits));
-          
-          const matchBhk = lookingFilters.bhk === 'All' || item.preferredBhk.toLowerCase() === lookingFilters.bhk.toLowerCase();
-          const matchTenant = matchesTenantType(item.tenantType, lookingFilters.tenant);
-
-          return matchSearch && matchBhk && matchTenant;
-        });
-
-        filtered.sort((a, b) => (rankLookingListing(b) - rankLookingListing(a)) || newestFirst(a, b));
+        let filtered = filteredLookingListings();
         setResultSummary(filtered.length, filtered.length === 1 ? "tenant request" : "tenant requests");
 
         if (filtered.length === 0) {
@@ -2433,8 +2549,31 @@ ${SITE_URL}`;
     function resetFiltersAndReload() {
       rentFilters = { search: '', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false };
       lookingFilters = { search: '', bhk: 'All', tenant: 'All' };
+      syncUrlFromState();
       renderFilters();
       renderListings();
+    }
+
+    function renderAdminDebug() {
+      const debug = document.getElementById("admin-debug");
+      if (!debug) return;
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("admin") !== "1") {
+        debug.classList.add("hidden");
+        debug.innerHTML = "";
+        return;
+      }
+      if (!skippedRows.length) {
+        debug.innerHTML = "<strong>Admin:</strong> no rejected rows in latest cache.";
+        debug.classList.remove("hidden");
+        return;
+      }
+      const lines = skippedRows.map((row) => {
+        const reasons = Array.isArray(row.reasons) ? row.reasons.join(", ") : (row.reason || "needs correction");
+        return `Row ${row.row} (${row.type}): ${reasons}`;
+      }).join("<br>");
+      debug.innerHTML = `<strong>Admin rejected rows:</strong><br>${escapeHtml(lines).replace(/&lt;br&gt;/g, "<br>")}`;
+      debug.classList.remove("hidden");
     }
   </script>
 </body>
