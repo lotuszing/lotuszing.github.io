@@ -1242,6 +1242,8 @@
     const COMBINED_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
+    const SHEET_CACHE_KEY = "lotus-zing-listings-csv-v1";
+    const SHEET_TIMEOUT_MS = 8000;
 
     function hasSheetConfig() {
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
@@ -1250,6 +1252,35 @@
     function sheetFetchUrl(url) {
       const separator = url.includes("?") ? "&" : "?";
       return `${url}${separator}v=${Date.now()}`;
+    }
+
+    function readSheetCache() {
+      try {
+        const cached = JSON.parse(localStorage.getItem(SHEET_CACHE_KEY) || "null");
+        return cached?.text ? cached : null;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function writeSheetCache(text) {
+      try {
+        localStorage.setItem(SHEET_CACHE_KEY, JSON.stringify({ text, savedAt: Date.now() }));
+      } catch (err) {
+        // Cache is a speed optimization only; ignore private-mode quota failures.
+      }
+    }
+
+    async function fetchTextWithTimeout(url) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
+      try {
+        const response = await fetch(url, { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error(`Sheet fetch failed: ${response.status}`);
+        return await response.text();
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     function cleanPhoneNumber(value) {
@@ -1962,6 +1993,24 @@ ${SITE_URL}`);
       return towers.length ? towers.join(", ") : raw;
     }
 
+    function applyCombinedCsv(csvText) {
+      const rows = parseCSV(csvText);
+      rentListings = [];
+      lookingListings = [];
+      if (rows.length > 1) {
+        const mapping = mapHeaders(rows[0]);
+        rows.slice(1).forEach((row, idx) => {
+          const listingType = classifyListingRow(row, mapping);
+          if (listingType === "rent") {
+            rentListings.push(rowToRentListing(row, mapping, idx));
+          } else if (listingType === "looking") {
+            lookingListings.push(rowToLookingListing(row, mapping, idx));
+          }
+        });
+      }
+      cleanupListings();
+    }
+
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!hasSheetConfig()) {
@@ -1973,29 +2022,26 @@ ${SITE_URL}`);
       const loader = document.getElementById('loader-state');
       const errorDiv = document.getElementById('error-state');
       const grid = document.getElementById('listings-grid');
+      const cachedSheet = COMBINED_CSV_URL ? readSheetCache() : null;
+      let renderedCache = false;
 
-      loader.classList.remove('hidden');
       errorDiv.classList.add('hidden');
-      grid.innerHTML = '';
+      if (cachedSheet) {
+        applyCombinedCsv(cachedSheet.text);
+        loader.classList.add('hidden');
+        setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
+        renderListings();
+        renderedCache = true;
+      } else {
+        loader.classList.remove('hidden');
+        grid.innerHTML = '';
+      }
 
       try {
         if (COMBINED_CSV_URL) {
-          const combinedCsv = await fetch(sheetFetchUrl(COMBINED_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); });
-          const rows = parseCSV(combinedCsv);
-          if (rows.length > 1) {
-            const mapping = mapHeaders(rows[0]);
-            rentListings = [];
-            lookingListings = [];
-            rows.slice(1).forEach((row, idx) => {
-              const listingType = classifyListingRow(row, mapping);
-              if (listingType === "rent") {
-                rentListings.push(rowToRentListing(row, mapping, idx));
-              } else if (listingType === "looking") {
-                lookingListings.push(rowToLookingListing(row, mapping, idx));
-              }
-            });
-          }
-          cleanupListings();
+          const combinedCsv = await fetchTextWithTimeout(sheetFetchUrl(COMBINED_CSV_URL));
+          writeSheetCache(combinedCsv);
+          applyCombinedCsv(combinedCsv);
           loader.classList.add('hidden');
           setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
           renderListings();
@@ -2003,8 +2049,8 @@ ${SITE_URL}`);
         }
 
         const [rentRes, lookingRes] = await Promise.all([
-          fetch(sheetFetchUrl(RENT_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); }),
-          fetch(sheetFetchUrl(LOOKING_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); })
+          fetchTextWithTimeout(sheetFetchUrl(RENT_CSV_URL)),
+          fetchTextWithTimeout(sheetFetchUrl(LOOKING_CSV_URL))
         ]);
 
         // Process Rent Listings
@@ -2030,7 +2076,9 @@ ${SITE_URL}`);
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
         setSyncStatus(`Sheet unavailable ${syncTimeLabel()}`, "error");
-        renderSetupPending("Live sheet did not load. Please refresh or try again shortly.");
+        if (!renderedCache) {
+          renderSetupPending("Live sheet did not load. Please refresh or try again shortly.");
+        }
       }
     }
 
