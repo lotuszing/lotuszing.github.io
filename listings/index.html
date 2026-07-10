@@ -950,6 +950,27 @@
       font-weight: 700;
       color: #51677f;
     }
+    .submit-reassurance {
+      margin: 0 0 0.8rem;
+      padding: 0.85rem 0.9rem;
+      border: 1px solid #B9E6DC;
+      border-radius: 1rem;
+      background: radial-gradient(circle at 0 0, rgba(0, 194, 168, 0.12), transparent 9rem), #F1FFFB;
+      color: #116353;
+      box-shadow: 0 10px 24px rgba(7, 27, 58, 0.08);
+    }
+    .submit-reassurance strong {
+      display: block;
+      color: #071B3A;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 0.94rem;
+      margin-bottom: 0.18rem;
+    }
+    .submit-reassurance p {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.48;
+    }
     @media (max-width: 640px) {
       body {
         padding-bottom: 1.5rem;
@@ -1136,6 +1157,10 @@
     </div>
 
     <div id="result-summary" class="result-summary" aria-live="polite"></div>
+    <div id="submit-reassurance" class="submit-reassurance hidden" aria-live="polite">
+      <strong>Post received. You can breathe.</strong>
+      <p>If details are valid, it usually appears here within 10-20 min. If it does not show, check phone number, tower+flat, rent/budget range, and date, then submit again.</p>
+    </div>
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
       <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
@@ -1676,9 +1701,17 @@ ${SITE_URL}`);
 
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
+      renderSubmitReassurance();
       renderFilters();
       fetchSheetData();
     });
+
+    function renderSubmitReassurance() {
+      const notice = document.getElementById("submit-reassurance");
+      if (!notice) return;
+      const params = new URLSearchParams(window.location.search);
+      notice.classList.toggle("hidden", params.get("submitted") !== "1");
+    }
 
     // switch Tab
     function switchTab(tab) {
