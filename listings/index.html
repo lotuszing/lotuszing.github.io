@@ -313,6 +313,11 @@
       border-color: #f1b6ae;
       color: #a3382f;
     }
+    .listing-status-badge--now {
+      background: #e7f8f4;
+      border-color: #9fd9cc;
+      color: #116353;
+    }
     .listing-title-row {
       display: block;
     }
@@ -352,9 +357,9 @@
       border: 1px solid transparent;
     }
     .listing-role-owner {
-      background: rgba(0, 88, 163, 0.1);
-      border-color: rgba(0, 88, 163, 0.22);
-      color: #0058A3;
+      background: rgba(0, 168, 137, 0.12);
+      border-color: rgba(0, 168, 137, 0.32);
+      color: #0b6b58;
     }
     .listing-role-broker {
       background: rgba(132, 151, 174, 0.14);
@@ -503,7 +508,7 @@
     }
     .listing-footer {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.36rem;
       padding: 0;
       border-top: 0;
@@ -938,6 +943,45 @@
     #listings-grid {
       gap: 0.72rem;
     }
+    .mobile-action-bar {
+      display: none;
+    }
+    .result-summary {
+      margin: -0.15rem 0 0.75rem;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #51677f;
+    }
+    @media (max-width: 640px) {
+      .mobile-action-bar {
+        position: fixed;
+        left: 0.75rem;
+        right: 0.75rem;
+        bottom: 0.75rem;
+        z-index: 50;
+        display: block;
+        padding: 0.5rem;
+        border: 1px solid rgba(187, 215, 242, 0.9);
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 16px 36px rgba(7, 27, 58, 0.18);
+        backdrop-filter: blur(14px);
+      }
+      .mobile-action-bar a {
+        width: 100%;
+        min-height: 2.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        font-size: 0.74rem;
+        font-weight: 800;
+      }
+      body {
+        padding-bottom: 5.5rem;
+      }
+    }
     .sticky {
       margin-top: 0.55rem;
       padding: 0.25rem;
@@ -1073,13 +1117,13 @@
               <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing listings home">Lotus Zing</a>
             </h1>
             <span id="refresh-counter" class="refresh-counter">Live sync</span>
-            <p class="header-subcopy">Find flats, post availability, and connect through the resident community.</p>
+            <p class="header-subcopy">Tenants find flats. Owners find verified resident leads.</p>
           </div>
           <span id="sync-status" hidden>Checking</span>
         </div>
 
-        <div class="header-actions grid grid-cols-2">
-          <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener noreferrer" class="action-ticket community-ticket live-card pop-delay-2 col-span-2 flex border shadow-sm">
+        <div class="header-actions grid">
+          <a href="https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t" target="_blank" rel="noopener noreferrer" class="action-ticket community-ticket live-card pop-delay-2 flex border shadow-sm">
             <span>
               <small>WhatsApp</small>
               <strong>
@@ -1093,19 +1137,6 @@
             </span>
           </a>
 
-          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="action-ticket post-ticket live-card pop-delay-3 flex border shadow-sm">
-            <span>
-              <small>Owner / Broker</small>
-              <strong>Post</strong>
-            </span>
-          </a>
-
-          <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="action-ticket find-ticket live-card pop-delay-4 flex border shadow-sm">
-            <span>
-              <small>Tenant</small>
-              <strong>Find</strong>
-            </span>
-          </a>
         </div>
       </div>
     </div>
@@ -1121,7 +1152,7 @@
         <span id="rent-count" class="board-tab-count">0</span>
       </button>
       <button onclick="switchTab('looking')" id="tab-looking-btn" class="board-tab">
-        <span class="board-tab-label">Requests</span>
+        <span class="board-tab-label">Tenants</span>
         <span id="looking-count" class="board-tab-count">0</span>
       </button>
     </div>
@@ -1130,6 +1161,8 @@
     <div id="filters-container" class="mb-3">
       <!-- DYNAMIC FILTERS LOADED BY JS -->
     </div>
+
+    <div id="result-summary" class="result-summary" aria-live="polite"></div>
 
     <!-- LOADER STATE -->
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
@@ -1160,22 +1193,26 @@
     <!-- SECONDARY CTA ROW -->
     <div class="mt-6 sm:mt-8 border border-[#BBD7F2] bg-[#071B3A] p-3 sm:p-4 rounded-xl text-center space-y-2 max-w-3xl mx-auto shadow-sm">
       <h3 class="font-display font-extrabold text-white text-lg sm:text-xl tracking-tight">
-        Add your post
+        Post as owner or tenant
       </h3>
       <p class="text-xs text-slate-300 max-w-xl mx-auto font-sans">
-        Use Tally. It appears after sheet sync.
+        Owners can list flats. Tenants can post what they need.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
-          List flat
+          Owner: list flat
         </a>
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
-          Post request
+          Tenant: request flat
         </a>
       </div>
     </div>
 
   </main>
+
+  <nav class="mobile-action-bar" aria-label="Quick actions">
+    <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="bg-[#071B3A] text-white">Post listing / request</a>
+  </nav>
 
   <!-- DISCLAIMER -->
   <footer class="border-t border-[#BBD7F2] bg-transparent py-6 sm:py-8 px-4 text-center mt-8 sm:mt-12">
@@ -1238,8 +1275,8 @@
       status.textContent = text;
       if (counter) {
         counter.textContent = text
-          .replace(/^Preview data\s+/i, "Refreshed ")
           .replace(/^Updated\s+/i, "Refreshed ")
+          .replace(/^Sheet unavailable\s+/i, "Offline ")
           .replace(/^No sheet\s+/i, "Offline ");
       }
     }
@@ -1257,134 +1294,8 @@
     const BASELINE_DATE = new Date();
 
     // Dynamic state filters
-    let rentFilters = { search: '', bhk: 'All', sort: 'newest', maxRent: 50000, ownerOnly: false };
-    let lookingFilters = { search: '', bhk: 'All', sort: 'newest' };
-
-    // Fallback Mock Data embedded directly inside the static HTML for extreme resilience
-    const LOCAL_RENT_FALLBACK = [
-      {
-        id: "r1",
-        timestamp: "2026-07-02",
-        towerFlat: "Tower 3, Flat 1402",
-        bhkType: "3 BHK",
-        furnishing: "Fully Furnished",
-        monthlyRent: 32000,
-        securityDeposit: 60000,
-        availableFrom: "Immediate",
-        preferredTenant: "Family",
-        parking: "Yes",
-        listedBy: "Owner",
-        posterName: "Amit Sharma",
-        contactNumber: "+919810234567",
-        notes: "High floor flat with beautiful view of the central park. Brand new premium woodwork in all bedrooms, modular kitchen with chimney, and energy-efficient water heaters installed."
-      },
-      {
-        id: "r2",
-        timestamp: "2026-07-01",
-        towerFlat: "Tower 7, Flat 204",
-        bhkType: "2 BHK",
-        furnishing: "Semi-Furnished",
-        monthlyRent: 24000,
-        securityDeposit: 48000,
-        availableFrom: "Immediate",
-        preferredTenant: "Any",
-        parking: "Yes",
-        listedBy: "Broker-Agent",
-        posterName: "Noida Housing Solutions",
-        contactNumber: "+918800123456",
-        notes: "Well-maintained pool-facing apartment. Wardrobes in both bedrooms, basic electrical fittings, geyser, and chimney included. Ready to move."
-      },
-      {
-        id: "r3",
-        timestamp: "2026-06-24",
-        towerFlat: "Tower 11, Flat 805",
-        bhkType: "1 BHK",
-        furnishing: "Semi-Furnished",
-        monthlyRent: 16500,
-        securityDeposit: 30000,
-        availableFrom: "2026-07-15",
-        preferredTenant: "Bachelors Women",
-        parking: "No",
-        listedBy: "Owner",
-        posterName: "Dr. Sunita Rao",
-        contactNumber: "+919958765432",
-        notes: "Quiet corner apartment, perfect for working professionals or college students. Wardrobe, lights, fans, and a small balcony with bird-netting."
-      },
-      {
-        id: "r4",
-        timestamp: "2026-06-06",
-        towerFlat: "Tower 2, Flat 1801",
-        bhkType: "3 BHK",
-        furnishing: "Unfurnished",
-        monthlyRent: 28000,
-        securityDeposit: 56000,
-        availableFrom: "2026-08-01",
-        preferredTenant: "Family",
-        parking: "Yes",
-        listedBy: "Owner",
-        posterName: "Rakesh Verma",
-        contactNumber: "+919312345678",
-        notes: "Spacious layout with 3 balconies. Freshly painted. Strictly for families who prefer long-term leases. No brokers please."
-      },
-      {
-        id: "r5",
-        timestamp: "2026-06-17",
-        towerFlat: "Tower 5, Flat 501",
-        bhkType: "Studio",
-        furnishing: "Fully Furnished",
-        monthlyRent: 12000,
-        securityDeposit: 20000,
-        availableFrom: "Immediate",
-        preferredTenant: "Bachelors Men",
-        parking: "No",
-        listedBy: "Broker-Agent",
-        posterName: "Singh Properties",
-        contactNumber: "+919711223344",
-        notes: "Excellent studio flat. Includes AC, double bed, smart TV, small fridge, and wardrobe. Ideal for single occupants."
-      }
-    ];
-
-    const LOCAL_LOOKING_FALLBACK = [
-      {
-        id: "l1",
-        timestamp: "2026-07-02",
-        preferredBhk: "2 BHK",
-        budget: 25000,
-        preferredMoveIn: "Immediate",
-        occupants: 3,
-        tenantType: "Family",
-        preferredArea: "Tower 5, Tower 6",
-        posterName: "Ananya & Rohit Sen",
-        contactNumber: "+919560123456",
-        notes: "Looking for a well-ventilated 2 BHK with a pool or central park view. Preferably semi-furnished."
-      },
-      {
-        id: "l2",
-        timestamp: "2026-07-01",
-        preferredBhk: "1 BHK",
-        budget: 15000,
-        preferredMoveIn: "2026-07-15",
-        occupants: 1,
-        tenantType: "Bachelors Men",
-        preferredArea: "Tower 1, Tower 2, Tower 3, Tower 4, Tower 5, Tower 6, Tower 15, Tower 16",
-        posterName: "Mayank Joshi",
-        contactNumber: "+919899123456",
-        notes: "Software developer seeking flat. Minimal furniture like bed/wardrobe is fine."
-      },
-      {
-        id: "l3",
-        timestamp: "2026-06-20",
-        preferredBhk: "3 BHK",
-        budget: 30000,
-        preferredMoveIn: "Immediate",
-        occupants: 4,
-        tenantType: "Family",
-        preferredArea: "Tower 2, Tower 3, Tower 4",
-        posterName: "Sanjay Singhal",
-        contactNumber: "+919911223344",
-        notes: "Need spacious layout, car parking is a must."
-      }
-    ];
+    let rentFilters = { search: '', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false };
+    let lookingFilters = { search: '', bhk: 'All', tenant: 'All' };
 
     // Expiry date calculative utility
     function parseListingDate(timestampStr) {
@@ -1453,6 +1364,17 @@
       }).format(parsed);
     }
 
+    function isAvailableNow(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return false;
+      if (/immediate|ready|now/i.test(raw)) return true;
+      const parsed = safeParseDate(raw);
+      if (!parsed) return false;
+      const today = new Date(BASELINE_DATE);
+      today.setHours(23, 59, 59, 999);
+      return parsed <= today;
+    }
+
     function formatDateTime(value, fallback = "Recently") {
       const raw = String(value || "").trim();
       if (!raw) return fallback;
@@ -1492,8 +1414,9 @@
         .join(" ");
     }
 
-    function renderStatusBadges(isNew, showWarning, daysRemaining) {
+    function renderStatusBadges(isNew, showWarning, daysRemaining, isNow = false) {
       return `
+        ${isNow ? '<span class="listing-status-badge listing-status-badge--now">Now</span>' : ''}
         ${isNew ? '<span class="listing-status-badge listing-status-badge--new">New</span>' : ''}
         ${showWarning ? `<span class="listing-status-badge listing-status-badge--warning">Expires in ${daysRemaining}d</span>` : ''}
       `;
@@ -1513,6 +1436,7 @@
     function renderRentCard(item, indexInList, popIndex) {
       const isNew = isNewListing(item.timestamp);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
+      const availableNow = isAvailableNow(item.availableFrom);
       const isOwner = item.listedBy.toLowerCase().includes("owner");
       const furnishing = formatDisplayText(item.furnishing);
       const listedBy = formatDisplayText(item.listedBy);
@@ -1556,7 +1480,7 @@ ${SITE_URL}`);
         <div class="listing-card-body">
           <div class="listing-title-row">
             <div>
-              <span class="listing-kicker">Available apartment ${renderStatusBadges(isNew, showWarning, daysRemaining)}</span>
+              <span class="listing-kicker">Available apartment ${renderStatusBadges(isNew, showWarning, daysRemaining, availableNow)}</span>
               <h4 class="listing-title">${escapeHtml(item.towerFlat)}</h4>
               <div class="listing-subhead">
                 <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
@@ -1576,6 +1500,7 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
+              <button onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">Copy</button>
               <button onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">Share</button>
             </div>
           </div>
@@ -1647,6 +1572,7 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
+              <button onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">Copy</button>
               <button onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">Share</button>
             </div>
           </div>
@@ -1683,8 +1609,8 @@ ${SITE_URL}`);
     function updateTabCounts() {
       const rentCount = document.getElementById('rent-count');
       const lookingCount = document.getElementById('looking-count');
-      if (rentCount) rentCount.textContent = rentListings.length;
-      if (lookingCount) lookingCount.textContent = lookingListings.length;
+      if (rentCount) rentCount.textContent = rentListings.filter((item) => !getExpiryInfo(item.timestamp).isExpired).length;
+      if (lookingCount) lookingCount.textContent = lookingListings.filter((item) => !getExpiryInfo(item.timestamp).isExpired).length;
     }
 
     function toggleListingCard(button) {
@@ -1705,53 +1631,24 @@ ${SITE_URL}`);
           <details ${filtersOpen ? "open" : ""} class="border border-[#BBD7F2] bg-[#FFFFFF] rounded-xl shadow-sm overflow-hidden">
             <summary class="min-h-9 cursor-pointer list-none flex items-center justify-between px-3 py-2">
               <span class="font-sans text-[11px] uppercase font-bold text-slate-900 tracking-[0.08em]">Filters</span>
-              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Available</span>
+              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Tenant view</span>
             </summary>
-            <div class="border-t border-slate-200 p-2.5 sm:p-3 space-y-2.5">
-            
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
-              <div class="md:col-span-4">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Search</label>
-                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Flat, tower, name..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
+            <div class="border-t border-slate-200 p-2.5 sm:p-3">
+              <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Tower, flat no., owner..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
+              <div class="mt-2 flex items-center gap-2">
+                <button onclick="toggleAvailableNow()" aria-pressed="${rentFilters.availableNow}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.availableNow ? 'bg-[#00A889] border-[#00A889] text-white' : 'bg-[#E7F8F4] border-[#B9E6DC] text-[#116353]'}">Now</button>
+                <button onclick="toggleOwnerOnly()" aria-pressed="${rentFilters.ownerOnly}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.ownerOnly ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-[#EAF4FF] border-[#BBD7F2] text-[#315776]'}" id="owner-toggle-btn">Owner</button>
               </div>
-              
-              <div class="md:col-span-3">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Layout</label>
-                <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2 py-1 text-xs outline-none">
-                  <option value="All" ${rentFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
-                  <option value="Studio" ${rentFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
-                  <option value="1 BHK" ${rentFilters.bhk === '1 BHK' ? 'selected' : ''}>1 BHK</option>
-                  <option value="2 BHK" ${rentFilters.bhk === '2 BHK' ? 'selected' : ''}>2 BHK</option>
-                  <option value="3 BHK" ${rentFilters.bhk === '3 BHK' ? 'selected' : ''}>3 BHK</option>
-                  <option value="4+ BHK" ${rentFilters.bhk === '4+ BHK' ? 'selected' : ''}>4+ BHK</option>
-                </select>
+              <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
+                ${renderBhkChips(rentFilters.bhk)}
               </div>
-              
-              <div class="md:col-span-3">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Sort</label>
-                <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2 py-1 text-xs outline-none">
-                  <option value="newest" ${rentFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
-                  <option value="oldest" ${rentFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
-                  <option value="rent_asc" ${rentFilters.sort === 'rent_asc' ? 'selected' : ''}>Rent: Low to High</option>
-                  <option value="rent_desc" ${rentFilters.sort === 'rent_desc' ? 'selected' : ''}>Rent: High to Low</option>
-                </select>
+              <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
+                ${renderBudgetChips(rentFilters.budget)}
               </div>
-              
-              <div class="md:col-span-2">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Max rent</label>
-                <div class="flex items-center gap-2 mt-1">
-                  <input type="range" min="5000" max="50000" step="1000" value="${rentFilters.maxRent}" oninput="updateFilter('maxRent', this.value)" class="w-full accent-[#0058A3] cursor-pointer h-1.5 bg-[#BBD7F2] rounded">
-                  <span class="font-sans text-xs text-slate-800 font-bold shrink-0">₹${rentFilters.maxRent >= 50000 ? '50k+' : (rentFilters.maxRent/1000) + 'k'}</span>
-                </div>
+              <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
+                ${renderTenantChips(rentFilters.tenant)}
+                ${renderParkingChips(rentFilters.parking)}
               </div>
-            </div>
-
-            <div class="flex items-center justify-between bg-[#EAF4FF] p-2 rounded border border-[#BBD7F2]">
-              <span class="text-[11px] text-slate-700">Owners only</span>
-              <button onclick="toggleOwnerOnly()" class="w-12 h-6 rounded-full p-1 transition-colors outline-none ${rentFilters.ownerOnly ? 'bg-[#0058A3]' : 'bg-slate-300'}" id="owner-toggle-btn">
-                <div class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${rentFilters.ownerOnly ? 'translate-x-6' : 'translate-x-0'}"></div>
-              </button>
-            </div>
             </div>
           </details>
         `;
@@ -1760,42 +1657,58 @@ ${SITE_URL}`);
           <details ${filtersOpen ? "open" : ""} class="border border-[#BBD7F2] bg-[#FFFFFF] rounded-xl shadow-sm overflow-hidden">
             <summary class="min-h-9 cursor-pointer list-none flex items-center justify-between px-3 py-2">
               <span class="font-sans text-[11px] uppercase font-bold text-slate-900 tracking-[0.08em]">Filters</span>
-              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Requests</span>
+              <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Owner view</span>
             </summary>
-            <div class="border-t border-slate-200 p-2.5 sm:p-3 space-y-2.5">
-            
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
-              <div class="md:col-span-5">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Search</label>
-                <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Area, name..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2.5 py-1 text-xs outline-none">
+            <div class="border-t border-slate-200 p-2.5 sm:p-3">
+              <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Area, budget, tenant..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
+              <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
+                ${renderBhkChips(lookingFilters.bhk)}
               </div>
-              
-              <div class="md:col-span-3">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Layout</label>
-                <select id="filter-bhk" onchange="updateFilter('bhk', this.value)" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2 py-1 text-xs outline-none">
-                  <option value="All" ${lookingFilters.bhk === 'All' ? 'selected' : ''}>All Layouts</option>
-                  <option value="Studio" ${lookingFilters.bhk === 'Studio' ? 'selected' : ''}>Studio</option>
-                  <option value="1 BHK" ${lookingFilters.bhk === '1 BHK' ? 'selected' : ''}>1 BHK</option>
-                  <option value="2 BHK" ${lookingFilters.bhk === '2 BHK' ? 'selected' : ''}>2 BHK</option>
-                  <option value="3 BHK" ${lookingFilters.bhk === '3 BHK' ? 'selected' : ''}>3 BHK</option>
-                  <option value="4+ BHK" ${lookingFilters.bhk === '4+ BHK' ? 'selected' : ''}>4+ BHK</option>
-                </select>
+              <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
+                ${renderTenantChips(lookingFilters.tenant)}
               </div>
-              
-              <div class="md:col-span-4">
-                <label class="block text-[9px] font-sans uppercase font-bold tracking-[0.08em] text-slate-500 mb-1">Sort</label>
-                <select id="filter-sort" onchange="updateFilter('sort', this.value)" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded px-2 py-1 text-xs outline-none">
-                  <option value="newest" ${lookingFilters.sort === 'newest' ? 'selected' : ''}>Newest Submission</option>
-                  <option value="oldest" ${lookingFilters.sort === 'oldest' ? 'selected' : ''}>Oldest Submission</option>
-                  <option value="budget_asc" ${lookingFilters.sort === 'budget_asc' ? 'selected' : ''}>Budget: Low to High</option>
-                  <option value="budget_desc" ${lookingFilters.sort === 'budget_desc' ? 'selected' : ''}>Budget: High to Low</option>
-                </select>
-              </div>
-            </div>
             </div>
           </details>
         `;
       }
+    }
+
+    function renderBhkChips(activeBhk) {
+      return ["All", "Studio", "1 BHK", "2 BHK", "3 BHK", "4+ BHK"].map((bhk) => {
+        const isActive = activeBhk === bhk;
+        return `<button onclick="updateFilter('bhk', '${bhk}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${bhk}</button>`;
+      }).join("");
+    }
+
+    function renderBudgetChips(activeBudget) {
+      return [
+        { value: "All", label: "Any rent" },
+        { value: "under20", label: "<20k" },
+        { value: "20to30", label: "20-30k" },
+        { value: "30plus", label: "30k+" }
+      ].map((band) => {
+        const isActive = activeBudget === band.value;
+        return `<button onclick="updateFilter('budget', '${band.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0058A3] border-[#0058A3] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${band.label}</button>`;
+      }).join("");
+    }
+
+    function renderTenantChips(activeTenant) {
+      return [
+        { value: "All", label: "Any tenant" },
+        { value: "family", label: "Family" },
+        { value: "bachelor", label: "Bachelors" }
+      ].map((type) => {
+        const isActive = activeTenant === type.value;
+        return `<button onclick="updateFilter('tenant', '${type.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0B6B58] border-[#0B6B58] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${type.label}</button>`;
+      }).join("");
+    }
+
+    function renderParkingChips(activeParking) {
+      return ["All", "Yes"].map((parking) => {
+        const isActive = activeParking === parking;
+        const label = parking === "All" ? "Any parking" : "Parking";
+        return `<button onclick="updateFilter('parking', '${parking}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#071B3A] border-[#071B3A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${label}</button>`;
+      }).join("");
     }
 
     // Filter value reactive update
@@ -1812,6 +1725,90 @@ ${SITE_URL}`);
       rentFilters.ownerOnly = !rentFilters.ownerOnly;
       renderFilters();
       renderListings();
+    }
+
+    function toggleAvailableNow() {
+      rentFilters.availableNow = !rentFilters.availableNow;
+      renderFilters();
+      renderListings();
+    }
+
+    function matchesBudgetBand(rent, band) {
+      if (band === "under20") return rent < 20000;
+      if (band === "20to30") return rent >= 20000 && rent <= 30000;
+      if (band === "30plus") return rent > 30000;
+      return true;
+    }
+
+    function matchesTenantType(value, selected) {
+      if (selected === "All") return true;
+      return String(value || "").toLowerCase().includes(selected);
+    }
+
+    function hasUsableContact(item) {
+      return cleanPhoneNumber(item.contactNumber).replace(/\D/g, "").length >= 10;
+    }
+
+    function rankRentListing(item) {
+      const ownerBoost = item.listedBy.toLowerCase().includes("owner") ? 1000 : 0;
+      const contactBoost = hasUsableContact(item) ? 500 : 0;
+      const nowBoost = isAvailableNow(item.availableFrom) ? 120 : 0;
+      return ownerBoost + contactBoost + nowBoost;
+    }
+
+    function rankLookingListing(item) {
+      return (hasUsableContact(item) ? 500 : 0) + (isNewListing(item.timestamp) ? 80 : 0);
+    }
+
+    function newestFirst(a, b) {
+      return new Date(b.timestamp) - new Date(a.timestamp);
+    }
+
+    function dedupeByNewest(items, keyFn) {
+      const byKey = new Map();
+      items.forEach((item) => {
+        const key = keyFn(item);
+        const existing = byKey.get(key);
+        if (!existing || newestFirst(item, existing) < 0) byKey.set(key, item);
+      });
+      return Array.from(byKey.values());
+    }
+
+    function normalizeKey(value) {
+      return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+    }
+
+    function cleanupListings() {
+      rentListings = dedupeByNewest(rentListings, (item) => normalizeKey(item.towerFlat) || item.id);
+      lookingListings = dedupeByNewest(lookingListings, (item) => normalizeKey(`${item.posterName}-${item.preferredBhk}-${item.budget}`) || item.id);
+    }
+
+    function setResultSummary(count, label) {
+      const summary = document.getElementById("result-summary");
+      if (summary) summary.textContent = count ? `Showing ${count} ${label}` : "";
+    }
+
+    function rentEmptyMessage() {
+      const parts = [];
+      if (rentFilters.bhk !== "All") parts.push(rentFilters.bhk);
+      if (rentFilters.budget !== "All") {
+        const labels = { under20: "under ₹20k", "20to30": "₹20-30k", "30plus": "above ₹30k" };
+        parts.push(labels[rentFilters.budget] || "selected budget");
+      }
+      if (rentFilters.tenant !== "All") parts.push(rentFilters.tenant === "family" ? "family preference" : "bachelor-friendly");
+      if (rentFilters.parking === "Yes") parts.push("parking");
+      if (rentFilters.availableNow) parts.push("available now");
+      if (rentFilters.ownerOnly) parts.push("owner-listed");
+      const filterText = parts.length ? ` for ${parts.join(", ")}` : "";
+      return `No flats${filterText} found. Try clearing one chip, or post your requirement so owners can contact you.`;
+    }
+
+    function lookingEmptyMessage() {
+      const parts = [];
+      if (lookingFilters.bhk !== "All") parts.push(lookingFilters.bhk);
+      if (lookingFilters.tenant !== "All") parts.push(lookingFilters.tenant === "family" ? "family" : "bachelors");
+      const filterText = parts.length ? ` for ${parts.join(", ")}` : "";
+      return `No tenant requests${filterText} found. Try another layout or list your flat so matching tenants can reach you.`;
     }
 
     // CSV parsing state-machine
@@ -1982,6 +1979,7 @@ ${SITE_URL}`);
               }
             });
           }
+          cleanupListings();
           loader.classList.add('hidden');
           setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
           renderListings();
@@ -2006,6 +2004,7 @@ ${SITE_URL}`);
           const mapping = mapHeaders(lookingRows[0]);
           lookingListings = lookingRows.slice(1).map((row, idx) => rowToLookingListing(row, mapping, idx));
         }
+        cleanupListings();
 
         loader.classList.add('hidden');
         setSyncStatus(`Updated ${syncTimeLabel()}`, "live");
@@ -2014,16 +2013,15 @@ ${SITE_URL}`);
       } catch (err) {
         console.error("Failed to connect to published sheets:", err);
         loader.classList.add('hidden');
-        setSyncStatus(`Preview data ${syncTimeLabel()}`, "idle");
-        rentListings = [...LOCAL_RENT_FALLBACK];
-        lookingListings = [...LOCAL_LOOKING_FALLBACK];
-        renderListings();
+        setSyncStatus(`Sheet unavailable ${syncTimeLabel()}`, "error");
+        renderSetupPending("Live sheet did not load. Please refresh or try again shortly.");
       }
     }
 
-    function renderSetupPending() {
+    function renderSetupPending(message = "Form is live. Listings show after sheet link is added.") {
       document.getElementById('error-state').classList.add('hidden');
       document.getElementById('loader-state').classList.add('hidden');
+      setResultSummary(0, "");
       rentListings = [];
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
@@ -2032,7 +2030,7 @@ ${SITE_URL}`);
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Pending</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
-            Form is live. Listings show after sheet link is added.
+            ${escapeHtml(message)}
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
@@ -2043,30 +2041,67 @@ ${SITE_URL}`);
     }
 
     // Share Rent Whatsapp Text Helper
-    function shareRentWhatsapp(idx) {
-      const item = rentListings[idx];
-      const text = `*Lotus Zing resident portal*
+    function rentShareText(item) {
+      return `*Lotus Zing resident portal*
 Flat available: ${item.bhkType} at ${item.towerFlat}
 Rent: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo | From: ${item.availableFrom}
 Contact: ${item.posterName} ${item.contactNumber}
 
 Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
 ${SITE_URL}`;
-
-      openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(text));
     }
 
-    function shareLookingWhatsapp(idx) {
-      const item = lookingListings[idx];
-      const text = `*Lotus Zing resident portal*
+    function lookingShareText(item) {
+      return `*Lotus Zing resident portal*
 Tenant request: ${item.preferredBhk}
 Budget: ₹${item.budget.toLocaleString('en-IN')}/mo | Move-in: ${item.preferredMoveIn}
 Contact: ${item.posterName} ${item.contactNumber}
 
 Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
 ${SITE_URL}`;
+    }
 
-      openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(text));
+    async function copyToClipboard(text, button) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      if (button) {
+        const original = button.textContent;
+        button.textContent = "Copied";
+        setTimeout(() => {
+          button.textContent = original;
+        }, 1200);
+      }
+    }
+
+    function copyRentSummary(idx, button) {
+      const item = rentListings[idx];
+      if (item) copyToClipboard(rentShareText(item), button);
+    }
+
+    function copyLookingSummary(idx, button) {
+      const item = lookingListings[idx];
+      if (item) copyToClipboard(lookingShareText(item), button);
+    }
+
+    function shareRentWhatsapp(idx) {
+      const item = rentListings[idx];
+      if (item) openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(rentShareText(item)));
+    }
+
+    function shareLookingWhatsapp(idx) {
+      const item = lookingListings[idx];
+      if (item) openSafe('https://api.whatsapp.com/send?text=' + encodeURIComponent(lookingShareText(item)));
     }
 
     // Render Listings
@@ -2094,29 +2129,22 @@ ${SITE_URL}`;
                               item.posterName.toLowerCase().includes(query) ||
                               item.bhkType.toLowerCase().includes(query);
           
-          // BHK matching
-          const matchBhk = rentFilters.bhk === 'All' || item.bhkType.toLowerCase() === rentFilters.bhk.toLowerCase();
-          
-          // Max Rent matching
-          const matchRent = item.monthlyRent <= rentFilters.maxRent;
-
           // Owner Only
           const matchOwner = !rentFilters.ownerOnly || item.listedBy.toLowerCase().includes("owner");
+          const matchBhk = rentFilters.bhk === 'All' || item.bhkType.toLowerCase() === rentFilters.bhk.toLowerCase();
+          const matchAvailableNow = !rentFilters.availableNow || isAvailableNow(item.availableFrom);
+          const matchBudget = matchesBudgetBand(item.monthlyRent, rentFilters.budget);
+          const matchTenant = matchesTenantType(item.preferredTenant, rentFilters.tenant);
+          const matchParking = rentFilters.parking === "All" || item.parking.toLowerCase().includes("yes");
 
-          return matchSearch && matchBhk && matchRent && matchOwner;
+          return matchSearch && matchBhk && matchOwner && matchAvailableNow && matchBudget && matchTenant && matchParking;
         });
 
-        // Sorting
-        filtered.sort((a, b) => {
-          if (rentFilters.sort === 'newest') return new Date(b.timestamp) - new Date(a.timestamp);
-          if (rentFilters.sort === 'oldest') return new Date(a.timestamp) - new Date(b.timestamp);
-          if (rentFilters.sort === 'rent_asc') return a.monthlyRent - b.monthlyRent;
-          if (rentFilters.sort === 'rent_desc') return b.monthlyRent - a.monthlyRent;
-          return 0;
-        });
+        filtered.sort((a, b) => (rankRentListing(b) - rankRentListing(a)) || newestFirst(a, b));
+        setResultSummary(filtered.length, filtered.length === 1 ? "flat" : "flats");
 
         if (filtered.length === 0) {
-          renderEmptyState('No flats match your filters. Try clearing your search parameters or submit a flat listing.');
+          renderEmptyState(rentEmptyMessage());
           return;
         }
 
@@ -2127,6 +2155,7 @@ ${SITE_URL}`;
 
       } else {
         const query = lookingFilters.search.toLowerCase().trim();
+        const queryDigits = query.replace(/[^\d]/g, "");
         
         let filtered = lookingListings.filter(item => {
           // Exclude expired (30 days age limit)
@@ -2137,25 +2166,20 @@ ${SITE_URL}`;
           const matchSearch = item.posterName.toLowerCase().includes(query) || 
                               item.notes.toLowerCase().includes(query) || 
                               item.preferredArea.toLowerCase().includes(query) ||
-                              item.preferredBhk.toLowerCase().includes(query);
+                              item.preferredBhk.toLowerCase().includes(query) ||
+                              (queryDigits && String(item.budget).includes(queryDigits));
           
-          // BHK matching
           const matchBhk = lookingFilters.bhk === 'All' || item.preferredBhk.toLowerCase() === lookingFilters.bhk.toLowerCase();
+          const matchTenant = matchesTenantType(item.tenantType, lookingFilters.tenant);
 
-          return matchSearch && matchBhk;
+          return matchSearch && matchBhk && matchTenant;
         });
 
-        // Sorting
-        filtered.sort((a, b) => {
-          if (lookingFilters.sort === 'newest') return new Date(b.timestamp) - new Date(a.timestamp);
-          if (lookingFilters.sort === 'oldest') return new Date(a.timestamp) - new Date(b.timestamp);
-          if (lookingFilters.sort === 'budget_asc') return a.budget - b.budget;
-          if (lookingFilters.sort === 'budget_desc') return b.budget - a.budget;
-          return 0;
-        });
+        filtered.sort((a, b) => (rankLookingListing(b) - rankLookingListing(a)) || newestFirst(a, b));
+        setResultSummary(filtered.length, filtered.length === 1 ? "tenant request" : "tenant requests");
 
         if (filtered.length === 0) {
-          renderEmptyState('No tenant requests match your filters. Try adjusting your parameters.');
+          renderEmptyState(lookingEmptyMessage());
           return;
         }
 
@@ -2174,14 +2198,14 @@ ${SITE_URL}`;
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">Empty</span>
           <h3 class="font-display font-bold text-slate-800 text-lg">No matches</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
-          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Reset All Filters</button>
+          <button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>
         </div>
       `;
     }
 
     function resetFiltersAndReload() {
-      rentFilters = { search: '', bhk: 'All', sort: 'newest', maxRent: 50000, ownerOnly: false };
-      lookingFilters = { search: '', bhk: 'All', sort: 'newest' };
+      rentFilters = { search: '', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false };
+      lookingFilters = { search: '', bhk: 'All', tenant: 'All' };
       renderFilters();
       renderListings();
     }
