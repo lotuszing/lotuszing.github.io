@@ -154,6 +154,30 @@ function hasTowerAndUnit(value) {
   return numbers.length >= 2;
 }
 
+function normalizeHeaderLabel(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .replace(/[?*:]+$/g, "")
+    .trim();
+}
+
+function collectExtraFields(row, headers, mapping) {
+  const mappedIndexes = new Set(Object.values(mapping).filter((index) => Number.isInteger(index)));
+  const sensitiveHeader = /(submission|timestamp|submitted|time|contact|phone|mobile|email|name)/i;
+  return headers
+    .map((header, index) => {
+      const label = normalizeHeaderLabel(header);
+      const value = String(row[index] || "").trim();
+      if (!label || !value || mappedIndexes.has(index) || sensitiveHeader.test(label)) return null;
+      return {
+        label: label.slice(0, 42),
+        value: value.replace(/\s+/g, " ").slice(0, 160)
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 10);
+}
+
 function rowToRentListing(row, mapping, idx) {
   const getVal = (key) => getRowValue(row, mapping, key);
   return {
@@ -170,7 +194,8 @@ function rowToRentListing(row, mapping, idx) {
     listedBy: getVal("listedBy") || "Owner",
     posterName: getVal("posterName") || "Resident",
     contactNumber: getVal("contactNumber") || "",
-    notes: getVal("notes") || ""
+    notes: getVal("notes") || "",
+    extraFields: collectExtraFields(row, mapping.__headers || [], mapping)
   };
 }
 
@@ -187,7 +212,8 @@ function rowToLookingListing(row, mapping, idx) {
     preferredArea: formatPreferredArea(getVal("preferredArea")) || "Any allowed tower",
     posterName: getVal("posterName") || "Resident",
     contactNumber: getVal("contactNumber") || "",
-    notes: getVal("notes") || ""
+    notes: getVal("notes") || "",
+    extraFields: collectExtraFields(row, mapping.__headers || [], mapping)
   };
 }
 
@@ -246,6 +272,7 @@ async function main() {
 
   const rows = parseCSV(await response.text());
   const mapping = mapHeaders(rows[0] || []);
+  mapping.__headers = rows[0] || [];
 
   const rentListings = [];
   const lookingListings = [];

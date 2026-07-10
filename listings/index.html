@@ -371,6 +371,27 @@
       font-size: 0.6rem;
       color: #5D7087;
     }
+    .listing-glance {
+      display: flex;
+      align-items: center;
+      gap: 0.28rem;
+      min-width: 0;
+      margin-top: 0.22rem;
+      color: #48617D;
+      font-size: 0.58rem;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .listing-glance-dot {
+      width: 0.22rem;
+      height: 0.22rem;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #9DB3CA;
+    }
     .listing-price-panel {
       min-width: auto;
       padding: 0;
@@ -506,6 +527,42 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    .listing-extra-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.28rem;
+      padding-top: 0.02rem;
+    }
+    .listing-extra-field {
+      min-width: 0;
+      padding: 0.34rem 0.42rem;
+      border: 1px solid rgba(216, 228, 240, 0.95);
+      border-radius: 0.58rem;
+      background: rgba(248, 251, 255, 0.82);
+    }
+    .listing-extra-field span {
+      display: block;
+      color: #60758E;
+      font-size: 0.46rem;
+      font-weight: 850;
+      letter-spacing: 0.07em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .listing-extra-field strong {
+      display: block;
+      margin-top: 0.14rem;
+      color: #102033;
+      font-size: 0.58rem;
+      font-weight: 750;
+      line-height: 1.18;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .listing-footer {
       display: grid;
@@ -1124,6 +1181,9 @@
       .listing-footer {
         grid-template-columns: 1fr;
       }
+      .listing-extra-grid {
+        grid-template-columns: 1fr;
+      }
       .listing-stat-grid {
         grid-template-columns: 1fr;
       }
@@ -1554,6 +1614,21 @@
       `;
     }
 
+    function renderExtraFields(fields) {
+      if (!Array.isArray(fields) || fields.length === 0) return "";
+      const rows = fields
+        .filter((field) => field?.label && field?.value)
+        .slice(0, 10)
+        .map((field) => `
+          <div class="listing-extra-field" title="${escapeHtml(`${field.label}: ${field.value}`)}">
+            <span>${escapeHtml(field.label)}</span>
+            <strong>${escapeHtml(field.value)}</strong>
+          </div>
+        `)
+        .join("");
+      return rows ? `<div class="listing-extra-grid">${rows}</div>` : "";
+    }
+
     function renderRentCard(item, indexInList, popIndex) {
       const isNew = isNewListing(item.timestamp);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
@@ -1607,6 +1682,13 @@ ${SITE_URL}`);
                 <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
                 <span class="listing-poster">Posted by ${escapeHtml(item.posterName)}</span>
               </div>
+              <div class="listing-glance" title="${escapeHtml(`From ${formatDateOnly(item.availableFrom, "Immediate")} | ${preferredTenant} | Parking ${parking}`)}">
+                <span>${escapeHtml(formatDateOnly(item.availableFrom, "Immediate"))}</span>
+                <span class="listing-glance-dot"></span>
+                <span>${escapeHtml(preferredTenant)}</span>
+                <span class="listing-glance-dot"></span>
+                <span>Parking ${escapeHtml(parking)}</span>
+              </div>
             </div>
           </div>
           <button type="button" class="listing-collapse-toggle" onclick="toggleListingCard(this)" aria-expanded="false">Details</button>
@@ -1618,6 +1700,7 @@ ${SITE_URL}`);
               <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
             </div>
             ${renderNotesPanel(item.notes)}
+            ${renderExtraFields(item.extraFields)}
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
@@ -1679,6 +1762,13 @@ ${SITE_URL}`);
                 <span class="listing-role-badge listing-role-owner">Looking to move</span>
                 <span class="listing-poster">${escapeHtml(preferredArea)}</span>
               </div>
+              <div class="listing-glance" title="${escapeHtml(`Move ${formatDateOnly(item.preferredMoveIn, "Immediate")} | ${formatOccupantsLabel(item.occupants)} | ${preferredArea}`)}">
+                <span>${escapeHtml(formatDateOnly(item.preferredMoveIn, "Immediate"))}</span>
+                <span class="listing-glance-dot"></span>
+                <span>${escapeHtml(formatOccupantsLabel(item.occupants))}</span>
+                <span class="listing-glance-dot"></span>
+                <span>${escapeHtml(preferredArea)}</span>
+              </div>
             </div>
           </div>
           <button type="button" class="listing-collapse-toggle" onclick="toggleListingCard(this)" aria-expanded="false">Details</button>
@@ -1690,6 +1780,7 @@ ${SITE_URL}`);
               <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
             </div>
             ${renderNotesPanel(item.notes)}
+            ${renderExtraFields(item.extraFields)}
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
