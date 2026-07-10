@@ -966,7 +966,6 @@
         border-radius: 1rem;
         background: rgba(255, 255, 255, 0.94);
         box-shadow: 0 16px 36px rgba(7, 27, 58, 0.18);
-        backdrop-filter: blur(14px);
       }
       .mobile-action-bar a {
         width: 100%;
@@ -1234,11 +1233,13 @@
     let activeTab = 'rent';
     let rentListings = [];
     let lookingListings = [];
+    let renderDebounceTimer = null;
     
     // Configs
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/I7HgvckX4b39oSdYPj6oXW?mode=gi_t";
     const SITE_URL = "https://lotuszing.github.io/listings/";
+    const DATA_JSON_URL = "./listings.json";
     const COMBINED_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
     const RENT_CSV_URL = "";
     const LOOKING_CSV_URL = "";
@@ -1281,6 +1282,11 @@
       } finally {
         clearTimeout(timeout);
       }
+    }
+
+    async function fetchJsonWithTimeout(url) {
+      const text = await fetchTextWithTimeout(url);
+      return JSON.parse(text);
     }
 
     function cleanPhoneNumber(value) {
@@ -1754,7 +1760,12 @@ ${SITE_URL}`);
       } else {
         lookingFilters[key] = value;
       }
-      renderListings();
+      if (key === "search") {
+        clearTimeout(renderDebounceTimer);
+        renderDebounceTimer = setTimeout(renderListings, 150);
+      } else {
+        renderListings();
+      }
     }
 
     function toggleOwnerOnly() {
@@ -1817,6 +1828,16 @@ ${SITE_URL}`);
     function cleanupListings() {
       rentListings = dedupeByNewest(rentListings, (item) => normalizeKey(item.towerFlat) || item.id);
       lookingListings = dedupeByNewest(lookingListings, (item) => normalizeKey(`${item.posterName}-${item.preferredBhk}-${item.budget}`) || item.id);
+      assignListingIndexes();
+    }
+
+    function assignListingIndexes() {
+      rentListings.forEach((item, index) => {
+        item.sourceIndex = index;
+      });
+      lookingListings.forEach((item, index) => {
+        item.sourceIndex = index;
+      });
     }
 
     function setResultSummary(count, label) {
@@ -2011,6 +2032,12 @@ ${SITE_URL}`);
       cleanupListings();
     }
 
+    function applyListingsPayload(payload) {
+      rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings : [];
+      lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings : [];
+      cleanupListings();
+    }
+
     // Async Fetch Sheet data
     async function fetchSheetData() {
       if (!hasSheetConfig()) {
@@ -2026,13 +2053,24 @@ ${SITE_URL}`);
       let renderedCache = false;
 
       errorDiv.classList.add('hidden');
-      if (cachedSheet) {
+      try {
+        const payload = await fetchJsonWithTimeout(sheetFetchUrl(DATA_JSON_URL));
+        applyListingsPayload(payload);
+        loader.classList.add('hidden');
+        setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
+        renderListings();
+        renderedCache = true;
+      } catch (err) {
+        // Same-origin JSON is a performance cache; fall through to localStorage or sheet.
+      }
+
+      if (!renderedCache && cachedSheet) {
         applyCombinedCsv(cachedSheet.text);
         loader.classList.add('hidden');
         setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
         renderListings();
         renderedCache = true;
-      } else {
+      } else if (!renderedCache) {
         loader.classList.remove('hidden');
         grid.innerHTML = '';
       }
@@ -2213,8 +2251,7 @@ ${SITE_URL}`;
         }
 
         filtered.forEach((item, originalIndex) => {
-          const indexInList = rentListings.findIndex(r => r.id === item.id);
-          grid.appendChild(renderRentCard(item, indexInList, originalIndex));
+          grid.appendChild(renderRentCard(item, item.sourceIndex, originalIndex));
         });
 
       } else {
@@ -2248,8 +2285,7 @@ ${SITE_URL}`;
         }
 
         filtered.forEach((item, originalIndex) => {
-          const indexInList = lookingListings.findIndex(l => l.id === item.id);
-          grid.appendChild(renderLookingCard(item, indexInList, originalIndex));
+          grid.appendChild(renderLookingCard(item, item.sourceIndex, originalIndex));
         });
       }
     }
