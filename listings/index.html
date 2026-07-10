@@ -1245,6 +1245,7 @@
     const LOOKING_CSV_URL = "";
     const SHEET_CACHE_KEY = "lotus-zing-listings-csv-v1";
     const SHEET_TIMEOUT_MS = 8000;
+    const CLIENT_SHEET_REFRESH = false;
 
     function hasSheetConfig() {
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
@@ -1285,8 +1286,15 @@
     }
 
     async function fetchJsonWithTimeout(url) {
-      const text = await fetchTextWithTimeout(url);
-      return JSON.parse(text);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
+      try {
+        const response = await fetch(url, { cache: "default", signal: controller.signal });
+        if (!response.ok) throw new Error(`JSON fetch failed: ${response.status}`);
+        return await response.json();
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     function cleanPhoneNumber(value) {
@@ -1944,8 +1952,8 @@ ${SITE_URL}`);
 
     function classifyListingRow(row, mapping) {
       const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
-      if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
       if (listingType.includes("looking") || listingType.includes("request") || listingType.includes("tenant")) return "looking";
+      if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
       const hasFlatFields = Boolean(getRowValue(row, mapping, "towerFlat") || getRowValue(row, mapping, "monthlyRent"));
       const hasLookingFields = Boolean(getRowValue(row, mapping, "budget") || getRowValue(row, mapping, "preferredArea"));
       if (hasFlatFields) return "rent";
@@ -2054,7 +2062,7 @@ ${SITE_URL}`);
 
       errorDiv.classList.add('hidden');
       try {
-        const payload = await fetchJsonWithTimeout(sheetFetchUrl(DATA_JSON_URL));
+        const payload = await fetchJsonWithTimeout(DATA_JSON_URL);
         applyListingsPayload(payload);
         loader.classList.add('hidden');
         setSyncStatus(`Refreshing ${syncTimeLabel()}`, "idle");
@@ -2073,6 +2081,14 @@ ${SITE_URL}`);
       } else if (!renderedCache) {
         loader.classList.remove('hidden');
         grid.innerHTML = '';
+      }
+
+      if (!CLIENT_SHEET_REFRESH) {
+        if (!renderedCache) {
+          loader.classList.add('hidden');
+          renderSetupPending("Listings cache did not load. Please refresh or try again shortly.");
+        }
+        return;
       }
 
       try {
