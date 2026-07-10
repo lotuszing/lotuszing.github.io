@@ -1247,6 +1247,11 @@
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
     }
 
+    function sheetFetchUrl(url) {
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}v=${Date.now()}`;
+    }
+
     function cleanPhoneNumber(value) {
       return String(value || "").replace(/[^\d+]/g, "");
     }
@@ -1885,6 +1890,17 @@ ${SITE_URL}`);
       return index !== undefined && index < row.length ? row[index].trim() : '';
     }
 
+    function classifyListingRow(row, mapping) {
+      const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
+      if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
+      if (listingType.includes("looking") || listingType.includes("request") || listingType.includes("tenant")) return "looking";
+      const hasFlatFields = Boolean(getRowValue(row, mapping, "towerFlat") || getRowValue(row, mapping, "monthlyRent"));
+      const hasLookingFields = Boolean(getRowValue(row, mapping, "budget") || getRowValue(row, mapping, "preferredArea"));
+      if (hasFlatFields) return "rent";
+      if (hasLookingFields) return "looking";
+      return "";
+    }
+
     function rowToRentListing(row, mapping, idx) {
       const getVal = (key) => getRowValue(row, mapping, key);
       const rent = parseInt(getVal("monthlyRent").replace(/[^0-9]/g, ""), 10) || 0;
@@ -1964,17 +1980,17 @@ ${SITE_URL}`);
 
       try {
         if (COMBINED_CSV_URL) {
-          const combinedCsv = await fetch(COMBINED_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); });
+          const combinedCsv = await fetch(sheetFetchUrl(COMBINED_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); });
           const rows = parseCSV(combinedCsv);
           if (rows.length > 1) {
             const mapping = mapHeaders(rows[0]);
             rentListings = [];
             lookingListings = [];
             rows.slice(1).forEach((row, idx) => {
-              const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
-              if (listingType.includes("available") || listingType.includes("rent")) {
+              const listingType = classifyListingRow(row, mapping);
+              if (listingType === "rent") {
                 rentListings.push(rowToRentListing(row, mapping, idx));
-              } else if (listingType.includes("looking") || listingType.includes("request")) {
+              } else if (listingType === "looking") {
                 lookingListings.push(rowToLookingListing(row, mapping, idx));
               }
             });
@@ -1987,8 +2003,8 @@ ${SITE_URL}`);
         }
 
         const [rentRes, lookingRes] = await Promise.all([
-          fetch(RENT_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); }),
-          fetch(LOOKING_CSV_URL).then(r => { if (!r.ok) throw new Error(); return r.text(); })
+          fetch(sheetFetchUrl(RENT_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); }),
+          fetch(sheetFetchUrl(LOOKING_CSV_URL), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.text(); })
         ]);
 
         // Process Rent Listings
