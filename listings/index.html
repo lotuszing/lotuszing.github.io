@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="deploy-version" content="2026-07-06-final-links">
+  <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
@@ -943,9 +943,6 @@
     #listings-grid {
       gap: 0.72rem;
     }
-    .mobile-action-bar {
-      display: none;
-    }
     .result-summary {
       margin: -0.15rem 0 0.75rem;
       font-family: "Archivo", sans-serif;
@@ -954,31 +951,8 @@
       color: #51677f;
     }
     @media (max-width: 640px) {
-      .mobile-action-bar {
-        position: fixed;
-        left: 0.75rem;
-        right: 0.75rem;
-        bottom: 0.75rem;
-        z-index: 50;
-        display: block;
-        padding: 0.5rem;
-        border: 1px solid rgba(187, 215, 242, 0.9);
-        border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.94);
-        box-shadow: 0 16px 36px rgba(7, 27, 58, 0.18);
-      }
-      .mobile-action-bar a {
-        width: 100%;
-        min-height: 2.35rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.75rem;
-        font-size: 0.74rem;
-        font-weight: 800;
-      }
       body {
-        padding-bottom: 5.5rem;
+        padding-bottom: 1.5rem;
       }
     }
     .sticky {
@@ -1115,8 +1089,8 @@
             <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
               <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing listings home">Lotus Zing</a>
             </h1>
-            <span id="refresh-counter" class="refresh-counter">Live sync</span>
-            <p class="header-subcopy">Tenants find flats. Owners find resident-posted requests.</p>
+            <span id="refresh-counter" class="refresh-counter">Checking cache</span>
+            <p class="header-subcopy">Tenants find flats. Owners find resident-posted requests. New posts usually appear within 10-20 min.</p>
           </div>
           <span id="sync-status" hidden>Checking</span>
         </div>
@@ -1195,7 +1169,7 @@
         Post as owner or tenant
       </h3>
       <p class="text-xs text-slate-300 max-w-xl mx-auto font-sans">
-        Owners can list flats. Tenants can post what they need.
+        Owners can list flats. Tenants can post what they need. Submitted names and phone numbers appear publicly.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
         <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
@@ -1208,10 +1182,6 @@
     </div>
 
   </main>
-
-  <nav class="mobile-action-bar" aria-label="Quick actions">
-    <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="bg-[#071B3A] text-white">Post listing / request</a>
-  </nav>
 
   <!-- DISCLAIMER -->
   <footer class="border-t border-[#BBD7F2] bg-transparent py-6 sm:py-8 px-4 text-center mt-8 sm:mt-12">
@@ -1247,6 +1217,18 @@
     const SHEET_CACHE_KEY = "lotus-zing-listings-csv-v1";
     const SHEET_TIMEOUT_MS = 8000;
     const CLIENT_SHEET_REFRESH = false;
+    const VALUE_LIMITS = {
+      rentMin: 5000,
+      rentMax: 150000,
+      depositMin: 0,
+      depositMax: 500000,
+      budgetMin: 5000,
+      budgetMax: 150000,
+      occupantsMin: 1,
+      occupantsMax: 8,
+      datePastDays: 120,
+      dateFutureDays: 730
+    };
 
     function hasSheetConfig() {
       return Boolean(COMBINED_CSV_URL || (RENT_CSV_URL && LOOKING_CSV_URL && !RENT_CSV_URL.startsWith("#")));
@@ -1378,6 +1360,56 @@
     // Format currency
     function formatCurrency(amount) {
       return '₹' + Number(amount).toLocaleString('en-IN');
+    }
+
+    function numberInRange(value, min, max) {
+      const amount = Number(value);
+      return Number.isFinite(amount) && amount >= min && amount <= max;
+    }
+
+    function hasReasonableDate(value) {
+      const raw = String(value || "").trim();
+      if (!raw || /immediate|ready|now/i.test(raw)) return true;
+      const parsed = safeParseDate(raw);
+      if (!parsed) return false;
+      const min = new Date(BASELINE_DATE);
+      min.setDate(min.getDate() - VALUE_LIMITS.datePastDays);
+      const max = new Date(BASELINE_DATE);
+      max.setDate(max.getDate() + VALUE_LIMITS.dateFutureDays);
+      return parsed >= min && parsed <= max;
+    }
+
+    function normalizePhoneDigits(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
+    }
+
+    function hasTowerAndUnit(value) {
+      const numbers = String(value || "").match(/\d+/g) || [];
+      return numbers.length >= 2;
+    }
+
+    function isValidRentListing(item) {
+      return Boolean(
+        item &&
+        item.towerFlat &&
+        item.towerFlat !== "Unknown Unit" &&
+        hasTowerAndUnit(item.towerFlat) &&
+        numberInRange(item.monthlyRent, VALUE_LIMITS.rentMin, VALUE_LIMITS.rentMax) &&
+        numberInRange(item.securityDeposit, VALUE_LIMITS.depositMin, VALUE_LIMITS.depositMax) &&
+        hasReasonableDate(item.availableFrom) &&
+        normalizePhoneDigits(item.contactNumber).length === 10
+      );
+    }
+
+    function isValidLookingListing(item) {
+      return Boolean(
+        item &&
+        numberInRange(item.budget, VALUE_LIMITS.budgetMin, VALUE_LIMITS.budgetMax) &&
+        numberInRange(item.occupants, VALUE_LIMITS.occupantsMin, VALUE_LIMITS.occupantsMax) &&
+        hasReasonableDate(item.preferredMoveIn) &&
+        normalizePhoneDigits(item.contactNumber).length === 10
+      );
     }
 
     function escapeHtml(value) {
@@ -1696,7 +1728,7 @@ ${SITE_URL}`);
               <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Tenant view</span>
             </summary>
             <div class="border-t border-slate-200 p-2.5 sm:p-3">
-              <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Tower, flat no., owner..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
+              <input type="text" id="filter-search-rent" oninput="updateFilter('search', this.value)" placeholder="Tower, flat no., owner..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
               <div class="mt-2 flex items-center gap-2">
                 <button onclick="toggleAvailableNow()" aria-pressed="${rentFilters.availableNow}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.availableNow ? 'bg-[#00A889] border-[#00A889] text-white' : 'bg-[#E7F8F4] border-[#B9E6DC] text-[#116353]'}">Now</button>
                 <button onclick="toggleOwnerOnly()" aria-pressed="${rentFilters.ownerOnly}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.ownerOnly ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-[#EAF4FF] border-[#BBD7F2] text-[#315776]'}" id="owner-toggle-btn">Owner</button>
@@ -1722,7 +1754,7 @@ ${SITE_URL}`);
               <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Owner view</span>
             </summary>
             <div class="border-t border-slate-200 p-2.5 sm:p-3">
-              <input type="text" id="filter-search" oninput="updateFilter('search', this.value)" placeholder="Area, budget, tenant..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
+              <input type="text" id="filter-search-looking" oninput="updateFilter('search', this.value)" placeholder="Area, budget, tenant..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
               <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
                 ${renderBhkChips(lookingFilters.bhk)}
               </div>
@@ -2063,9 +2095,11 @@ ${SITE_URL}`);
         rows.slice(1).forEach((row, idx) => {
           const listingType = classifyListingRow(row, mapping);
           if (listingType === "rent") {
-            rentListings.push(rowToRentListing(row, mapping, idx));
+            const listing = rowToRentListing(row, mapping, idx);
+            if (isValidRentListing(listing)) rentListings.push(listing);
           } else if (listingType === "looking") {
-            lookingListings.push(rowToLookingListing(row, mapping, idx));
+            const listing = rowToLookingListing(row, mapping, idx);
+            if (isValidLookingListing(listing)) lookingListings.push(listing);
           }
         });
       }
@@ -2073,8 +2107,8 @@ ${SITE_URL}`);
     }
 
     function applyListingsPayload(payload) {
-      rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings : [];
-      lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings : [];
+      rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
+      lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
       lastDataUpdatedAt = payload?.generatedAt || "";
       cleanupListings();
     }
@@ -2119,7 +2153,7 @@ ${SITE_URL}`);
       if (!CLIENT_SHEET_REFRESH) {
         if (!renderedCache) {
           loader.classList.add('hidden');
-          renderSetupPending("Listings cache did not load. Please refresh or try again shortly.");
+          renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
         }
         return;
       }
@@ -2164,12 +2198,12 @@ ${SITE_URL}`);
         loader.classList.add('hidden');
         setSyncStatus(`Sheet unavailable ${syncTimeLabel()}`, "error");
         if (!renderedCache) {
-          renderSetupPending("Live sheet did not load. Please refresh or try again shortly.");
+          renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
         }
       }
     }
 
-    function renderSetupPending(message = "Form is live. Listings show after sheet link is added.") {
+    function renderSetupPending(message = "Listings cache is not available yet. New posts usually appear within 10-20 min.") {
       document.getElementById('error-state').classList.add('hidden');
       document.getElementById('loader-state').classList.add('hidden');
       setResultSummary(0, "");
@@ -2178,8 +2212,8 @@ ${SITE_URL}`);
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
         <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-[#EAF4FF] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
-          <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Pending</span>
-          <h3 class="font-display font-bold text-slate-900 text-lg">Sheet not connected</h3>
+          <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Temporary</span>
+          <h3 class="font-display font-bold text-slate-900 text-lg">Listings unavailable</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
             ${escapeHtml(message)}
           </p>

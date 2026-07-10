@@ -4,6 +4,18 @@ const path = require("path");
 
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrOnoEOnNWqOypLuXT_vgHewY6JKRGooYGfpAGGnpg3oskyxZ_9fEU3p1T44eZtA9qo2IuszIrf-EB/pub?gid=0&single=true&output=csv";
 const OUT_FILE = path.join(__dirname, "..", "listings", "listings.json");
+const LIMITS = {
+  rentMin: 5000,
+  rentMax: 150000,
+  depositMin: 0,
+  depositMax: 500000,
+  budgetMin: 5000,
+  budgetMax: 150000,
+  occupantsMin: 1,
+  occupantsMax: 8,
+  datePastDays: 120,
+  dateFutureDays: 730
+};
 
 function parseCSV(text) {
   const rows = [];
@@ -108,6 +120,40 @@ function numberFrom(value) {
   return parseInt(String(value || "").replace(/[^0-9]/g, ""), 10) || 0;
 }
 
+function numberInRange(value, min, max) {
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount >= min && amount <= max;
+}
+
+function safeParseDate(value) {
+  if (!value) return null;
+  const parsed = new Date(String(value).trim().replace(" ", "T"));
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function hasReasonableDate(value) {
+  const raw = String(value || "").trim();
+  if (!raw || /immediate|ready|now/i.test(raw)) return true;
+  const parsed = safeParseDate(raw);
+  if (!parsed) return false;
+  const now = new Date();
+  const min = new Date(now);
+  min.setDate(min.getDate() - LIMITS.datePastDays);
+  const max = new Date(now);
+  max.setDate(max.getDate() + LIMITS.dateFutureDays);
+  return parsed >= min && parsed <= max;
+}
+
+function normalizePhoneDigits(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
+}
+
+function hasTowerAndUnit(value) {
+  const numbers = String(value || "").match(/\d+/g) || [];
+  return numbers.length >= 2;
+}
+
 function rowToRentListing(row, mapping, idx) {
   const getVal = (key) => getRowValue(row, mapping, key);
   return {
@@ -145,6 +191,29 @@ function rowToLookingListing(row, mapping, idx) {
   };
 }
 
+function isValidRentListing(item) {
+  return Boolean(
+    item &&
+    item.towerFlat &&
+    item.towerFlat !== "Unknown Unit" &&
+    hasTowerAndUnit(item.towerFlat) &&
+    numberInRange(item.monthlyRent, LIMITS.rentMin, LIMITS.rentMax) &&
+    numberInRange(item.securityDeposit, LIMITS.depositMin, LIMITS.depositMax) &&
+    hasReasonableDate(item.availableFrom) &&
+    normalizePhoneDigits(item.contactNumber).length === 10
+  );
+}
+
+function isValidLookingListing(item) {
+  return Boolean(
+    item &&
+    numberInRange(item.budget, LIMITS.budgetMin, LIMITS.budgetMax) &&
+    numberInRange(item.occupants, LIMITS.occupantsMin, LIMITS.occupantsMax) &&
+    hasReasonableDate(item.preferredMoveIn) &&
+    normalizePhoneDigits(item.contactNumber).length === 10
+  );
+}
+
 async function main() {
   const response = await fetch(`${CSV_URL}&v=${Date.now()}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`CSV fetch failed: ${response.status}`);
@@ -154,21 +223,31 @@ async function main() {
 
   const rentListings = [];
   const lookingListings = [];
+  const skippedRows = [];
 
   rows.slice(1).forEach((row, idx) => {
     const listingType = classifyListingRow(row, mapping);
-    if (listingType === "rent") rentListings.push(rowToRentListing(row, mapping, idx));
-    if (listingType === "looking") lookingListings.push(rowToLookingListing(row, mapping, idx));
+    if (listingType === "rent") {
+      const listing = rowToRentListing(row, mapping, idx);
+      if (isValidRentListing(listing)) rentListings.push(listing);
+      else skippedRows.push({ row: idx + 2, type: "rent", reason: "invalid_or_incomplete" });
+    }
+    if (listingType === "looking") {
+      const listing = rowToLookingListing(row, mapping, idx);
+      if (isValidLookingListing(listing)) lookingListings.push(listing);
+      else skippedRows.push({ row: idx + 2, type: "looking", reason: "invalid_or_out_of_range" });
+    }
   });
 
   const payload = {
     generatedAt: new Date().toISOString(),
+    skippedRows,
     rentListings,
     lookingListings
   };
 
   fs.writeFileSync(OUT_FILE, `${JSON.stringify(payload, null, 2)}\n`);
-  console.log(`Updated ${OUT_FILE}: ${rentListings.length} flats, ${lookingListings.length} tenant requests`);
+  console.log(`Updated ${OUT_FILE}: ${rentListings.length} flats, ${lookingListings.length} tenant requests, ${skippedRows.length} skipped`);
 }
 
 main().catch((error) => {

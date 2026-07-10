@@ -1,22 +1,18 @@
 {
-  "generatedAt": "2026-07-10T04:58:08.012Z",
-  "rentListings": [
+  "generatedAt": "2026-07-10T05:17:43.165Z",
+  "skippedRows": [
     {
-      "id": "sheet-rent-4aNvjko",
-      "timestamp": "2026-07-10 4:40:19",
-      "towerFlat": "Tower 5,",
-      "bhkType": "1 BHK",
-      "furnishing": "Fully furnished",
-      "monthlyRent": 25000,
-      "securityDeposit": 30000,
-      "availableFrom": "2026-07-17",
-      "preferredTenant": "Bachelors (Men)",
-      "parking": "Yes",
-      "listedBy": "Owner",
-      "posterName": "Shailansh Gaur",
-      "contactNumber": "919917749494",
-      "notes": ""
+      "row": 2,
+      "type": "looking",
+      "reason": "invalid_or_out_of_range"
     },
+    {
+      "row": 3,
+      "type": "rent",
+      "reason": "invalid_or_incomplete"
+    }
+  ],
+  "rentListings": [
     {
       "id": "sheet-rent-xVNyZlv",
       "timestamp": "2026-07-10 4:41:34",
@@ -50,19 +46,5 @@
       "notes": ""
     }
   ],
-  "lookingListings": [
-    {
-      "id": "sheet-looking-GeBD1K2",
-      "timestamp": "2026-07-10 4:34:09",
-      "preferredBhk": "3 BHK",
-      "budget": 234234,
-      "preferredMoveIn": "2026-07-15",
-      "occupants": 3,
-      "tenantType": "Bachelors (Men)",
-      "preferredArea": "Tower 15, Tower 16",
-      "posterName": "sods",
-      "contactNumber": "919917749494",
-      "notes": "dssdfds"
-    }
-  ]
+  "lookingListings": []
 }
