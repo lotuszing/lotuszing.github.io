@@ -2,6 +2,16 @@
 
 Use these rules inside the Tally form so residents know what went wrong before they submit.
 
+## Canonical Submit Link
+
+Use this one portal link anywhere residents are asked to post a flat or request a flat:
+
+```text
+https://lotuszing.github.io/listings/?submit=1
+```
+
+Do not share the raw Tally link publicly unless necessary. The portal link shows the rejection checklist first, then sends users to the single Tally form.
+
 ## Listing Type
 
 - Required.

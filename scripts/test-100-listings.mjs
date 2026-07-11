@@ -111,7 +111,7 @@ async function run() {
     tenants: document.querySelector("#looking-count")?.textContent?.trim() || ""
   }));
 
-  await page.getByRole("button", { name: /Owner: list flat/i }).click();
+  await page.getByRole("button", { name: /Submit listing or request/i }).click();
   await page.waitForSelector("#submit-rules-dialog[open]", { timeout: 5000 });
   const submitDialogTitle = await page.locator("#submit-rules-title").textContent();
   const submitRuleCount = await page.locator("#submit-rules-list li").count();

@@ -1379,14 +1379,11 @@
         Post as owner or tenant
       </h3>
       <p class="text-xs text-slate-300 max-w-xl mx-auto font-sans">
-        Owners can list flats. Tenants can post what they need. Submitted names and phone numbers appear publicly.
+        One guided form for owners, brokers, and tenants. Submitted names and phone numbers appear publicly.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <button type="button" onclick="openSubmitChecklist('owner')" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
-          Owner: list flat
-        </button>
-        <button type="button" onclick="openSubmitChecklist('tenant')" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
-          Tenant: request flat
+        <button type="button" onclick="openSubmitChecklist('submit')" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
+          Submit listing or request
         </button>
       </div>
     </div>
@@ -1442,6 +1439,7 @@
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/DRaBE5Kky5J6kNymTPko8j";
     const SITE_URL = "https://lotuszing.github.io/listings/";
+    const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
     const LIVE_API_URL = "https://lotus-zing-listings-api.lotus-zing.workers.dev/listings";
     const DATA_JSON_URL = "./listings.json";
     const SHEET_TIMEOUT_MS = 8000;
@@ -1458,6 +1456,18 @@
       dateFutureDays: 730
     };
     const SUBMIT_RULES = {
+      submit: {
+        title: "Submit without getting lost",
+        copy: "One form handles both flat listings and tenant requests. Pick the right type inside Tally, then keep these details clean.",
+        rules: [
+          "Choose the correct type inside the form: Flat available or Looking for flat.",
+          "Phone must be a real 10-digit Indian mobile number.",
+          "Flat posts need both tower and flat number, for example Tower 3, Flat 1402.",
+          "Rent, budget, and deposit must be realistic and inside the allowed ranges.",
+          "Move-in or available date must be Immediate or a reasonable valid date.",
+          "Missing required details, joke text, or test entries will not appear publicly."
+        ]
+      },
       owner: {
         title: "List a flat without rejection",
         copy: "Owners and brokers need these details ready before the post can go live.",
@@ -1483,7 +1493,7 @@
         ]
       }
     };
-    let pendingSubmitType = "owner";
+    let pendingSubmitType = "submit";
 
     async function fetchJsonWithTimeout(url) {
       const controller = new AbortController();
@@ -1930,6 +1940,7 @@ ${SITE_URL}`);
       updateActiveTabButtons();
       renderFilters();
       fetchSheetData();
+      openChecklistFromUrl();
     });
 
     function renderSubmitReassurance() {
@@ -1940,7 +1951,7 @@ ${SITE_URL}`);
     }
 
     function openSubmitChecklist(type = "owner") {
-      pendingSubmitType = type === "tenant" ? "tenant" : "owner";
+      pendingSubmitType = SUBMIT_RULES[type] ? type : "submit";
       const rules = SUBMIT_RULES[pendingSubmitType];
       const dialog = document.getElementById("submit-rules-dialog");
       const title = document.getElementById("submit-rules-title");
@@ -1954,9 +1965,16 @@ ${SITE_URL}`);
       title.textContent = rules.title;
       copy.textContent = rules.copy;
       list.innerHTML = rules.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("");
-      continueButton.textContent = pendingSubmitType === "tenant" ? "Post requirement" : "List flat";
+      continueButton.textContent = "Open one form";
       if (typeof dialog.showModal === "function") dialog.showModal();
       else continueToTally();
+    }
+
+    function openChecklistFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("submit") === "1") {
+        setTimeout(() => openSubmitChecklist("submit"), 250);
+      }
     }
 
     function closeSubmitChecklist() {
@@ -1967,7 +1985,7 @@ ${SITE_URL}`);
     function continueToTally() {
       closeSubmitChecklist();
       const url = `${TALLY_FORM_URL}?source=listings_portal&type=${encodeURIComponent(pendingSubmitType)}`;
-      openSafe(url);
+      window.location.href = url;
     }
 
     // switch Tab
@@ -2515,7 +2533,7 @@ ${SITE_URL}`);
             ${escapeHtml(message)}
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <button type="button" onclick="openSubmitChecklist('owner')" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</button>
+            <button type="button" onclick="openSubmitChecklist('submit')" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</button>
             <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
           </div>
         </div>
