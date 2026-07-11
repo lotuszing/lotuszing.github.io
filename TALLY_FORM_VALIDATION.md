@@ -31,9 +31,10 @@ Do not share the raw Tally link publicly unless necessary. The portal link shows
 
 ## Flat Available Fields
 
-- Tower and flat: required.
-- Tower and flat helper text: `Add both tower and flat number, for example Tower 3, Flat 1402. Missing flat number will be rejected.`
-- Tower and flat regex: `(?i).*(tower|twr|t)\s*(1[56]|[1-6]).*(flat|unit|apt|apartment)?\s*\d+.*`
+- Tower or unit: required.
+- Flat/unit number: recommended, but not required.
+- Tower helper text: `Add at least the tower, for example Tower 5. Add flat/unit number if you are comfortable sharing it publicly.`
+- Tower regex: `(?i).*(tower|twr|t)?\s*(1[56]|[1-6]).*`
 - Monthly rent: required number.
 - Monthly rent min/max: `5000` to `150000`.
 - Security deposit: required number.
@@ -63,7 +64,7 @@ Submitted. Valid posts usually appear on the Lotus Zing board within seconds.
 
 If your post does not appear, it likely failed one of these checks:
 - phone number is not a valid 10-digit Indian mobile
-- tower and flat number are incomplete
+- tower or unit number is missing
 - rent/budget/deposit is outside the allowed range
 - move-in or available date is invalid
 - required fields were skipped

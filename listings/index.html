@@ -1462,7 +1462,7 @@
         rules: [
           "Choose the correct type inside the form: Flat available or Looking for flat.",
           "Phone must be a real 10-digit Indian mobile number.",
-          "Flat posts need both tower and flat number, for example Tower 3, Flat 1402.",
+          "Flat posts need at least a tower or unit number, for example Tower 3. Flat number is recommended.",
           "Rent, budget, and deposit must be realistic and inside the allowed ranges.",
           "Move-in or available date must be Immediate or a reasonable valid date.",
           "Missing required details, joke text, or test entries will not appear publicly."
@@ -1472,7 +1472,7 @@
         title: "List a flat without rejection",
         copy: "Owners and brokers need these details ready before the post can go live.",
         rules: [
-          "Tower and flat number must both be present, for example Tower 3, Flat 1402.",
+          "Tower or unit number must be present, for example Tower 3. Flat number is recommended.",
           "Phone must be a real 10-digit Indian mobile number.",
           "Monthly rent must be between ₹5,000 and ₹1,50,000.",
           "Deposit must be between ₹0 and ₹5,00,000.",
@@ -1611,9 +1611,9 @@
       return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
     }
 
-    function hasTowerAndUnit(value) {
+    function hasLocationNumber(value) {
       const numbers = String(value || "").match(/\d+/g) || [];
-      return numbers.length >= 2;
+      return numbers.length >= 1;
     }
 
     function isValidRentListing(item) {
@@ -1621,7 +1621,7 @@
         item &&
         item.towerFlat &&
         item.towerFlat !== "Unknown Unit" &&
-        hasTowerAndUnit(item.towerFlat) &&
+        hasLocationNumber(item.towerFlat) &&
         numberInRange(item.monthlyRent, VALUE_LIMITS.rentMin, VALUE_LIMITS.rentMax) &&
         numberInRange(item.securityDeposit, VALUE_LIMITS.depositMin, VALUE_LIMITS.depositMax) &&
         hasReasonableDate(item.availableFrom) &&

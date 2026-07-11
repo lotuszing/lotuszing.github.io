@@ -198,7 +198,7 @@ function getField(fields, patterns) {
 
 function getCombinedTowerFlat(fields) {
   const combined = getField(fields, [/tower.*flat|flat.*tower|tower\/flat|unit/]);
-  if (hasTowerAndUnit(combined)) return combined;
+  if (hasLocationNumber(combined)) return combined;
   const tower = getField(fields, [/^tower$|tower number|tower/]);
   const flatNo = getField(fields, [/flat number|flat no|flat|unit number|apartment/]);
   if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
@@ -278,9 +278,9 @@ function normalizePhoneDigits(value) {
   return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
 }
 
-function hasTowerAndUnit(value) {
+function hasLocationNumber(value) {
   const numbers = String(value || "").match(/\d+/g) || [];
-  return numbers.length >= 2;
+  return numbers.length >= 1;
 }
 
 function safeParseDate(value) {
@@ -304,7 +304,7 @@ function hasReasonableDate(value) {
 
 function rentValidationReasons(item) {
   const reasons = [];
-  if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasTowerAndUnit(item.towerFlat)) reasons.push("add both tower and flat number");
+  if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasLocationNumber(item.towerFlat)) reasons.push("add tower or unit number");
   if (!numberInRange(item?.monthlyRent, LIMITS.rentMin, LIMITS.rentMax)) reasons.push("rent out of range");
   if (!numberInRange(item?.securityDeposit, LIMITS.depositMin, LIMITS.depositMax)) reasons.push("deposit out of range");
   if (!hasReasonableDate(item?.availableFrom)) reasons.push("available date invalid");

@@ -93,7 +93,7 @@ function getRowValue(row, mapping, key) {
 
 function combinedTowerFlat(row, mapping) {
   const combined = getRowValue(row, mapping, "towerFlat");
-  if (hasTowerAndUnit(combined)) return combined;
+  if (hasLocationNumber(combined)) return combined;
   const tower = getRowValue(row, mapping, "tower");
   const flatNo = getRowValue(row, mapping, "flatNo");
   if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
@@ -160,9 +160,9 @@ function normalizePhoneDigits(value) {
   return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
 }
 
-function hasTowerAndUnit(value) {
+function hasLocationNumber(value) {
   const numbers = String(value || "").match(/\d+/g) || [];
-  return numbers.length >= 2;
+  return numbers.length >= 1;
 }
 
 function normalizeHeaderLabel(value) {
@@ -230,8 +230,8 @@ function rowToLookingListing(row, mapping, idx) {
 
 function rentValidationReasons(item) {
   const reasons = [];
-  if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasTowerAndUnit(item.towerFlat)) {
-    reasons.push("add both tower and flat number");
+  if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasLocationNumber(item.towerFlat)) {
+    reasons.push("add tower or unit number");
   }
   if (!numberInRange(item?.monthlyRent, LIMITS.rentMin, LIMITS.rentMax)) {
     reasons.push(`rent must be ₹${LIMITS.rentMin.toLocaleString("en-IN")}-₹${LIMITS.rentMax.toLocaleString("en-IN")}`);
