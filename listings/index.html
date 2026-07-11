@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://*.workers.dev https://lotus-zing-listings-api.lotus-zing.workers.dev; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
   
@@ -1340,6 +1340,7 @@
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/DRaBE5Kky5J6kNymTPko8j";
     const SITE_URL = "https://lotuszing.github.io/listings/";
+    const LIVE_API_URL = "https://lotus-zing-listings-api.lotus-zing.workers.dev/listings";
     const DATA_JSON_URL = "./listings.json";
     const SHEET_TIMEOUT_MS = 8000;
     const VALUE_LIMITS = {
@@ -2316,20 +2317,27 @@ ${SITE_URL}`);
     async function fetchSheetData() {
       const loader = document.getElementById('loader-state');
       const errorDiv = document.getElementById('error-state');
+      const sources = LIVE_API_URL ? [LIVE_API_URL, DATA_JSON_URL] : [DATA_JSON_URL];
 
       errorDiv.classList.add('hidden');
       loader.classList.remove('hidden');
-      try {
-        const payload = await fetchJsonWithTimeout(DATA_JSON_URL);
-        applyListingsPayload(payload);
-        loader.classList.add('hidden');
-        setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
-        renderListings();
-      } catch (err) {
-        loader.classList.add('hidden');
-        setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
-        renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
+
+      for (const source of sources) {
+        try {
+          const payload = await fetchJsonWithTimeout(source);
+          applyListingsPayload(payload);
+          loader.classList.add('hidden');
+          setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+          renderListings();
+          return;
+        } catch (err) {
+          // Try the next source. Current order: live API, then static JSON fallback.
+        }
       }
+
+      loader.classList.add('hidden');
+      setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
+      renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
     }
 
     function renderSetupPending(message = "Listings cache is not available yet. New posts usually appear within 10-20 min.") {
