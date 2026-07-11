@@ -6,6 +6,8 @@
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://*.workers.dev https://lotus-zing-listings-api.lotus-zing.workers.dev; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <link rel="canonical" href="https://lotuszing.github.io/listings/">
+  <meta property="og:url" content="https://lotuszing.github.io/listings/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
   <title>Lotus Zing Flat/Room Listings Noticeboard</title>
   
@@ -1495,6 +1497,27 @@
     };
     let pendingSubmitType = "submit";
 
+    function canonicalQueryString() {
+      const params = new URLSearchParams(window.location.search);
+      params.delete("v");
+      const query = params.toString();
+      return query ? `?${query}` : "";
+    }
+
+    function canonicalPortalUrl() {
+      return `${SITE_URL}${canonicalQueryString()}`;
+    }
+
+    function normalizeLivePortalRoute() {
+      if (window.location.origin !== "https://lotuszing.github.io") return;
+      if (window.location.pathname === "/listings") {
+        window.location.replace(canonicalPortalUrl());
+      }
+    }
+
+    window.canonicalPortalUrl = canonicalPortalUrl;
+    normalizeLivePortalRoute();
+
     async function fetchJsonWithTimeout(url) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
@@ -2629,7 +2652,7 @@ ${SITE_URL}`;
       const items = currentVisibleItems().slice(0, 5);
       const title = activeTab === "rent" ? "*Lotus Zing flats digest*" : "*Lotus Zing tenant requests digest*";
       if (!items.length) {
-        return `${title}\nNo active matches right now.\n\n${window.location.href}`;
+        return `${title}\nNo active matches right now.\n\n${canonicalPortalUrl()}`;
       }
       const lines = items.map((item, index) => {
         if (activeTab === "rent") {
@@ -2637,7 +2660,7 @@ ${SITE_URL}`;
         }
         return `${index + 1}. ${item.preferredBhk} request - ${formatCurrency(item.budget)}/mo - ${item.preferredArea}`;
       });
-      return `${title}\n${lines.join("\n")}\n\nOpen filtered view:\n${window.location.href}`;
+      return `${title}\n${lines.join("\n")}\n\nOpen filtered view:\n${canonicalPortalUrl()}`;
     }
 
     function copyCurrentDigest(button) {
@@ -2646,7 +2669,7 @@ ${SITE_URL}`;
 
     function copyCurrentViewLink(button) {
       syncUrlFromState();
-      copyToClipboard(window.location.href, button);
+      copyToClipboard(canonicalPortalUrl(), button);
     }
 
     function shareRentWhatsapp(idx) {

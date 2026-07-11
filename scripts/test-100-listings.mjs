@@ -117,6 +117,7 @@ async function run() {
   const submitRuleCount = await page.locator("#submit-rules-list li").count();
   await page.getByRole("button", { name: /Review first/i }).click();
   await page.waitForTimeout(700);
+  const canonicalPortalUrl = await page.evaluate(() => window.canonicalPortalUrl?.() || "");
 
   const boxes = await page.locator(".listing-card").evaluateAll((cards) => cards.slice(0, 12).map((card) => {
     const box = card.getBoundingClientRect();
@@ -152,6 +153,7 @@ async function run() {
     tabCounts,
     submitDialogTitle,
     submitRuleCount,
+    canonicalPortalUrl,
     firstCardHeights: boxes.map((box) => Math.round(box.height)),
     overlapsInFirst12: overlapCount(boxes),
     consoleErrors,

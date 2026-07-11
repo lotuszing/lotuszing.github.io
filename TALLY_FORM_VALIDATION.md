@@ -10,6 +10,14 @@ Use this one portal link anywhere residents are asked to post a flat or request 
 https://lotuszing.github.io/listings/?submit=1
 ```
 
+Use this one portal home link for normal browsing:
+
+```text
+https://lotuszing.github.io/listings/
+```
+
+The slashless `/listings` route should redirect to `/listings/` on the live site.
+
 Do not share the raw Tally link publicly unless necessary. The portal link shows the rejection checklist first, then sends users to the single Tally form.
 
 ## Listing Type
