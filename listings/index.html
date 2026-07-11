@@ -1499,7 +1499,7 @@
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
       try {
-        const response = await fetch(url, { cache: "default", signal: controller.signal });
+        const response = await fetch(url, { cache: "no-cache", signal: controller.signal });
         if (!response.ok) throw new Error(`JSON fetch failed: ${response.status}`);
         return await response.json();
       } finally {
@@ -2491,26 +2491,53 @@ ${SITE_URL}`);
       cleanupListings();
     }
 
+    function payloadTimestamp(payload) {
+      const time = Date.parse(payload?.generatedAt || "");
+      return Number.isFinite(time) ? time : 0;
+    }
+
+    function payloadItemCount(payload) {
+      return (Array.isArray(payload?.rentListings) ? payload.rentListings.length : 0) +
+             (Array.isArray(payload?.lookingListings) ? payload.lookingListings.length : 0);
+    }
+
+    function chooseBestPayload(payloads) {
+      const validPayloads = payloads.filter(Boolean);
+      if (!validPayloads.length) return null;
+      return validPayloads.sort((a, b) => {
+        const timeDelta = payloadTimestamp(b) - payloadTimestamp(a);
+        if (timeDelta) return timeDelta;
+        return payloadItemCount(b) - payloadItemCount(a);
+      })[0];
+    }
+
     // Public clients only read the sanitized JSON cache. Raw Sheet access stays server-side.
     async function fetchSheetData() {
       const loader = document.getElementById('loader-state');
       const errorDiv = document.getElementById('error-state');
-      const sources = LIVE_API_URL ? [LIVE_API_URL, DATA_JSON_URL] : [DATA_JSON_URL];
+      const canFetchStaticJson = window.location.protocol !== "file:";
+      const sources = LIVE_API_URL
+        ? [LIVE_API_URL, ...(canFetchStaticJson ? [DATA_JSON_URL] : [])]
+        : [DATA_JSON_URL];
 
       errorDiv.classList.add('hidden');
       loader.classList.remove('hidden');
 
-      for (const source of sources) {
+      const payloads = await Promise.all(sources.map(async (source) => {
         try {
-          const payload = await fetchJsonWithTimeout(source);
-          applyListingsPayload(payload);
-          loader.classList.add('hidden');
-          setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
-          renderListings();
-          return;
+          return await fetchJsonWithTimeout(source);
         } catch (err) {
-          // Try the next source. Current order: live API, then static JSON fallback.
+          return null;
         }
+      }));
+      const payload = chooseBestPayload(payloads);
+
+      if (payload) {
+        applyListingsPayload(payload);
+        loader.classList.add('hidden');
+        setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+        renderListings();
+        return;
       }
 
       loader.classList.add('hidden');

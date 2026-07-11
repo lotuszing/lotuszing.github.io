@@ -196,11 +196,20 @@ function getField(fields, patterns) {
   return key ? fields[key].value : "";
 }
 
+function getCombinedTowerFlat(fields) {
+  const combined = getField(fields, [/tower.*flat|flat.*tower|tower\/flat|unit/]);
+  if (hasTowerAndUnit(combined)) return combined;
+  const tower = getField(fields, [/^tower$|tower number|tower/]);
+  const flatNo = getField(fields, [/flat number|flat no|flat|unit number|apartment/]);
+  if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
+  return combined || [tower, flatNo].filter(Boolean).join(" ");
+}
+
 function classifyFields(fields) {
   const listingType = getField(fields, [/what.*listing/, /listing type/, /listing/]).toLowerCase();
   if (/looking|request|tenant/.test(listingType)) return "looking";
   if (/available|rent|flat|owner|broker/.test(listingType)) return "rent";
-  if (getField(fields, [/tower|flat|unit/]) || getField(fields, [/monthly|rent|price/])) return "rent";
+  if (getCombinedTowerFlat(fields) || getField(fields, [/monthly|rent|price/])) return "rent";
   if (getField(fields, [/budget|max/]) || getField(fields, [/preferred.*tower|preferred.*area/])) return "looking";
   return "";
 }
@@ -210,7 +219,7 @@ function fieldsToRentListing(fields, body) {
   return {
     id: `tally-rent-${id}`,
     timestamp: getField(fields, [/timestamp|submitted|time/]) || new Date().toISOString(),
-    towerFlat: getField(fields, [/tower|flat|unit/]) || "Unknown Unit",
+    towerFlat: getCombinedTowerFlat(fields) || "Unknown Unit",
     bhkType: getField(fields, [/bhk|room type|room/]) || "2 BHK",
     furnishing: getField(fields, [/furnish/]) || "Semi-Furnished",
     monthlyRent: numberFrom(getField(fields, [/monthly|rent|price/])) || 0,

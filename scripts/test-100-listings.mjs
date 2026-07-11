@@ -116,6 +116,7 @@ async function run() {
   const submitDialogTitle = await page.locator("#submit-rules-title").textContent();
   const submitRuleCount = await page.locator("#submit-rules-list li").count();
   await page.getByRole("button", { name: /Review first/i }).click();
+  await page.waitForTimeout(700);
 
   const boxes = await page.locator(".listing-card").evaluateAll((cards) => cards.slice(0, 12).map((card) => {
     const box = card.getBoundingClientRect();

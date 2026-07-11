@@ -57,7 +57,9 @@ function mapHeaders(headers) {
     if (h.includes("submission id")) setOnce("submissionId", index);
     else if (h.includes("what are you listing") || h === "listing type" || h.includes("listing?")) setOnce("listingType", index);
     else if (h.includes("preferred tower") || h.includes("preferred area") || h === "preferred tower/area") setOnce("preferredArea", index);
-    else if (h.includes("tower") || h.includes("flat") || h.includes("unit")) setOnce("towerFlat", index);
+    else if ((h.includes("tower") && (h.includes("flat") || h.includes("unit"))) || h.includes("tower/flat")) setOnce("towerFlat", index);
+    else if (h.includes("tower")) setOnce("tower", index);
+    else if (h.includes("flat") || h.includes("unit")) setOnce("flatNo", index);
     else if (h.includes("bhk") || h.includes("room type") || h.includes("room")) {
       setOnce("bhkType", index);
       setOnce("preferredBhk", index);
@@ -89,11 +91,20 @@ function getRowValue(row, mapping, key) {
   return index !== undefined && index < row.length ? String(row[index] || "").trim() : "";
 }
 
+function combinedTowerFlat(row, mapping) {
+  const combined = getRowValue(row, mapping, "towerFlat");
+  if (hasTowerAndUnit(combined)) return combined;
+  const tower = getRowValue(row, mapping, "tower");
+  const flatNo = getRowValue(row, mapping, "flatNo");
+  if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
+  return combined || [tower, flatNo].filter(Boolean).join(" ");
+}
+
 function classifyListingRow(row, mapping) {
   const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
   if (listingType.includes("looking") || listingType.includes("request") || listingType.includes("tenant")) return "looking";
   if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
-  if (getRowValue(row, mapping, "towerFlat") || getRowValue(row, mapping, "monthlyRent")) return "rent";
+  if (combinedTowerFlat(row, mapping) || getRowValue(row, mapping, "monthlyRent")) return "rent";
   if (getRowValue(row, mapping, "budget") || getRowValue(row, mapping, "preferredArea")) return "looking";
   return "";
 }
@@ -183,7 +194,7 @@ function rowToRentListing(row, mapping, idx) {
   return {
     id: `sheet-rent-${getVal("submissionId") || idx}`,
     timestamp: getVal("timestamp") || new Date().toISOString(),
-    towerFlat: getVal("towerFlat") || "Unknown Unit",
+    towerFlat: combinedTowerFlat(row, mapping) || "Unknown Unit",
     bhkType: getVal("bhkType") || "2 BHK",
     furnishing: getVal("furnishing") || "Semi-Furnished",
     monthlyRent: numberFrom(getVal("monthlyRent")),

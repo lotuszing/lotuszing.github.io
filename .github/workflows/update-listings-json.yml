@@ -11,6 +11,9 @@ permissions:
 jobs:
   update-listings:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -24,6 +27,11 @@ jobs:
         env:
           SHEET_CSV_URL: ${{ secrets.SHEET_CSV_URL }}
         run: node scripts/update-listings-json.js
+
+      - name: Update Worker cache
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' }}
+        working-directory: workers/listings-api
+        run: npx wrangler kv key put listings-cache-v1 --path ../../listings/listings.json --binding LISTINGS_KV --remote
 
       - name: Commit updated listings
         uses: stefanzweifel/git-auto-commit-action@v5
