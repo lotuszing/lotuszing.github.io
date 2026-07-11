@@ -254,7 +254,7 @@ function fieldsToLookingListing(fields, body) {
 }
 
 function collectExtraFields(fields) {
-  const mapped = /(submission|timestamp|submitted|time|contact|phone|mobile|email|name|poster|listing|tower|flat|unit|bhk|room|furnish|rent|price|monthly|deposit|security|available|from|tenant|parking|broker|agent|owner|notes|comment|desc|budget|move|occupants|people|area)/i;
+  const mapped = /(submission|respondent|timestamp|submitted|time|contact|phone|mobile|email|name|poster|listing|tower|flat|unit|bhk|room|furnish|rent|price|monthly|deposit|security|available|from|tenant|parking|broker|agent|owner|notes|comment|desc|budget|move|occupants|people|area)/i;
   return Object.values(fields)
     .filter((field) => field.label && field.value && !mapped.test(field.label))
     .map((field) => ({

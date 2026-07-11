@@ -174,7 +174,7 @@ function normalizeHeaderLabel(value) {
 
 function collectExtraFields(row, headers, mapping) {
   const mappedIndexes = new Set(Object.values(mapping).filter((index) => Number.isInteger(index)));
-  const sensitiveHeader = /(submission|timestamp|submitted|time|contact|phone|mobile|email|name)/i;
+  const sensitiveHeader = /(submission|respondent|timestamp|submitted|time|contact|phone|mobile|email|name)/i;
   return headers
     .map((header, index) => {
       const label = normalizeHeaderLabel(header);
