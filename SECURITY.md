@@ -8,6 +8,7 @@
 - The scheduled GitHub Action reads the Sheet through the `SHEET_CSV_URL` repository secret.
 - Rejected rows are logged in the Action output only; they are not written to public JSON.
 - The Cloudflare Worker webhook path validates Tally submissions before updating its public cache.
+- Webhook writes are serialized through a Durable Object writer before publishing to KV, avoiding lost updates under simultaneous submissions.
 
 ## Required GitHub Secret
 

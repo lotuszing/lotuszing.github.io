@@ -37,12 +37,32 @@ export default {
     }
 
     if (url.pathname === "/webhooks/tally" && request.method === "POST") {
+      if (env.LISTINGS_WRITER) {
+        const id = env.LISTINGS_WRITER.idFromName(CACHE_KEY);
+        return env.LISTINGS_WRITER.get(id).fetch(request);
+      }
       return handleTallyWebhook(request, env);
     }
 
     return json({ error: "Not found" }, 404);
   }
 };
+
+export class ListingWriter {
+  constructor(state, env) {
+    this.state = state;
+    this.env = env;
+    this.queue = Promise.resolve();
+  }
+
+  async fetch(request) {
+    // KV is eventually consistent and read-modify-write is unsafe under concurrent submissions.
+    // One Durable Object instance serializes webhook writes, then publishes the clean cache to KV.
+    const run = this.queue.catch(() => {}).then(() => handleTallyWebhook(request, this.env));
+    this.queue = run.catch(() => {});
+    return run;
+  }
+}
 
 async function getListings(env) {
   const cache = await readCache(env);

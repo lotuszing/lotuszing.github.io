@@ -597,6 +597,17 @@
       background: #EAF4FF;
       color: #0058A3;
     }
+    .board-tab:not(.is-active) {
+      background: #F8FBFF;
+      color: #24435F;
+    }
+    .board-tab:not(.is-active) .board-tab-label::before {
+      opacity: 0.7;
+    }
+    .board-tab:not(.is-active) .board-tab-count {
+      background: #DDEDFB;
+      color: #0058A3;
+    }
     .board-tab.is-active {
       background: linear-gradient(180deg, #071B3A 0%, #0A3560 100%);
       color: #ffffff;

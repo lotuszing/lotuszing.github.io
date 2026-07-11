@@ -5,7 +5,7 @@ Cloudflare Worker for faster listing updates.
 ## Flow
 
 ```text
-Tally webhook -> Cloudflare Worker -> KV cached listings -> frontend LIVE_API_URL
+Tally webhook -> Cloudflare Durable Object writer -> KV cached listings -> frontend LIVE_API_URL
 ```
 
 ## Endpoints
@@ -53,6 +53,7 @@ Until `LIVE_API_URL` is set, the frontend keeps using `listings/listings.json`.
 ## Notes
 
 - The Worker keeps only active 30-day listings in the public cache.
+- Webhook writes are serialized through a Durable Object so simultaneous submissions do not overwrite each other.
 - Known sensitive generic extra fields are ignored.
 - Phone numbers are still included in approved listings because the current UI has direct Call/WhatsApp buttons.
-- For extremely high write concurrency, migrate storage from KV read-modify-write to D1 or a Durable Object.
+- KV remains the public read cache, so normal visitors do not hit the write path.
