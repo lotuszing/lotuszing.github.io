@@ -1061,6 +1061,75 @@
       font-size: 0.78rem;
       line-height: 1.48;
     }
+    .submit-rules-dialog {
+      width: min(92vw, 32rem);
+      border: 1px solid #BBD7F2;
+      border-radius: 1.25rem;
+      padding: 0;
+      color: #071B3A;
+      background: #FFFFFF;
+      box-shadow: 0 24px 70px rgba(7, 27, 58, 0.28);
+    }
+    .submit-rules-dialog::backdrop {
+      background: rgba(7, 27, 58, 0.48);
+      backdrop-filter: blur(4px);
+    }
+    .submit-rules-panel {
+      padding: 1.1rem;
+      background: radial-gradient(circle at 0 0, rgba(0, 194, 168, 0.11), transparent 11rem), #FFFFFF;
+    }
+    .submit-rules-eyebrow {
+      display: inline-flex;
+      color: #0058A3;
+      font-family: "DM Mono", ui-monospace, monospace;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .submit-rules-list {
+      display: grid;
+      gap: 0.45rem;
+      margin: 0.95rem 0;
+    }
+    .submit-rules-list li {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      color: #48617D;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+    .submit-rules-list li::before {
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      flex: 0 0 auto;
+      margin-top: 0.32rem;
+      border-radius: 999px;
+      background: #00A58F;
+    }
+    .submit-rules-warning {
+      border: 1px solid #F2D49B;
+      border-radius: 0.9rem;
+      padding: 0.72rem 0.78rem;
+      background: #FFF8E7;
+      color: #6D4A00;
+      font-size: 0.78rem;
+      line-height: 1.38;
+    }
+    .submit-rules-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+      margin-top: 0.95rem;
+    }
+    @media (min-width: 520px) {
+      .submit-rules-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
     .utility-actions {
       display: flex;
       justify-content: flex-end;
@@ -1272,7 +1341,7 @@
     <div id="result-summary" class="result-summary" aria-live="polite"></div>
     <div id="submit-reassurance" class="submit-reassurance hidden" aria-live="polite">
       <strong>Post received. You can breathe.</strong>
-      <p>If details are valid, it usually appears here within 10-20 min. If it does not show, check phone number, tower+flat, rent/budget range, and date, then submit again.</p>
+      <p>Valid posts usually appear within seconds. If it does not show, it likely failed phone, tower+flat, rent/budget, deposit, or date checks.</p>
     </div>
     <div class="utility-actions">
       <button id="copy-digest-btn" type="button" onclick="copyCurrentDigest(this)" class="utility-action">Copy digest</button>
@@ -1313,16 +1382,38 @@
         Owners can list flats. Tenants can post what they need. Submitted names and phone numbers appear publicly.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
+        <button type="button" onclick="openSubmitChecklist('owner')" class="w-full sm:w-auto px-6 py-3 bg-[#0058A3] hover:bg-[#003E73] border border-[#003E73] font-sans text-xs font-bold uppercase tracking-[0.06em] text-white rounded-xl transition-all">
           Owner: list flat
-        </a>
-        <a href="https://tally.so/r/KYg7YD" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
+        </button>
+        <button type="button" onclick="openSubmitChecklist('tenant')" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#EAF4FF] border border-[#BBD7F2] font-sans text-xs font-bold uppercase tracking-[0.06em] text-[#071B3A] rounded-xl transition-all">
           Tenant: request flat
-        </a>
+        </button>
       </div>
     </div>
 
   </main>
+
+  <dialog id="submit-rules-dialog" class="submit-rules-dialog">
+    <div class="submit-rules-panel">
+      <span class="submit-rules-eyebrow">Before you submit</span>
+      <h3 id="submit-rules-title" class="mt-2 font-display text-xl font-extrabold tracking-tight text-[#071B3A]">Avoid rejection</h3>
+      <p id="submit-rules-copy" class="mt-2 text-sm leading-relaxed text-[#48617D]">
+        The form accepts only clean resident-ready posts. Please check these before opening Tally.
+      </p>
+      <ul id="submit-rules-list" class="submit-rules-list"></ul>
+      <p class="submit-rules-warning">
+        If these rules are not met, the portal may reject the submission and it will not appear publicly.
+      </p>
+      <div class="submit-rules-actions">
+        <button type="button" onclick="closeSubmitChecklist()" class="px-4 py-2.5 border border-[#BBD7F2] bg-white text-[#071B3A] font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
+          Review first
+        </button>
+        <button id="submit-rules-continue" type="button" onclick="continueToTally()" class="px-4 py-2.5 border border-[#071B3A] bg-[#071B3A] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
+          Continue to form
+        </button>
+      </div>
+    </div>
+  </dialog>
 
   <!-- DISCLAIMER -->
   <footer class="border-t border-[#BBD7F2] bg-transparent py-6 sm:py-8 px-4 text-center mt-8 sm:mt-12">
@@ -1366,6 +1457,33 @@
       datePastDays: 120,
       dateFutureDays: 730
     };
+    const SUBMIT_RULES = {
+      owner: {
+        title: "List a flat without rejection",
+        copy: "Owners and brokers need these details ready before the post can go live.",
+        rules: [
+          "Tower and flat number must both be present, for example Tower 3, Flat 1402.",
+          "Phone must be a real 10-digit Indian mobile number.",
+          "Monthly rent must be between ₹5,000 and ₹1,50,000.",
+          "Deposit must be between ₹0 and ₹5,00,000.",
+          "Available date must be Immediate or a reasonable valid date.",
+          "BHK, furnishing, listed by, and contact name must be selected clearly."
+        ]
+      },
+      tenant: {
+        title: "Post a tenant request without rejection",
+        copy: "Tenant requests need clean contact and requirement details so owners can respond.",
+        rules: [
+          "Phone must be a real 10-digit Indian mobile number.",
+          "Budget must be between ₹5,000 and ₹1,50,000.",
+          "Move-in must be Immediate or a reasonable valid date.",
+          "Occupants must be between 1 and 8 people.",
+          "BHK, tenant type, preferred tower or area, and contact name must be clear.",
+          "Avoid jokes, test text, or missing details because those posts are rejected."
+        ]
+      }
+    };
+    let pendingSubmitType = "owner";
 
     async function fetchJsonWithTimeout(url) {
       const controller = new AbortController();
@@ -1819,6 +1937,37 @@ ${SITE_URL}`);
       if (!notice) return;
       const params = new URLSearchParams(window.location.search);
       notice.classList.toggle("hidden", params.get("submitted") !== "1");
+    }
+
+    function openSubmitChecklist(type = "owner") {
+      pendingSubmitType = type === "tenant" ? "tenant" : "owner";
+      const rules = SUBMIT_RULES[pendingSubmitType];
+      const dialog = document.getElementById("submit-rules-dialog");
+      const title = document.getElementById("submit-rules-title");
+      const copy = document.getElementById("submit-rules-copy");
+      const list = document.getElementById("submit-rules-list");
+      const continueButton = document.getElementById("submit-rules-continue");
+      if (!dialog || !title || !copy || !list || !continueButton) {
+        continueToTally();
+        return;
+      }
+      title.textContent = rules.title;
+      copy.textContent = rules.copy;
+      list.innerHTML = rules.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("");
+      continueButton.textContent = pendingSubmitType === "tenant" ? "Post requirement" : "List flat";
+      if (typeof dialog.showModal === "function") dialog.showModal();
+      else continueToTally();
+    }
+
+    function closeSubmitChecklist() {
+      const dialog = document.getElementById("submit-rules-dialog");
+      if (dialog?.open) dialog.close();
+    }
+
+    function continueToTally() {
+      closeSubmitChecklist();
+      const url = `${TALLY_FORM_URL}?source=listings_portal&type=${encodeURIComponent(pendingSubmitType)}`;
+      openSafe(url);
     }
 
     // switch Tab
@@ -2351,7 +2500,7 @@ ${SITE_URL}`);
       renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
     }
 
-    function renderSetupPending(message = "Listings cache is not available yet. New posts usually appear within 10-20 min.") {
+    function renderSetupPending(message = "Listings cache is not available yet. Valid new posts usually appear within seconds after Tally webhook delivery.") {
       document.getElementById('error-state').classList.add('hidden');
       document.getElementById('loader-state').classList.add('hidden');
       setResultSummary(0, "");
@@ -2366,7 +2515,7 @@ ${SITE_URL}`);
             ${escapeHtml(message)}
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="${TALLY_FORM_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</a>
+            <button type="button" onclick="openSubmitChecklist('owner')" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</button>
             <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
           </div>
         </div>
