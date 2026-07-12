@@ -1662,7 +1662,7 @@
       <ul id="submit-rules-list" class="submit-rules-list"></ul>
       <div class="submit-rules-actions">
         <button id="submit-rules-continue" type="button" onclick="continueToTally()" class="px-4 py-2.5 border border-[#071B3A] bg-[#071B3A] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
-          Open form
+          Start posting
         </button>
       </div>
     </div>
@@ -2254,7 +2254,7 @@ ${SITE_URL}`);
       title.textContent = rules.title;
       copy.textContent = rules.copy;
       list.innerHTML = rules.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("");
-      continueButton.textContent = "Open form";
+      continueButton.textContent = "Start posting";
       if (typeof dialog.showModal === "function") dialog.showModal();
       else continueToTally();
     }
