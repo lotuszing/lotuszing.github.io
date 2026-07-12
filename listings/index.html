@@ -1541,8 +1541,8 @@
               </h1>
               <span class="brand-purpose">Flat Board</span>
             </div>
-            <span id="refresh-counter" class="refresh-counter">Checking cache</span>
-            <p class="header-subcopy">Resident flat listings and tenant requests, refreshed from verified form submissions.</p>
+            <span id="refresh-counter" class="refresh-counter">Checking board</span>
+            <p class="header-subcopy">Resident flat listings and tenant requests, updated from verified community submissions.</p>
           </div>
           <span id="sync-status" hidden>Checking</span>
         </div>
@@ -1590,11 +1590,11 @@
     <div id="result-summary" class="result-summary" aria-live="polite"></div>
     <div id="submit-reassurance" class="submit-reassurance hidden" aria-live="polite">
       <strong>Post received. You can breathe.</strong>
-      <p>Valid posts usually appear within seconds. If it does not show, it likely failed phone, tower+flat, rent/budget, deposit, or date checks.</p>
+      <p>If the details are complete, your post should appear shortly. If it does not, please review the phone number, tower or flat details, rent or budget, deposit, and date.</p>
     </div>
     <div id="portal-feedback" class="portal-feedback hidden" aria-live="polite"></div>
     <div class="utility-actions">
-      <button id="copy-digest-btn" type="button" onclick="copyCurrentDigest(this)" class="utility-action">Copy digest</button>
+      <button id="copy-digest-btn" type="button" onclick="copyCurrentDigest(this)" class="utility-action">Copy summary</button>
       <button id="copy-link-btn" type="button" onclick="copyCurrentViewLink(this)" class="utility-action">Copy view link</button>
     </div>
     <!-- LOADER STATE -->
@@ -1607,13 +1607,13 @@
     <!-- FAILURE FLOW STATE -->
     <div id="error-state" class="hidden border border-rose-200 bg-rose-50 p-4 rounded-xl max-w-md mx-auto my-5 text-center space-y-2">
       <span class="font-display text-lg font-bold text-rose-900">!</span>
-      <h3 class="font-display font-extrabold text-rose-950 text-lg">Live Connection Interrupted</h3>
+      <h3 class="font-display font-extrabold text-rose-950 text-lg">Couldn’t update listings</h3>
       <p class="text-xs text-rose-800 font-sans leading-relaxed">
-        Live sheet did not load. Try again.
+        The board could not load the latest posts. Please try again.
       </p>
       <div class="pt-2 flex justify-center gap-3">
         <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-slate-900">
-          Retry Fetching
+          Try again
         </button>
       </div>
     </div>
@@ -1643,13 +1643,13 @@
   <dialog id="submit-rules-dialog" class="submit-rules-dialog">
     <div class="submit-rules-panel">
       <span class="submit-rules-eyebrow">Before you submit</span>
-      <h3 id="submit-rules-title" class="mt-2 font-display text-xl font-extrabold tracking-tight text-[#071B3A]">Avoid rejection</h3>
+      <h3 id="submit-rules-title" class="mt-2 font-display text-xl font-extrabold tracking-tight text-[#071B3A]">Make your post go live</h3>
       <p id="submit-rules-copy" class="mt-2 text-sm leading-relaxed text-[#48617D]">
-        The form accepts only clean resident-ready posts. Please check these before opening Tally.
+        The form works best when the post is clear, complete, and useful for residents.
       </p>
       <ul id="submit-rules-list" class="submit-rules-list"></ul>
       <p class="submit-rules-warning">
-        If these rules are not met, the portal may reject the submission and it will not appear publicly.
+        Incomplete or unclear posts may stay hidden until they are fixed.
       </p>
       <div class="submit-rules-actions">
         <button type="button" onclick="closeSubmitChecklist()" class="px-4 py-2.5 border border-[#BBD7F2] bg-white text-[#071B3A] font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
@@ -1707,18 +1707,18 @@
     const SUBMIT_RULES = {
       submit: {
         title: "Submit without getting lost",
-        copy: "One form handles both flat listings and tenant requests. Pick the right type inside Tally, then keep these details clean.",
+        copy: "One form handles both flat listings and tenant requests. Pick the right type, then keep these details clean.",
         rules: [
           "Choose the correct type inside the form: Flat available or Looking for flat.",
           "Phone must be a real 10-digit Indian mobile number.",
           "Flat posts need at least a tower or unit number, for example Tower 3. Flat number is recommended.",
           "Rent, budget, and deposit must be realistic and inside the allowed ranges.",
           "Move-in or available date must be Immediate or a reasonable valid date.",
-          "Missing required details, joke text, or test entries will not appear publicly."
+          "Incomplete, joke, or test entries stay hidden from the public board."
         ]
       },
       owner: {
-        title: "List a flat without rejection",
+        title: "List a flat that residents can trust",
         copy: "Owners and brokers need these details ready before the post can go live.",
         rules: [
           "Tower or unit number must be present, for example Tower 3. Flat number is recommended.",
@@ -1730,7 +1730,7 @@
         ]
       },
       tenant: {
-        title: "Post a tenant request without rejection",
+        title: "Post a tenant request owners can act on",
         copy: "Tenant requests need clean contact and requirement details so owners can respond.",
         rules: [
           "Phone must be a real 10-digit Indian mobile number.",
@@ -1738,7 +1738,7 @@
           "Move-in must be Immediate or a reasonable valid date.",
           "Occupants must be between 1 and 8 people.",
           "BHK, tenant type, preferred tower or area, and contact name must be clear.",
-          "Avoid jokes, test text, or missing details because those posts are rejected."
+          "Avoid jokes, test text, or missing details because they stay hidden from the public board."
         ]
       }
     };
@@ -1824,8 +1824,8 @@
       if (counter) {
         counter.textContent = text
           .replace(/^Updated\s+/i, "Refreshed ")
-          .replace(/^Sheet unavailable\s+/i, "Offline ")
-          .replace(/^No sheet\s+/i, "Offline ");
+          .replace(/^Board unavailable\s+/i, "Offline ")
+          .replace(/^Update paused\s+/i, "Offline ");
       }
     }
 
@@ -2080,10 +2080,10 @@ ${WHATSAPP_GROUP_URL}
 Listings portal:
 ${SITE_URL}`);
       const callAction = phone
-        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Opening dialer.', 'Calling the poster from this listing.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
+        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'Starting a pre-filled message to the poster.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
+        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
 
       const card = document.createElement('div');
@@ -2159,10 +2159,10 @@ ${WHATSAPP_GROUP_URL}
 Listings portal:
 ${SITE_URL}`);
       const callAction = phone
-        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Opening dialer.', 'Calling the poster from this request.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
+        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'Starting a pre-filled message to the poster.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
+        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
         : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
       const preferredArea = item.preferredArea || "Any allowed tower";
 
@@ -2238,7 +2238,7 @@ ${SITE_URL}`);
       const submitted = params.get("submitted") === "1";
       notice.classList.toggle("hidden", !submitted);
       if (submitted) {
-        showPortalFeedback("Checking your post.", "If details pass validation, it will appear after the sheet cache refreshes.", "info");
+        showPortalFeedback("Post received.", "If everything is complete, it should appear on the board shortly.", "info");
       }
     }
 
@@ -2276,7 +2276,7 @@ ${SITE_URL}`);
 
     function continueToTally() {
       closeSubmitChecklist();
-      showPortalFeedback("Opening form.", "If the listing does not appear after submission, check phone, date, rent/budget, and tower details.", "info");
+      showPortalFeedback("Opening form.", "After submitting, come back here and refresh if your post does not appear right away.", "info");
       const url = `${TALLY_FORM_URL}?source=listings_portal&type=${encodeURIComponent(pendingSubmitType)}`;
       window.location.href = url;
     }
@@ -2656,19 +2656,19 @@ ${SITE_URL}`);
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
         const total = rentListings.length + lookingListings.length;
-        showPortalFeedback("Listings refreshed.", `${total} active ${total === 1 ? "post" : "posts"} loaded from the sheet cache.`, "good");
+        showPortalFeedback("Listings refreshed.", `${total} active ${total === 1 ? "post" : "posts"} ready on the board.`, "good");
         return;
       } catch (err) {
         // Show the friendly unavailable state below.
       }
 
       loader.classList.add('hidden');
-      setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
-      showPortalFeedback("Could not refresh.", "Please try again. If this repeats, the published sheet cache may still be updating.", "warn");
-      renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
+      setSyncStatus(`Update paused ${syncTimeLabel()}`, "error");
+      showPortalFeedback("Could not refresh.", "Please try again. If this repeats, wait a minute and refresh the board.", "warn");
+      renderSetupPending("The board is taking longer than usual to update. Please refresh or try again shortly.");
     }
 
-    function renderSetupPending(message = "Listings cache is not available yet. Valid new posts usually appear within seconds after Tally webhook delivery.") {
+    function renderSetupPending(message = "The board is still preparing the latest posts. Valid new posts usually appear shortly after submission.") {
       document.getElementById('error-state').classList.add('hidden');
       document.getElementById('loader-state').classList.add('hidden');
       setResultSummary(0, "");
@@ -2751,7 +2751,7 @@ ${SITE_URL}`;
 
     function currentDigestText() {
       const items = currentVisibleItems().slice(0, 5);
-      const title = activeTab === "rent" ? "*Lotus Zing flats digest*" : "*Lotus Zing tenant requests digest*";
+      const title = activeTab === "rent" ? "*Lotus Zing flats summary*" : "*Lotus Zing tenant requests summary*";
       if (!items.length) {
         return `${title}\nNo active matches right now.\n\n${canonicalPortalUrl()}`;
       }
