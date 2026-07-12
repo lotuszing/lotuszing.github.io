@@ -196,12 +196,19 @@ function getField(fields, patterns) {
   return key ? fields[key].value : "";
 }
 
+function normalizeTowerLabel(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const match = raw.match(/\b(1[56]|[1-6])\b/);
+  return match ? `Tower ${match[1]}` : raw;
+}
+
 function getCombinedTowerFlat(fields) {
-  const combined = getField(fields, [/tower.*flat|flat.*tower|tower\/flat|unit/]);
+  const combined = getField(fields, [/tower.*flat|flat.*tower|tower\/flat/]);
   if (hasLocationNumber(combined)) return combined;
-  const tower = getField(fields, [/^tower$|tower number|tower/]);
+  const tower = normalizeTowerLabel(getField(fields, [/^tower$|tower number|tower/]));
   const flatNo = getField(fields, [/flat number|flat no|flat|unit number|apartment/]);
-  if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
+  if (tower && flatNo) return `${tower}, Flat ${flatNo}`;
   return combined || [tower, flatNo].filter(Boolean).join(" ");
 }
 

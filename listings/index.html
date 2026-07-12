@@ -2402,7 +2402,9 @@ ${SITE_URL}`);
         const h = header.toLowerCase().trim();
         if (h.includes("what are you listing") || h === "listing type" || h.includes("listing?")) setOnce("listingType", index);
         else if (h.includes("preferred tower") || h.includes("preferred area") || h === "preferred tower/area") setOnce("preferredArea", index);
-        else if (h.includes("tower") || h.includes("flat") || h.includes("unit")) setOnce("towerFlat", index);
+        else if ((h.includes("tower") && (h.includes("flat") || h.includes("unit"))) || h.includes("tower/flat")) setOnce("towerFlat", index);
+        else if (h === "tower" || h.includes("tower number")) setOnce("tower", index);
+        else if (h.includes("flat") || h.includes("unit")) setOnce("flatNo", index);
         else if (h.includes("bhk") || h.includes("room type") || h.includes("room")) {
           setOnce("bhkType", index);
           setOnce("preferredBhk", index);
@@ -2435,11 +2437,27 @@ ${SITE_URL}`);
       return index !== undefined && index < row.length ? row[index].trim() : '';
     }
 
+    function normalizeTowerLabel(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      const match = raw.match(/\b(1[56]|[1-6])\b/);
+      return match ? `Tower ${match[1]}` : raw;
+    }
+
+    function combinedTowerFlat(row, mapping) {
+      const combined = getRowValue(row, mapping, "towerFlat");
+      if (hasLocationNumber(combined)) return combined;
+      const tower = normalizeTowerLabel(getRowValue(row, mapping, "tower"));
+      const flatNo = getRowValue(row, mapping, "flatNo");
+      if (tower && flatNo) return `${tower}, Flat ${flatNo}`;
+      return combined || [tower, flatNo].filter(Boolean).join(" ");
+    }
+
     function classifyListingRow(row, mapping) {
       const listingType = getRowValue(row, mapping, "listingType").toLowerCase();
       if (listingType.includes("looking") || listingType.includes("request") || listingType.includes("tenant")) return "looking";
       if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
-      const hasFlatFields = Boolean(getRowValue(row, mapping, "towerFlat") || getRowValue(row, mapping, "monthlyRent"));
+      const hasFlatFields = Boolean(combinedTowerFlat(row, mapping) || getRowValue(row, mapping, "monthlyRent"));
       const hasLookingFields = Boolean(getRowValue(row, mapping, "budget") || getRowValue(row, mapping, "preferredArea"));
       if (hasFlatFields) return "rent";
       if (hasLookingFields) return "looking";
@@ -2453,7 +2471,7 @@ ${SITE_URL}`);
       return {
         id: 'rc-' + idx,
         timestamp: getVal("timestamp") || "2026-07-02",
-        towerFlat: getVal("towerFlat") || "Unknown Unit",
+        towerFlat: combinedTowerFlat(row, mapping) || "Unknown Unit",
         bhkType: getVal("bhkType") || "2 BHK",
         furnishing: getVal("furnishing") || "Semi-Furnished",
         monthlyRent: rent,

@@ -91,12 +91,19 @@ function getRowValue(row, mapping, key) {
   return index !== undefined && index < row.length ? String(row[index] || "").trim() : "";
 }
 
+function normalizeTowerLabel(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const match = raw.match(/\b(1[56]|[1-6])\b/);
+  return match ? `Tower ${match[1]}` : raw;
+}
+
 function combinedTowerFlat(row, mapping) {
   const combined = getRowValue(row, mapping, "towerFlat");
   if (hasLocationNumber(combined)) return combined;
-  const tower = getRowValue(row, mapping, "tower");
+  const tower = normalizeTowerLabel(getRowValue(row, mapping, "tower"));
   const flatNo = getRowValue(row, mapping, "flatNo");
-  if (tower && flatNo) return `Tower ${tower}, Flat ${flatNo}`;
+  if (tower && flatNo) return `${tower}, Flat ${flatNo}`;
   return combined || [tower, flatNo].filter(Boolean).join(" ");
 }
 

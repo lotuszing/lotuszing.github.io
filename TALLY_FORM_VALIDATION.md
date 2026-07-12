@@ -39,10 +39,11 @@ Do not share the raw Tally link publicly unless necessary. The portal link shows
 
 ## Flat Available Fields
 
-- Tower or unit: required.
-- Flat/unit number: recommended, but not required.
-- Tower helper text: `Add at least the tower, for example Tower 5. Add flat/unit number if you are comfortable sharing it publicly.`
-- Tower regex: `(?i).*(tower|twr|t)?\s*(1[56]|[1-6]).*`
+- Tower: required dropdown.
+- Tower options: `Tower 1`, `Tower 2`, `Tower 3`, `Tower 4`, `Tower 5`, `Tower 6`, `Tower 15`, `Tower 16`.
+- Flat/unit number: separate short-text field, recommended but not required.
+- Tower helper text: `Choose the tower. Add flat/unit number if you are comfortable sharing it publicly.`
+- Flat/unit helper text: `Example: 1204. Leave blank only if the flat number is private.`
 - Monthly rent: required number.
 - Monthly rent min/max: `5000` to `150000`.
 - Security deposit: required number.
