@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://lotuszing.github.io/listings/">
   <meta property="og:url" content="https://lotuszing.github.io/listings/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
-  <title>Lotus Zing Flat/Room Listings Noticeboard</title>
+  <title>Lotus Zing Flat Board</title>
   
   <!-- Font Imports -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -243,6 +243,22 @@
     @media (min-width: 768px) {
       .md\:text-5xl { font-size: 3rem; line-height: 1; }
     }
+    :root {
+      --font-body: "Archivo", ui-sans-serif, system-ui, sans-serif;
+      --font-display: "Space Grotesk", sans-serif;
+      --font-mono: "DM Mono", ui-monospace, monospace;
+      --text-micro: 0.5rem;
+      --text-label: 0.54rem;
+      --text-caption: 0.58rem;
+      --text-small: 0.66rem;
+      --text-body: 0.74rem;
+      --text-body-lg: 0.78rem;
+      --text-title: clamp(0.92rem, 1.15vw, 1.08rem);
+      --text-section: clamp(1.03rem, 2.8vw, 1.12rem);
+      --leading-tight: 1.12;
+      --leading-copy: 1.45;
+      --track-label: 0.08em;
+    }
     body {
       background:
         radial-gradient(circle at 96% 3%, rgba(0, 88, 163, 0.16), transparent 16rem),
@@ -324,6 +340,7 @@
       border-radius: 13px;
       padding: 0.55rem 0.65rem;
       text-align: left;
+      text-decoration: none;
     }
     .action-ticket::before {
       content: "";
@@ -434,8 +451,8 @@
       border-radius: 0.5rem;
       background: rgba(234, 244, 255, 0.82);
       color: #0058A3;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.52rem;
+      font-family: var(--font-body);
+      font-size: var(--text-label);
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -474,11 +491,11 @@
     }
     .listing-card.is-expanded .listing-detail {
       gap: 0.38rem;
-      font-size: 0.72rem;
-      line-height: 1.42;
+      font-size: var(--text-body);
+      line-height: var(--leading-copy);
     }
     .listing-card.is-expanded .listing-detail span {
-      font-size: 0.56rem;
+      font-size: var(--text-caption);
     }
     .listing-card.is-expanded .listing-detail strong {
       white-space: normal;
@@ -496,8 +513,8 @@
       margin-bottom: 0.24rem;
     }
     .listing-card.is-expanded .listing-note-copy {
-      font-size: 0.76rem;
-      line-height: 1.48;
+      font-size: var(--text-body-lg);
+      line-height: var(--leading-copy);
       display: block;
       overflow: visible;
     }
@@ -508,18 +525,18 @@
       padding: 0.5rem 0.58rem;
     }
     .listing-card.is-expanded .listing-extra-field span {
-      font-size: 0.54rem;
+      font-size: var(--text-label);
     }
     .listing-card.is-expanded .listing-extra-field strong {
-      font-size: 0.72rem;
-      line-height: 1.32;
+      font-size: var(--text-body);
+      line-height: var(--leading-copy);
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
     }
     .listing-card.is-expanded .listing-footer {
       margin-top: 0.08rem;
-      gap: 0.5rem;
+      gap: 0.34rem;
       padding-top: 0.62rem;
       border-top: 1px solid rgba(187, 215, 242, 0.72);
     }
@@ -532,8 +549,8 @@
       border: 1px solid #0b4f8a;
       background: linear-gradient(180deg, #0b63b6 0%, #084a86 100%);
       color: #ffffff;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.58rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
       font-weight: 800;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
@@ -546,8 +563,8 @@
       border: 1px solid rgba(187, 215, 242, 0.95);
       background: rgba(233, 242, 250, 0.92);
       color: #49647f;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.5rem;
+      font-family: var(--font-body);
+      font-size: var(--text-micro);
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -558,8 +575,8 @@
       min-height: 1.4rem;
       padding: 0.18rem 0.48rem;
       border-radius: 999px;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.54rem;
+      font-family: var(--font-body);
+      font-size: var(--text-label);
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -585,8 +602,8 @@
     }
     .listing-kicker {
       display: block;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.5rem;
+      font-family: var(--font-body);
+      font-size: var(--text-micro);
       font-weight: 700;
       letter-spacing: 0.09em;
       text-transform: uppercase;
@@ -598,7 +615,7 @@
     }
     .listing-title {
       margin-top: 0.18rem;
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(0.84rem, 1vw, 0.96rem);
       font-weight: 800;
       line-height: 1.08;
@@ -611,7 +628,7 @@
       min-height: 1.12rem;
       padding: 0.12rem 0.34rem;
       border-radius: 999px;
-      font-family: "Archivo", sans-serif;
+      font-family: var(--font-body);
       font-size: 0.46rem;
       font-weight: 700;
       letter-spacing: 0.04em;
@@ -629,7 +646,7 @@
       color: #52657D;
     }
     .listing-poster {
-      font-size: 0.6rem;
+      font-size: var(--text-small);
       color: #5D7087;
     }
     .listing-glance {
@@ -639,7 +656,7 @@
       min-width: 0;
       margin-top: 0.22rem;
       color: #48617D;
-      font-size: 0.58rem;
+      font-size: var(--text-caption);
       font-weight: 700;
       line-height: 1.2;
       white-space: nowrap;
@@ -665,8 +682,8 @@
     }
     .listing-price-label {
       display: none;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.54rem;
+      font-family: var(--font-body);
+      font-size: var(--text-label);
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -675,8 +692,8 @@
     .listing-price-value {
       display: block;
       margin-top: 0;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+      font-family: var(--font-display);
+      font-size: var(--text-title);
       font-weight: 800;
       line-height: 0.94;
       letter-spacing: -0.04em;
@@ -684,14 +701,14 @@
     }
     .listing-price-unit {
       margin-left: 0.25rem;
-      font-size: 0.58rem;
+      font-size: var(--text-caption);
       font-weight: 600;
       color: #5d7087;
     }
     .listing-price-meta {
       display: block;
       margin-top: 0.08rem;
-      font-size: 0.5rem;
+      font-size: var(--text-micro);
       color: #5d7087;
     }
     .listing-detail-list {
@@ -707,7 +724,7 @@
       display: flex;
       align-items: baseline;
       gap: 0.28rem;
-      font-size: 0.6rem;
+      font-size: var(--text-small);
       line-height: 1.25;
       color: #102033;
     }
@@ -741,8 +758,8 @@
     }
     .listing-stat-label {
       display: block;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.52rem;
+      font-family: var(--font-body);
+      font-size: var(--text-label);
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -751,7 +768,7 @@
     .listing-stat-value {
       display: block;
       margin-top: 0.22rem;
-      font-size: 0.74rem;
+      font-size: var(--text-body);
       font-weight: 700;
       line-height: 1.2;
       color: #102033;
@@ -760,7 +777,7 @@
     .listing-stat-helper {
       display: block;
       margin-top: 0.22rem;
-      font-size: 0.6rem;
+      font-size: var(--text-small);
       line-height: 1.25;
       color: #5D7087;
     }
@@ -772,8 +789,8 @@
     }
     .listing-note-label {
       display: none;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.52rem;
+      font-family: var(--font-body);
+      font-size: var(--text-label);
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -781,7 +798,7 @@
     }
     .listing-note-copy {
       margin-top: 0;
-      font-size: 0.58rem;
+      font-size: var(--text-caption);
       line-height: 1.25;
       color: #4f6378;
       display: -webkit-box;
@@ -818,7 +835,7 @@
       display: block;
       margin-top: 0.14rem;
       color: #102033;
-      font-size: 0.58rem;
+      font-size: var(--text-caption);
       font-weight: 750;
       line-height: 1.18;
       overflow: hidden;
@@ -827,8 +844,8 @@
     }
     .listing-footer {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.36rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.3rem;
       padding: 0;
       border-top: 0;
       background: transparent;
@@ -842,8 +859,8 @@
       gap: 0.5rem;
       padding: 0.62rem 0.78rem;
       text-align: left;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 0.78rem;
+      font-family: var(--font-display);
+      font-size: var(--text-body-lg);
       font-weight: 800;
       color: #48617D;
       background: transparent;
@@ -893,8 +910,8 @@
       border-radius: 999px;
       background: rgba(0, 88, 163, 0.10);
       color: #0058A3;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.58rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
       font-weight: 800;
       text-align: center;
     }
@@ -906,17 +923,27 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 2.5rem;
-      padding: 0.42rem 0.52rem;
+      gap: 0.24rem;
+      min-height: 2.16rem;
+      padding: 0.3rem 0.34rem;
       border-radius: 0.62rem;
       border: 1px solid transparent;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.62rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
       font-weight: 800;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.025em;
       transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
       outline: none;
       text-transform: uppercase;
+      text-decoration: none;
+    }
+    .listing-cta-icon {
+      width: 0.92rem;
+      height: 0.92rem;
+      flex: 0 0 auto;
+    }
+    .listing-cta-label {
+      line-height: 1;
     }
     .listing-cta:hover {
       transform: translateY(-1px);
@@ -934,13 +961,14 @@
       background: #EAF4FF;
     }
     .listing-cta--wa {
-      background: linear-gradient(180deg, #168268 0%, #106553 100%);
-      border-color: #0d5848;
+      background: #00A58F;
+      border-color: #00A58F;
       color: #ffffff;
-      box-shadow: 0 6px 14px rgba(16, 101, 83, 0.16);
+      box-shadow: 0 6px 14px rgba(0, 165, 143, 0.18);
     }
     .listing-cta--wa:hover {
-      background: linear-gradient(180deg, #13745d 0%, #0d5848 100%);
+      background: #008F7D;
+      border-color: #008F7D;
     }
     .listing-cta--group {
       background: linear-gradient(180deg, #0b63b6 0%, #094c8c 100%);
@@ -957,6 +985,25 @@
       color: #98a7b9;
       box-shadow: none;
       pointer-events: none;
+    }
+    .listing-cta--icon-only {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+    }
+    .listing-cta--icon-only .listing-cta-icon {
+      width: 1.04rem;
+      height: 1.04rem;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     /* Professional marketplace header: vibrant, restrained, product-grade */
     body {
@@ -1008,8 +1055,8 @@
       color: #FFFFFF !important;
     }
     .community-ticket {
-      background: #00B2A3 !important;
-      border-color: #0AD4C1 !important;
+      background: #00A58F !important;
+      border-color: #00A58F !important;
       color: #031E2A !important;
     }
     .community-ticket::before {
@@ -1053,8 +1100,8 @@
       gap: 0.38rem;
       margin-top: 0.55rem;
       color: rgba(255, 255, 255, 0.78);
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
@@ -1134,7 +1181,7 @@
       margin-top: 0.72rem;
       max-width: 34rem;
       color: #5D7087 !important;
-      font-size: 0.78rem;
+      font-size: var(--text-body-lg);
       line-height: 1.5;
       font-weight: 500;
     }
@@ -1161,7 +1208,7 @@
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.72);
       color: #0058A3;
-      font-size: 0.68rem;
+      font-size: var(--text-small);
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1220,8 +1267,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 1.28rem;
-      height: 1.28rem;
+      width: 1.42rem;
+      height: 1.42rem;
       margin-right: 0.42rem;
       border-radius: 999px;
       background: #FFFFFF;
@@ -1237,9 +1284,8 @@
     .wa-icon svg {
       position: relative;
       z-index: 1;
-      width: 0.9rem;
-      height: 0.9rem;
-      fill: currentColor;
+      width: 1.04rem;
+      height: 1.04rem;
     }
     .community-ticket:hover .wa-icon {
       animation-duration: 1100ms;
@@ -1290,11 +1336,11 @@
     }
     .listing-card:not(.is-expanded) .listing-title {
       margin-top: 0.22rem;
-      font-size: clamp(1.03rem, 2.8vw, 1.12rem);
+      font-size: var(--text-section);
       line-height: 1.2;
     }
     .listing-card:not(.is-expanded) .listing-kicker {
-      font-size: 0.58rem;
+      font-size: var(--text-caption);
       line-height: 1.25;
       letter-spacing: 0.075em;
     }
@@ -1305,10 +1351,10 @@
     .listing-card:not(.is-expanded) .listing-role-badge {
       min-height: 1.35rem;
       padding: 0.16rem 0.46rem;
-      font-size: 0.55rem;
+      font-size: var(--text-label);
     }
     .listing-card:not(.is-expanded) .listing-poster {
-      font-size: 0.72rem;
+      font-size: var(--text-body);
       line-height: 1.35;
     }
     .listing-card:not(.is-expanded) .listing-glance {
@@ -1316,7 +1362,7 @@
       margin-top: 0.36rem;
       gap: 0.42rem;
       row-gap: 0.24rem;
-      font-size: 0.72rem;
+      font-size: var(--text-body);
       line-height: 1.35;
       white-space: normal;
       overflow: visible;
@@ -1328,17 +1374,17 @@
     }
     .listing-card:not(.is-expanded) .listing-price-meta {
       margin-top: 0.08rem;
-      font-size: 0.6rem;
+      font-size: var(--text-small);
     }
     .listing-card:not(.is-expanded) .listing-chip-primary,
     .listing-card:not(.is-expanded) .listing-chip-secondary {
       min-height: 1.35rem;
       padding: 0.16rem 0.5rem;
-      font-size: 0.62rem;
+      font-size: var(--text-small);
     }
     .listing-card:not(.is-expanded) .listing-collapse-toggle {
       min-height: 2.5rem;
-      font-size: 0.66rem;
+      font-size: var(--text-small);
       border-radius: 0.72rem;
     }
     .listing-card:not(.is-expanded)::after {
@@ -1353,8 +1399,8 @@
     }
     .result-summary {
       margin: -0.15rem 0 0.75rem;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.72rem;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
       font-weight: 700;
       color: #51677f;
     }
@@ -1370,13 +1416,13 @@
     .submit-reassurance strong {
       display: block;
       color: #071B3A;
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--font-display);
       font-size: 0.94rem;
       margin-bottom: 0.18rem;
     }
     .submit-reassurance p {
       margin: 0;
-      font-size: 0.78rem;
+      font-size: var(--text-body-lg);
       line-height: 1.48;
     }
     .portal-feedback {
@@ -1386,14 +1432,14 @@
       border-radius: 0.9rem;
       background: #FFFFFF;
       color: #315776;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.78rem;
+      font-family: var(--font-body);
+      font-size: var(--text-body-lg);
       line-height: 1.45;
       box-shadow: 0 10px 24px rgba(7, 27, 58, 0.07);
     }
     .portal-feedback strong {
       color: #071B3A;
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--font-display);
       margin-right: 0.35rem;
     }
     .portal-feedback.is-good {
@@ -1407,13 +1453,13 @@
       color: #6D4A00;
     }
     .submit-rules-dialog {
-      width: min(92vw, 28rem);
+      width: min(91vw, 24.5rem);
       border: 1px solid #BBD7F2;
-      border-radius: 1.25rem;
+      border-radius: 1.05rem;
       padding: 0;
       color: #071B3A;
       background: #FFFFFF;
-      box-shadow: 0 24px 70px rgba(7, 27, 58, 0.28);
+      box-shadow: 0 20px 56px rgba(7, 27, 58, 0.24);
     }
     .submit-rules-dialog::backdrop {
       background: rgba(7, 27, 58, 0.48);
@@ -1421,23 +1467,23 @@
     }
     .submit-rules-panel {
       position: relative;
-      padding: 1rem;
+      padding: 1rem 1rem 1.05rem;
       background: radial-gradient(circle at 0 0, rgba(0, 194, 168, 0.11), transparent 11rem), #FFFFFF;
     }
     .submit-rules-close {
       position: absolute;
-      top: 0.72rem;
-      left: 0.72rem;
+      top: 0.82rem;
+      left: 0.82rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2.75rem;
-      height: 2.75rem;
+      width: 2rem;
+      height: 2rem;
       border: 1px solid #D7E7F6;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.88);
       color: #48617D;
-      font-family: "Archivo", sans-serif;
+      font-family: var(--font-body);
       font-size: 1rem;
       font-weight: 800;
       line-height: 1;
@@ -1449,42 +1495,75 @@
     }
     .submit-rules-eyebrow {
       display: inline-flex;
-      margin-left: 3.2rem;
+      margin-left: 2.52rem;
+      min-height: 2rem;
+      align-items: center;
       color: #0058A3;
-      font-family: "DM Mono", ui-monospace, monospace;
-      font-size: 0.66rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
       font-weight: 800;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
+    .submit-rules-title {
+      margin: 0.72rem 0 0;
+      color: #071B3A;
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 850;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+    .submit-rules-copy {
+      margin: 0.38rem 0 0;
+      color: #48617D;
+      font-size: var(--text-body-lg);
+      line-height: 1.45;
+    }
     .submit-rules-list {
       display: grid;
-      gap: 0.4rem;
-      margin: 0.78rem 0 0;
+      gap: 0.38rem;
+      margin: 0.72rem 0 0;
+      padding: 0.62rem 0.68rem;
+      border: 1px solid rgba(187, 215, 242, 0.72);
+      border-radius: 0.82rem;
+      background: rgba(248, 251, 255, 0.84);
     }
     .submit-rules-list li {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.42rem;
       align-items: flex-start;
       color: #48617D;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.82rem;
-      line-height: 1.35;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 1.36;
     }
     .submit-rules-list li::before {
       content: "";
-      width: 0.45rem;
-      height: 0.45rem;
+      width: 0.34rem;
+      height: 0.34rem;
       flex: 0 0 auto;
-      margin-top: 0.32rem;
+      margin-top: 0.36rem;
       border-radius: 999px;
       background: #00A58F;
     }
     .submit-rules-actions {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0.55rem;
-      margin-top: 0.95rem;
+      gap: 0.5rem;
+      margin-top: 0.78rem;
+    }
+    .submit-rules-primary {
+      min-height: 2.55rem;
+      border-radius: 0.82rem;
+      border: 1px solid #071B3A;
+      background: #071B3A;
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
     .utility-actions {
       display: flex;
@@ -1499,9 +1578,10 @@
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.9);
       color: #0058A3;
-      font-size: 0.68rem;
+      font-size: var(--text-small);
       font-weight: 800;
       letter-spacing: 0.02em;
+      text-decoration: none;
     }
     @media (max-width: 640px) {
       body {
@@ -1534,8 +1614,8 @@
       min-height: 2.75rem;
       padding: 0.68rem 1rem;
       border-radius: 999px;
-      font-family: "Archivo", sans-serif;
-      font-size: 0.72rem;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
       font-weight: 850;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -1670,7 +1750,7 @@
         padding-bottom: 0.78rem;
       }
       .listing-footer {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
       .listing-extra-grid {
         grid-template-columns: 1fr;
@@ -1702,7 +1782,7 @@
           <div>
             <div class="brand-row">
               <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
-                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing flat board home">Lotus Zing</a>
+                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing Flat Board home">Lotus Zing</a>
               </h1>
               <span class="brand-purpose">Flat Board</span>
             </div>
@@ -1719,7 +1799,8 @@
               <strong>
                 <span class="wa-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" role="img" focusable="false">
-                    <path d="M12 3.8a8 8 0 0 0-6.9 12l-.8 3.3 3.4-.8A8 8 0 1 0 12 3.8Zm4.3 11.5c-.2.5-1 1-1.5 1.1-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.4 0 .6l-.4.6c-.1.1-.3.3-.1.6.2.3.7 1.1 1.4 1.7 1 .9 1.8 1.1 2.1 1.2.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.1.1.7-.1 1.2Z"/>
+                    <path d="M5.3 19.1 6 16.2a7.5 7.5 0 1 1 2.8 2.3l-3.5.6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9.3 8.8c.3-.5.6-.5.9-.2l.9 1.2c.2.3.1.6-.2.9l-.4.4c.5 1 1.3 1.8 2.4 2.3l.5-.5c.3-.3.6-.3.9-.1l1.2.8c.3.2.4.6.2.9-.4.6-1 .9-1.7.8-2.6-.3-5-2.5-5.5-5.1-.2-.6.2-1.1.8-1.4Z" fill="currentColor"/>
                   </svg>
                 </span>
                 Join community
@@ -1809,13 +1890,13 @@
     <div class="submit-rules-panel">
       <button type="button" onclick="closeSubmitChecklist()" class="submit-rules-close" aria-label="Close submit checklist">×</button>
       <span class="submit-rules-eyebrow">Before you submit</span>
-      <h3 id="submit-rules-title" class="mt-2 font-display text-lg font-extrabold tracking-tight text-[#071B3A]">Quick check</h3>
-      <p id="submit-rules-copy" class="mt-2 text-sm leading-relaxed text-[#48617D]">
+      <h3 id="submit-rules-title" class="submit-rules-title">Quick check</h3>
+      <p id="submit-rules-copy" class="submit-rules-copy">
         Keep these ready so your post can show up cleanly.
       </p>
       <ul id="submit-rules-list" class="submit-rules-list"></ul>
       <div class="submit-rules-actions">
-        <button id="submit-rules-continue" type="button" onclick="continueToTally()" class="px-4 py-2.5 border border-[#071B3A] bg-[#071B3A] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
+        <button id="submit-rules-continue" type="button" onclick="continueToTally()" class="submit-rules-primary">
           Start posting
         </button>
       </div>
@@ -1848,7 +1929,7 @@
         <div class="rounded-xl border border-[#D7E7F6] bg-white/70 p-3">
           <strong class="block font-sans text-[10px] uppercase tracking-[0.12em] text-[#0058A3]">Copyright</strong>
           <p class="mt-1 text-xs leading-relaxed text-slate-600">
-            © 2026 Lotus Zing Community Board. Built and maintained by Shailansh Gaur.
+            © 2026 Lotus Zing Flat Board. Built and maintained by a Lotus Zing resident.
           </p>
         </div>
       </div>
@@ -1871,6 +1952,7 @@
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/DRaBE5Kky5J6kNymTPko8j";
     const SITE_URL = "https://lotuszing.github.io/listings/";
+    const PORTAL_NAME = "Lotus Zing Flat Board";
     const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
     const DATA_JSON_URL = "https://lotuszing.github.io/listings/listings.json";
     const SHEET_TIMEOUT_MS = 8000;
@@ -1987,6 +2069,24 @@
     const cardCtaWa = `${cardCtaBase} listing-cta--wa`;
     const cardCtaGroup = `${cardCtaBase} listing-cta--group`;
     const cardCtaDisabled = `${cardCtaBase} listing-cta--disabled`;
+
+    function ctaIcon(name) {
+      const icons = {
+        call: '<svg class="listing-cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.7 4.8 9 4.3l2.1 4.8-1.4 1.1c.9 1.8 2.3 3.2 4.1 4.1l1.1-1.4 4.8 2.1-.5 2.3c-.2.9-1 1.5-1.9 1.5C10.6 18.8 5.2 13.4 5.2 6.7c0-.9.6-1.7 1.5-1.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+        wa: '<svg class="listing-cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.3 19.1 6 16.2a7.5 7.5 0 1 1 2.8 2.3l-3.5.6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.3 8.8c.3-.5.6-.5.9-.2l.9 1.2c.2.3.1.6-.2.9l-.4.4c.5 1 1.3 1.8 2.4 2.3l.5-.5c.3-.3.6-.3.9-.1l1.2.8c.3.2.4.6.2.9-.4.6-1 .9-1.7.8-2.6-.3-5-2.5-5.5-5.1-.2-.6.2-1.1.8-1.4Z" fill="currentColor"/></svg>',
+        copy: '<svg class="listing-cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 8.5c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2v7c0 1.1-.9 2-2 2h-6c-1.1 0-2-.9-2-2v-7Z" stroke="currentColor" stroke-width="1.8"/><path d="M6 14.5c-1.1 0-2-.9-2-2v-7c0-1.1.9-2 2-2h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+        share: '<svg class="listing-cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.8 12.7 15.2 16M15.2 8 8.8 11.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.8 14.7a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4ZM17.2 9.7a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4ZM17.2 19.7a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4Z" stroke="currentColor" stroke-width="1.8"/></svg>'
+      };
+      return icons[name] || "";
+    }
+
+    function ctaLabel(iconName, text) {
+      return `${ctaIcon(iconName)}<span class="listing-cta-label">${text}</span>`;
+    }
+
+    function ctaIconOnly(iconName, text) {
+      return `${ctaIcon(iconName)}<span class="sr-only">${text}</span>`;
+    }
 
     function setSyncStatus(text, mode = "idle") {
       const status = document.getElementById("sync-status");
@@ -2240,7 +2340,7 @@
       const preferredTenant = formatDisplayText(item.preferredTenant);
       const parking = formatDisplayText(item.parking);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your listing on the *Lotus Zing resident portal*.
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your listing on the *${PORTAL_NAME}*.
 
 • *Flat*: ${item.bhkType} at ${item.towerFlat}
 • *Rent*: ${formatCurrency(item.monthlyRent)}/mo
@@ -2250,14 +2350,14 @@ Is it still available? Happy to connect and discuss.
 You can also join the Lotus Zing WhatsApp community here:
 ${WHATSAPP_GROUP_URL}
 
-Listings portal:
+Board link:
 ${SITE_URL}`);
       const callAction = phone
-        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
-        : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
+        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">${ctaLabel('call', 'Call')}</a>`
+        : `<span class="${cardCtaDisabled}" aria-disabled="true">${ctaLabel('call', 'Call')}</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
-        : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
+        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa} listing-cta--icon-only" aria-label="WhatsApp poster">${ctaIconOnly('wa', 'WhatsApp')}</a>`
+        : `<span class="${cardCtaDisabled} listing-cta--icon-only" aria-disabled="true">${ctaIconOnly('wa', 'WhatsApp')}</span>`;
 
       const card = document.createElement('div');
       card.className = "listing-pop listing-card flex flex-col h-full";
@@ -2305,8 +2405,8 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
-              <button type="button" onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">Copy</button>
-              <button type="button" onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">Share</button>
+              <button type="button" onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">${ctaLabel('copy', 'Copy')}</button>
+              <button type="button" onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">${ctaLabel('share', 'Share')}</button>
             </div>
           </div>
         </div>
@@ -2319,7 +2419,7 @@ ${SITE_URL}`);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
       const tenantType = formatDisplayText(item.tenantType);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your request on the *Lotus Zing resident portal*.
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your request on the *${PORTAL_NAME}*.
 
 • *Request*: ${item.preferredBhk}
 • *Budget*: ${formatCurrency(item.budget)}/mo
@@ -2329,14 +2429,14 @@ Can we connect if you know of a suitable option?
 You can also join the Lotus Zing WhatsApp community here:
 ${WHATSAPP_GROUP_URL}
 
-Listings portal:
+Board link:
 ${SITE_URL}`);
       const callAction = phone
-        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">Call</a>`
-        : `<span class="${cardCtaDisabled}" aria-disabled="true">Call</span>`;
+        ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">${ctaLabel('call', 'Call')}</a>`
+        : `<span class="${cardCtaDisabled}" aria-disabled="true">${ctaLabel('call', 'Call')}</span>`;
       const whatsappAction = whatsappUrl
-        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa}" aria-label="WhatsApp poster">WhatsApp</a>`
-        : `<span class="${cardCtaDisabled}" aria-disabled="true">WhatsApp</span>`;
+        ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa} listing-cta--icon-only" aria-label="WhatsApp poster">${ctaIconOnly('wa', 'WhatsApp')}</a>`
+        : `<span class="${cardCtaDisabled} listing-cta--icon-only" aria-disabled="true">${ctaIconOnly('wa', 'WhatsApp')}</span>`;
       const preferredArea = item.preferredArea || "Any allowed tower";
 
       const card = document.createElement('div');
@@ -2385,8 +2485,8 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
-              <button type="button" onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">Copy</button>
-              <button type="button" onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">Share</button>
+              <button type="button" onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">${ctaLabel('copy', 'Copy')}</button>
+              <button type="button" onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">${ctaLabel('share', 'Share')}</button>
             </div>
           </div>
         </div>
@@ -2867,22 +2967,22 @@ ${SITE_URL}`);
 
     // Share Rent Whatsapp Text Helper
     function rentShareText(item) {
-      return `*Lotus Zing resident portal*
+      return `*${PORTAL_NAME}*
 Flat available: ${item.bhkType} at ${item.towerFlat}
 Rent: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo | From: ${item.availableFrom}
 Contact: ${item.posterName} ${item.contactNumber}
 
-Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
+Shared via ${PORTAL_NAME} - built for quicker, trusted community connections.
 ${SITE_URL}`;
     }
 
     function lookingShareText(item) {
-      return `*Lotus Zing resident portal*
+      return `*${PORTAL_NAME}*
 Tenant request: ${item.preferredBhk}
 Budget: ₹${item.budget.toLocaleString('en-IN')}/mo | Move-in: ${item.preferredMoveIn}
 Contact: ${item.posterName} ${item.contactNumber}
 
-Shared via the Lotus Zing resident portal - built for quicker, trusted community connections.
+Shared via ${PORTAL_NAME} - built for quicker, trusted community connections.
 ${SITE_URL}`;
     }
 
@@ -2926,7 +3026,7 @@ ${SITE_URL}`;
 
     function currentDigestText() {
       const items = currentVisibleItems().slice(0, 5);
-      const title = activeTab === "rent" ? "*Lotus Zing flats summary*" : "*Lotus Zing tenant requests summary*";
+      const title = activeTab === "rent" ? `*${PORTAL_NAME}: flats summary*` : `*${PORTAL_NAME}: tenant requests summary*`;
       if (!items.length) {
         return `${title}\nNo active matches right now.\n\n${canonicalPortalUrl()}`;
       }
