@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://*.workers.dev https://lotus-zing-listings-api.lotus-zing.workers.dev; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://lotuszing.github.io; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <link rel="canonical" href="https://lotuszing.github.io/listings/">
   <meta property="og:url" content="https://lotuszing.github.io/listings/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
@@ -1642,10 +1642,8 @@
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/DRaBE5Kky5J6kNymTPko8j";
     const SITE_URL = "https://lotuszing.github.io/listings/";
     const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
-    const LIVE_API_URL = "https://lotus-zing-listings-api.lotus-zing.workers.dev/listings";
-    const DATA_JSON_URL = "./listings.json";
+    const DATA_JSON_URL = "https://lotuszing.github.io/listings/listings.json";
     const SHEET_TIMEOUT_MS = 8000;
-    const LIVE_TIMEOUT_MS = 3500;
     const VALUE_LIMITS = {
       rentMin: 5000,
       rentMax: 150000,
@@ -2169,10 +2167,6 @@ ${SITE_URL}`);
       updateActiveTabButtons();
       renderFilters();
       fetchSheetData();
-      setInterval(refreshLiveListingsSilently, 20000);
-      document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) refreshLiveListingsSilently();
-      });
       openChecklistFromUrl();
     });
 
@@ -2746,30 +2740,6 @@ ${SITE_URL}`);
       cleanupListings();
     }
 
-    function payloadTimestamp(payload) {
-      const time = Date.parse(payload?.generatedAt || "");
-      return Number.isFinite(time) ? time : 0;
-    }
-
-    function payloadItemCount(payload) {
-      return (Array.isArray(payload?.rentListings) ? payload.rentListings.length : 0) +
-             (Array.isArray(payload?.lookingListings) ? payload.lookingListings.length : 0);
-    }
-
-    function currentListingCount() {
-      return rentListings.length + lookingListings.length;
-    }
-
-    function chooseBestPayload(payloads) {
-      const validPayloads = payloads.filter(Boolean);
-      if (!validPayloads.length) return null;
-      return validPayloads.sort((a, b) => {
-        const timeDelta = payloadTimestamp(b) - payloadTimestamp(a);
-        if (timeDelta) return timeDelta;
-        return payloadItemCount(b) - payloadItemCount(a);
-      })[0];
-    }
-
     // Public clients only read the sanitized JSON cache. Raw Sheet access stays server-side.
     async function fetchSheetData() {
       const loader = document.getElementById('loader-state');
@@ -2777,68 +2747,20 @@ ${SITE_URL}`);
       errorDiv.classList.add('hidden');
       loader.classList.remove('hidden');
 
-      const applyPayload = (payload) => {
+      try {
+        const payload = await fetchJsonWithTimeout(DATA_JSON_URL, SHEET_TIMEOUT_MS);
         applyListingsPayload(payload);
         loader.classList.add('hidden');
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
-      };
-
-      const canFetchStaticJson = window.location.protocol !== "file:";
-      const requests = [];
-      if (LIVE_API_URL) requests.push(fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS));
-      if (canFetchStaticJson) requests.push(fetchJsonWithTimeout(DATA_JSON_URL, SHEET_TIMEOUT_MS));
-
-      const pending = requests.map((request) => request.catch(() => null));
-      let emptyPayload = null;
-      while (pending.length) {
-        const wrapped = pending.map((request, index) => request.then((payload) => ({ index, payload })));
-        const { index, payload } = await Promise.race(wrapped);
-        pending.splice(index, 1);
-        if (payload && payloadItemCount(payload) > 0) {
-          applyPayload(payload);
-          return;
-        }
-        if (payload && !emptyPayload) emptyPayload = payload;
-      }
-
-      if (emptyPayload) {
-        applyPayload(emptyPayload);
         return;
-      }
-
-      if (window.location.protocol === "file:" && LIVE_API_URL) {
-        try {
-          const livePayload = await fetchJsonWithTimeout(LIVE_API_URL, SHEET_TIMEOUT_MS);
-          if (livePayload) {
-            applyPayload(livePayload);
-            return;
-          }
-        } catch (err) {
-          // Show the friendly unavailable state below.
-        }
+      } catch (err) {
+        // Show the friendly unavailable state below.
       }
 
       loader.classList.add('hidden');
       setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
       renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
-    }
-
-    async function refreshLiveListingsSilently() {
-      if (!LIVE_API_URL || document.hidden) return;
-      try {
-        const payload = await fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS);
-        if (!payload) return;
-        if (payloadItemCount(payload) === 0 && currentListingCount() > 0) return;
-        const previousStamp = lastDataUpdatedAt;
-        applyListingsPayload(payload);
-        if (lastDataUpdatedAt !== previousStamp) {
-          setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
-          renderListings();
-        }
-      } catch (err) {
-        return;
-      }
     }
 
     function renderSetupPending(message = "Listings cache is not available yet. Valid new posts usually appear within seconds after Tally webhook delivery.") {
