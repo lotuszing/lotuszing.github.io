@@ -451,7 +451,7 @@
       content: " +";
     }
     .listing-card.is-expanded .listing-collapse-toggle::after {
-      content: " -";
+      content: "";
     }
     .listing-collapsible {
       display: none;
@@ -460,6 +460,14 @@
     }
     .listing-card.is-expanded .listing-collapsible {
       display: flex;
+    }
+    .listing-card.is-expanded .listing-card-body {
+      gap: 0.58rem;
+    }
+    .listing-card.is-expanded .listing-footer {
+      margin-top: 0.08rem;
+      padding-top: 0.48rem;
+      border-top: 1px solid rgba(187, 215, 242, 0.72);
     }
     .listing-chip-primary {
       display: inline-flex;
@@ -1142,8 +1150,15 @@
       background: #00A58F !important;
       border-color: #00A58F !important;
       color: #FFFFFF !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    .community-ticket > span,
     .community-ticket strong {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: #FFFFFF !important;
     }
     .wa-icon {
@@ -1157,20 +1172,13 @@
       border-radius: 999px;
       background: #FFFFFF;
       color: #00A58F;
+      flex: 0 0 auto;
       font-size: 0.72rem;
       font-weight: 900;
       line-height: 1;
       box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.44);
-      animation: waPulse 2200ms ease-out infinite;
-    }
-    .wa-icon::after {
-      content: "";
-      position: absolute;
-      inset: -0.22rem;
-      border: 1px solid rgba(255, 255, 255, 0.42);
-      border-radius: inherit;
-      opacity: 0.72;
-      animation: waRing 2200ms ease-out infinite;
+      transform-origin: center;
+      animation: waPulse 2200ms ease-in-out infinite;
     }
     .wa-icon svg {
       position: relative;
@@ -1181,24 +1189,15 @@
     }
     .community-ticket:hover .wa-icon {
       animation-duration: 1100ms;
-      transform: scale(1.04);
     }
     @keyframes waPulse {
       0%, 100% {
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.34);
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.28);
       }
       52% {
-        box-shadow: 0 0 0 0.38rem rgba(255, 255, 255, 0);
-      }
-    }
-    @keyframes waRing {
-      0% {
-        transform: scale(0.82);
-        opacity: 0.72;
-      }
-      70%, 100% {
-        transform: scale(1.14);
-        opacity: 0;
+        transform: scale(1.045);
+        box-shadow: 0 0 0 0.22rem rgba(255, 255, 255, 0);
       }
     }
     .post-ticket {
