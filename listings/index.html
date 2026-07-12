@@ -540,6 +540,30 @@
       padding-top: 0.62rem;
       border-top: 1px solid rgba(187, 215, 242, 0.72);
     }
+    .listing-report-row {
+      display: flex;
+      justify-content: center;
+      margin-top: -0.22rem;
+    }
+    .listing-report-link {
+      min-height: 1.8rem;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #B42318;
+      padding: 0.12rem 0.1rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .listing-report-link:hover {
+      background: transparent;
+      color: #991B1B;
+      text-decoration: underline;
+      text-underline-offset: 0.18rem;
+    }
     .listing-chip-primary {
       display: inline-flex;
       align-items: center;
@@ -596,6 +620,11 @@
       background: #e7f8f4;
       border-color: #9fd9cc;
       color: #116353;
+    }
+    .listing-status-badge--review {
+      background: #fff3f2;
+      border-color: #f1b6ae;
+      color: #991B1B;
     }
     .listing-title-row {
       display: block;
@@ -1565,6 +1594,38 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
+    .report-reason-grid {
+      display: grid;
+      gap: 0.42rem;
+      margin-top: 0.72rem;
+    }
+    .report-panel {
+      background: radial-gradient(circle at 0 0, rgba(220, 38, 38, 0.10), transparent 10rem), #FFFFFF;
+    }
+    .report-panel .submit-rules-eyebrow {
+      color: #B42318;
+    }
+    .report-panel .submit-rules-primary {
+      border-color: #991B1B;
+      background: #B42318;
+    }
+    .report-reason {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 2.38rem;
+      border: 1px solid #BBD7F2;
+      border-radius: 0.78rem;
+      background: rgba(248, 251, 255, 0.86);
+      color: #315776;
+      padding: 0.42rem 0.58rem;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      font-weight: 750;
+    }
+    .report-reason input {
+      accent-color: #0058A3;
+    }
     .utility-actions {
       display: flex;
       justify-content: flex-end;
@@ -2109,6 +2170,23 @@
     </div>
   </dialog>
 
+  <dialog id="report-dialog" class="submit-rules-dialog">
+    <div class="submit-rules-panel report-panel">
+      <button type="button" onclick="closeReportDialog()" class="submit-rules-close" aria-label="Close report dialog">×</button>
+      <span class="submit-rules-eyebrow">Report listing</span>
+      <h3 id="report-title" class="submit-rules-title">What looks wrong?</h3>
+      <p id="report-copy" class="submit-rules-copy">
+        Reports are review signals only. A listing will not be removed just because one person reports it.
+      </p>
+      <div id="report-reasons" class="report-reason-grid"></div>
+      <div class="submit-rules-actions">
+        <button id="report-copy-btn" type="button" onclick="copyReportMessage(this)" class="submit-rules-primary">
+          Copy report
+        </button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- TRUST + LEGAL FOOTER -->
   <footer class="border-t border-[#BBD7F2] bg-transparent py-6 sm:py-8 px-4 mt-8 sm:mt-12">
     <div class="max-w-3xl mx-auto space-y-4">
@@ -2153,6 +2231,7 @@
     let lookingListings = [];
     let lastDataUpdatedAt = "";
     let renderDebounceTimer = null;
+    let pendingReport = null;
     
     // Configs
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
@@ -2161,7 +2240,16 @@
     const PORTAL_NAME = "Lotus Zing Flat Board";
     const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
     const DATA_JSON_URL = "https://lotuszing.github.io/listings/listings.json";
+    const REPORT_ENDPOINT_URL = "";
     const SHEET_TIMEOUT_MS = 8000;
+    const REPORT_REASONS = [
+      "Already rented / closed",
+      "Wrong information",
+      "Contact issue",
+      "Spam or fake",
+      "Duplicate post",
+      "Other"
+    ];
     const VALUE_LIMITS = {
       rentMin: 5000,
       rentMax: 150000,
@@ -2502,11 +2590,20 @@
         .join(" ");
     }
 
-    function renderStatusBadges(isNew, showWarning, daysRemaining, isNow = false) {
+    function reportCount(item) {
+      return Math.max(0, Number(item?.reportCount) || 0);
+    }
+
+    function hasReviewRisk(item) {
+      return reportCount(item) >= 3 || item?.reportRisk === "high";
+    }
+
+    function renderStatusBadges(isNew, showWarning, daysRemaining, isNow = false, item = null) {
       return `
         ${isNow ? '<span class="listing-status-badge listing-status-badge--now">Now</span>' : ''}
         ${isNew ? '<span class="listing-status-badge listing-status-badge--new">New</span>' : ''}
         ${showWarning ? `<span class="listing-status-badge listing-status-badge--warning">Expires in ${daysRemaining}d</span>` : ''}
+        ${hasReviewRisk(item) ? '<span class="listing-status-badge listing-status-badge--review">Verify details</span>' : ''}
       `;
     }
 
@@ -2583,7 +2680,7 @@ ${SITE_URL}`);
         <div class="listing-card-body">
           <div class="listing-title-row">
             <div>
-              <span class="listing-kicker">Available apartment ${renderStatusBadges(isNew, showWarning, daysRemaining, availableNow)}</span>
+              <span class="listing-kicker">Available apartment ${renderStatusBadges(isNew, showWarning, daysRemaining, availableNow, item)}</span>
               <h4 class="listing-title">${escapeHtml(item.towerFlat)}</h4>
               <div class="listing-subhead">
                 <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
@@ -2613,6 +2710,9 @@ ${SITE_URL}`);
               ${whatsappAction}
               <button type="button" onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">${ctaLabel('copy', 'Copy')}</button>
               <button type="button" onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">${ctaLabel('share', 'Share')}</button>
+            </div>
+            <div class="listing-report-row">
+              <button type="button" onclick="openReportDialog('rent', ${indexInList})" class="listing-report-link">Report this listing</button>
             </div>
           </div>
         </div>
@@ -2663,7 +2763,7 @@ ${SITE_URL}`);
         <div class="listing-card-body">
           <div class="listing-title-row">
             <div>
-              <span class="listing-kicker">Tenant request ${renderStatusBadges(isNew, showWarning, daysRemaining)}</span>
+              <span class="listing-kicker">Tenant request ${renderStatusBadges(isNew, showWarning, daysRemaining, false, item)}</span>
               <h4 class="listing-title">${escapeHtml(item.posterName)}</h4>
               <div class="listing-subhead">
                 <span class="listing-role-badge listing-role-owner">Looking to move</span>
@@ -2693,6 +2793,9 @@ ${SITE_URL}`);
               ${whatsappAction}
               <button type="button" onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">${ctaLabel('copy', 'Copy')}</button>
               <button type="button" onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">${ctaLabel('share', 'Share')}</button>
+            </div>
+            <div class="listing-report-row">
+              <button type="button" onclick="openReportDialog('looking', ${indexInList})" class="listing-report-link">Report this request</button>
             </div>
           </div>
         </div>
@@ -2758,6 +2861,129 @@ ${SITE_URL}`);
       showPortalFeedback("Opening form.", "After submitting, come back here and refresh if your post does not appear right away.", "info");
       const url = `${TALLY_FORM_URL}?source=listings_portal&type=${encodeURIComponent(pendingSubmitType)}`;
       window.location.href = url;
+    }
+
+    function reportStorageKey(item) {
+      return `lz-report-${item?.id || ""}`;
+    }
+
+    function hasReportedFromDevice(item) {
+      try {
+        return Boolean(localStorage.getItem(reportStorageKey(item)));
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function markReportedFromDevice(item, reason) {
+      try {
+        localStorage.setItem(reportStorageKey(item), JSON.stringify({ reason, at: new Date().toISOString() }));
+      } catch (_) {
+        // Private browsing can block storage; the report text can still be copied.
+      }
+    }
+
+    function reporterKey() {
+      try {
+        const storageKey = "lz-reporter-key";
+        let key = localStorage.getItem(storageKey);
+        if (!key) {
+          key = `r-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+          localStorage.setItem(storageKey, key);
+        }
+        return key;
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function openReportDialog(type, indexInList) {
+      const item = type === "rent" ? rentListings[indexInList] : lookingListings[indexInList];
+      const dialog = document.getElementById("report-dialog");
+      const title = document.getElementById("report-title");
+      const copy = document.getElementById("report-copy");
+      const reasons = document.getElementById("report-reasons");
+      const button = document.getElementById("report-copy-btn");
+      if (!item || !dialog || !title || !copy || !reasons || !button) return;
+
+      pendingReport = { type, indexInList, item };
+      const subject = type === "rent" ? item.towerFlat : `${item.preferredBhk} request`;
+      title.textContent = `Report ${subject}`;
+      copy.textContent = hasReportedFromDevice(item)
+        ? "You already reported this from this device. You can copy the report again if needed."
+        : "Reports are review signals only. One report will not remove a listing.";
+      reasons.innerHTML = REPORT_REASONS.map((reason, index) => `
+        <label class="report-reason">
+          <input type="radio" name="report-reason" value="${escapeHtml(reason)}" ${index === 0 ? "checked" : ""}>
+          <span>${escapeHtml(reason)}</span>
+        </label>
+      `).join("");
+      button.textContent = REPORT_ENDPOINT_URL ? "Report" : "Copy report";
+      if (typeof dialog.showModal === "function") dialog.showModal();
+    }
+
+    function closeReportDialog() {
+      const dialog = document.getElementById("report-dialog");
+      if (dialog?.open) dialog.close();
+    }
+
+    function selectedReportReason() {
+      return document.querySelector('input[name="report-reason"]:checked')?.value || "Other";
+    }
+
+    function reportMessage() {
+      if (!pendingReport?.item) return "";
+      const { type, item } = pendingReport;
+      const reason = selectedReportReason();
+      const title = type === "rent"
+        ? `${item.bhkType} at ${item.towerFlat}`
+        : `${item.preferredBhk} request by ${item.posterName}`;
+      return `*Report for ${PORTAL_NAME}*
+Type: ${type === "rent" ? "Flat listing" : "Tenant request"}
+Listing: ${title}
+Reason: ${reason}
+ID: ${item.id}
+
+Please review. This is only a signal, not an automatic removal.
+${SITE_URL}?tab=${type === "rent" ? "rent" : "looking"}`;
+    }
+
+    async function submitReportToEndpoint(reason) {
+      if (!REPORT_ENDPOINT_URL || !pendingReport?.item?.id) return false;
+      const submissionId = pendingReport.item.id.replace(/^sheet-(rent|looking)-/, "");
+      const response = await fetch(REPORT_ENDPOINT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "report",
+          submissionId,
+          reason,
+          reporterKey: reporterKey(),
+          listingType: pendingReport.type
+        })
+      });
+      return Boolean(response);
+    }
+
+    async function copyReportMessage(button) {
+      if (!pendingReport?.item) return;
+      const reason = selectedReportReason();
+      markReportedFromDevice(pendingReport.item, reason);
+      button.textContent = "Reporting...";
+      try {
+        const submitted = await submitReportToEndpoint(reason);
+        if (submitted) {
+          button.textContent = "Reported";
+          showPortalFeedback("Report received.", "Multiple reports can push a listing lower, but one report will not remove it.", "good");
+          setTimeout(closeReportDialog, 450);
+          return;
+        }
+      } catch (_) {
+        // Fall back to copy when the report endpoint is not ready or blocked.
+      }
+      copyToClipboard(reportMessage(), button);
+      showPortalFeedback("Report copied.", "Paste it in the community or send it to the board admin for review.", "good");
     }
 
     // switch Tab
@@ -3050,11 +3276,15 @@ ${SITE_URL}`);
       const ownerBoost = item.listedBy.toLowerCase().includes("owner") ? 1000 : 0;
       const contactBoost = hasUsableContact(item) ? 500 : 0;
       const nowBoost = isAvailableNow(item.availableFrom) ? 120 : 0;
-      return ownerBoost + contactBoost + nowBoost;
+      const reports = reportCount(item);
+      const reportPenalty = reports >= 3 ? 900 : reports >= 2 ? 260 : 0;
+      return ownerBoost + contactBoost + nowBoost - reportPenalty;
     }
 
     function rankLookingListing(item) {
-      return (hasUsableContact(item) ? 500 : 0) + (isNewListing(item.timestamp) ? 80 : 0);
+      const reports = reportCount(item);
+      const reportPenalty = reports >= 3 ? 900 : reports >= 2 ? 260 : 0;
+      return (hasUsableContact(item) ? 500 : 0) + (isNewListing(item.timestamp) ? 80 : 0) - reportPenalty;
     }
 
     function newestFirst(a, b) {

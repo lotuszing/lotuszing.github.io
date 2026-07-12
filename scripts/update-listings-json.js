@@ -76,6 +76,9 @@ function mapHeaders(headers) {
     else if (h.includes("name") || h.includes("poster")) setOnce("posterName", index);
     else if (h.includes("contact") || h.includes("phone") || h.includes("mobile")) setOnce("contactNumber", index);
     else if (h.includes("notes") || h.includes("comment") || h.includes("desc") || h.includes("free text")) setOnce("notes", index);
+    else if (h.includes("status") || h.includes("moderation") || h.includes("visibility")) setOnce("status", index);
+    else if (h.includes("report count") || h === "reports") setOnce("reportCount", index);
+    else if (h.includes("report reason")) setOnce("reportReasons", index);
     else if (h.includes("budget") || h.includes("max")) setOnce("budget", index);
     else if (h.includes("move") || h.includes("move-in")) setOnce("preferredMoveIn", index);
     else if (h.includes("occupants") || h.includes("people")) setOnce("occupants", index);
@@ -113,6 +116,22 @@ function classifyListingRow(row, mapping) {
   if (listingType.includes("available") || listingType.includes("rent") || listingType.includes("flat")) return "rent";
   if (combinedTowerFlat(row, mapping) || getRowValue(row, mapping, "monthlyRent")) return "rent";
   if (getRowValue(row, mapping, "budget") || getRowValue(row, mapping, "preferredArea")) return "looking";
+  return "";
+}
+
+function isHiddenRow(row, mapping) {
+  const status = getRowValue(row, mapping, "status").toLowerCase();
+  return /\b(hidden|hide|removed|remove|delete|deleted|spam|fake|rented|closed|inactive)\b/.test(status);
+}
+
+function reportCountFrom(row, mapping) {
+  return Math.max(0, numberFrom(getRowValue(row, mapping, "reportCount")));
+}
+
+function reportRiskFrom(row, mapping) {
+  const count = reportCountFrom(row, mapping);
+  if (count >= 3) return "high";
+  if (count >= 2) return "medium";
   return "";
 }
 
@@ -213,6 +232,8 @@ function rowToRentListing(row, mapping, idx) {
     posterName: getVal("posterName") || "Resident",
     contactNumber: getVal("contactNumber") || "",
     notes: getVal("notes") || "",
+    reportCount: reportCountFrom(row, mapping),
+    reportRisk: reportRiskFrom(row, mapping),
     extraFields: collectExtraFields(row, mapping.__headers || [], mapping)
   };
 }
@@ -231,6 +252,8 @@ function rowToLookingListing(row, mapping, idx) {
     posterName: getVal("posterName") || "Resident",
     contactNumber: getVal("contactNumber") || "",
     notes: getVal("notes") || "",
+    reportCount: reportCountFrom(row, mapping),
+    reportRisk: reportRiskFrom(row, mapping),
     extraFields: collectExtraFields(row, mapping.__headers || [], mapping)
   };
 }
@@ -297,6 +320,10 @@ async function main() {
   const skippedRows = [];
 
   rows.slice(1).forEach((row, idx) => {
+    if (isHiddenRow(row, mapping)) {
+      skippedRows.push({ row: idx + 2, type: "hidden", reasons: ["marked hidden in sheet"] });
+      return;
+    }
     const listingType = classifyListingRow(row, mapping);
     if (listingType === "rent") {
       const listing = rowToRentListing(row, mapping, idx);
