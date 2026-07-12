@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="deploy-version" content="2026-07-10-audit-hardening">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://*.workers.dev https://lotus-zing-listings-api.lotus-zing.workers.dev; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://wa.me https://*.workers.dev https://lotus-zing-listings-api.lotus-zing.workers.dev; img-src 'self' data:; base-uri 'self'; form-action 'self' https://tally.so https://api.whatsapp.com https://wa.me; upgrade-insecure-requests">
   <link rel="canonical" href="https://lotuszing.github.io/listings/">
   <meta property="og:url" content="https://lotuszing.github.io/listings/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
@@ -15,22 +15,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=DM+Mono:wght@500&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            mono: ['DM Mono', 'ui-monospace', 'monospace'],
-            display: ['Space Grotesk', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
   
   <style>
     :root {
@@ -45,6 +29,219 @@
       --clay-soft: #F4F9FF;
       --line: #BBD7F2;
       --muted: #48617D;
+    }
+    *, ::before, ::after {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+      border-color: #e5e7eb;
+    }
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      tab-size: 4;
+      font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+    }
+    body {
+      margin: 0;
+      line-height: inherit;
+    }
+    button, input, select, textarea {
+      font: inherit;
+      color: inherit;
+      margin: 0;
+    }
+    button, select {
+      text-transform: none;
+    }
+    button, [type="button"] {
+      -webkit-appearance: button;
+      background-color: transparent;
+      background-image: none;
+      cursor: pointer;
+    }
+    a {
+      color: inherit;
+    }
+    strong {
+      font-weight: bolder;
+    }
+    h1, h3, h4, p {
+      margin: 0;
+    }
+    .hidden { display: none !important; }
+    .relative { position: relative; }
+    .sticky { position: sticky; }
+    .top-0 { top: 0; }
+    .z-10 { z-index: 10; }
+    .z-20 { z-index: 20; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .my-5 { margin-top: 1.25rem; margin-bottom: 1.25rem; }
+    .my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .mb-2\.5 { margin-bottom: 0.625rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .inline-block { display: inline-block; }
+    .inline-flex { display: inline-flex; }
+    .flex { display: flex; }
+    .grid { display: grid; }
+    .h-6 { height: 1.5rem; }
+    .h-full { height: 100%; }
+    .min-h-9 { min-height: 2.25rem; }
+    .min-h-screen { min-height: 100vh; }
+    .w-6 { width: 1.5rem; }
+    .w-full { width: 100%; }
+    .max-w-md { max-width: 28rem; }
+    .max-w-lg { max-width: 32rem; }
+    .max-w-xl { max-width: 36rem; }
+    .max-w-2xl { max-width: 42rem; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-7xl { max-width: 80rem; }
+    .shrink-0 { flex-shrink: 0; }
+    .cursor-pointer { cursor: pointer; }
+    .list-none { list-style-type: none; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .col-span-full { grid-column: 1 / -1; }
+    .flex-col { flex-direction: column; }
+    .items-start { align-items: flex-start; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-2\.5 { gap: 0.625rem; }
+    .gap-3 { gap: 0.75rem; }
+    .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+    .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-x-auto { overflow-x: auto; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-4 { border-width: 4px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-t { border-top-width: 1px; }
+    .border-dashed { border-style: dashed; }
+    .border-\[\#003E73\] { border-color: #003E73; }
+    .border-\[\#0058A3\] { border-color: #0058A3; }
+    .border-\[\#00A889\] { border-color: #00A889; }
+    .border-\[\#06152A\] { border-color: #06152A; }
+    .border-\[\#071B3A\] { border-color: #071B3A; }
+    .border-\[\#0B6B58\] { border-color: #0B6B58; }
+    .border-\[\#B9E6DC\] { border-color: #B9E6DC; }
+    .border-\[\#BBD7F2\] { border-color: #BBD7F2; }
+    .border-rose-200 { border-color: #fecdd3; }
+    .border-slate-200 { border-color: #e2e8f0; }
+    .border-slate-300 { border-color: #cbd5e1; }
+    .border-slate-900 { border-color: #0f172a; }
+    .border-t-\[\#071B3A\] { border-top-color: #071B3A; }
+    .bg-\[\#0058A3\] { background-color: #0058A3; }
+    .bg-\[\#00A889\] { background-color: #00A889; }
+    .bg-\[\#06152A\] { background-color: #06152A; }
+    .bg-\[\#071B3A\] { background-color: #071B3A; }
+    .bg-\[\#0B6B58\] { background-color: #0B6B58; }
+    .bg-\[\#E7F8F4\] { background-color: #E7F8F4; }
+    .bg-\[\#EAF4FF\] { background-color: #EAF4FF; }
+    .bg-\[\#F8FBFF\] { background-color: #F8FBFF; }
+    .bg-\[\#FFFFFF\], .bg-white { background-color: #fff; }
+    .bg-\[\#FFFFFF\]\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    .bg-rose-50 { background-color: #fff1f2; }
+    .bg-rose-900 { background-color: #881337; }
+    .bg-slate-900 { background-color: #0f172a; }
+    .bg-transparent { background-color: transparent; }
+    .p-1\.5 { padding: 0.375rem; }
+    .p-2\.5 { padding: 0.625rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-10 { padding: 2.5rem; }
+    .p-12 { padding: 3rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .pb-0\.5 { padding-bottom: 0.125rem; }
+    .pb-8 { padding-bottom: 2rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .text-center { text-align: center; }
+    .font-sans { font-family: Archivo, ui-sans-serif, system-ui, sans-serif; }
+    .font-display { font-family: "Space Grotesk", sans-serif; }
+    .text-\[10px\] { font-size: 10px; }
+    .text-\[11px\] { font-size: 11px; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .font-bold { font-weight: 700; }
+    .font-extrabold { font-weight: 800; }
+    .uppercase { text-transform: uppercase; }
+    .leading-\[0\.9\] { line-height: 0.9; }
+    .leading-relaxed { line-height: 1.625; }
+    .tracking-\[-0\.05em\] { letter-spacing: -0.05em; }
+    .tracking-\[0\.06em\] { letter-spacing: 0.06em; }
+    .tracking-\[0\.08em\] { letter-spacing: 0.08em; }
+    .tracking-\[0\.12em\] { letter-spacing: 0.12em; }
+    .tracking-tight { letter-spacing: -0.025em; }
+    .text-\[\#0058A3\] { color: #0058A3; }
+    .text-\[\#071B3A\] { color: #071B3A; }
+    .text-\[\#116353\] { color: #116353; }
+    .text-\[\#315776\] { color: #315776; }
+    .text-\[\#48617D\] { color: #48617D; }
+    .text-rose-800 { color: #9f1239; }
+    .text-rose-900 { color: #881337; }
+    .text-rose-950 { color: #4c0519; }
+    .text-slate-300 { color: #cbd5e1; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-slate-500 { color: #64748b; }
+    .text-slate-600 { color: #475569; }
+    .text-slate-700 { color: #334155; }
+    .text-slate-800 { color: #1e293b; }
+    .text-slate-900 { color: #0f172a; }
+    .text-slate-950 { color: #020617; }
+    .text-white { color: #fff; }
+    .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+    .shadow-\[2px_2px_0px_0px_rgba\(15\,23\,42\,1\)\] { box-shadow: 2px 2px 0 0 rgba(15,23,42,1); }
+    .outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+    .backdrop-blur { backdrop-filter: blur(8px); }
+    .transition, .transition-all { transition-property: color, background-color, border-color, transform, opacity, box-shadow; transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+    .animate-spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hover\:bg-\[\#003E73\]:hover { background-color: #003E73; }
+    .hover\:bg-rose-950:hover { background-color: #4c0519; }
+    .hover\:bg-slate-800:hover { background-color: #1e293b; }
+    .focus\:border-\[\#0058A3\]:focus { border-color: #0058A3; }
+    @media (min-width: 640px) {
+      .sm\:w-auto { width: auto; }
+      .sm\:flex-row { flex-direction: row; }
+      .sm\:mt-8 { margin-top: 2rem; }
+      .sm\:mt-12 { margin-top: 3rem; }
+      .sm\:p-3 { padding: 0.75rem; }
+      .sm\:p-4 { padding: 1rem; }
+      .sm\:px-4 { padding-left: 1rem; padding-right: 1rem; }
+      .sm\:px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .sm\:py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .sm\:py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+      .sm\:py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+      .sm\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+      .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    }
+    @media (min-width: 768px) {
+      .md\:text-5xl { font-size: 3rem; line-height: 1; }
     }
     body {
       background:
@@ -1034,6 +1231,9 @@
     }
     #listings-grid {
       gap: 0.72rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 26rem));
+      justify-content: start;
+      align-items: start;
     }
     .result-summary {
       margin: -0.15rem 0 0.75rem;
@@ -1290,7 +1490,7 @@
           <div>
             <div class="brand-row">
               <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
-                <a class="home-brand-link" href="./index.html" aria-label="Go to Lotus Zing flat board home">Lotus Zing</a>
+                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing flat board home">Lotus Zing</a>
               </h1>
               <span class="brand-purpose">Flat Board</span>
             </div>
@@ -1324,12 +1524,12 @@
   <main class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
     
     <!-- NAVIGATION TABS -->
-    <div class="sticky top-0 z-20 flex gap-1.5 border border-[#BBD7F2] mb-2.5 overflow-hidden rounded-2xl bg-[#FFFFFF]/95 p-1.5 backdrop-blur">
-      <button onclick="switchTab('rent')" id="tab-rent-btn" class="board-tab is-active">
+    <div class="sticky top-0 z-20 flex gap-1.5 border border-[#BBD7F2] mb-2.5 overflow-hidden rounded-2xl bg-[#FFFFFF]/95 p-1.5 backdrop-blur" role="tablist" aria-label="Listing type">
+      <button type="button" onclick="switchTab('rent')" id="tab-rent-btn" class="board-tab is-active" role="tab" aria-selected="true" aria-controls="listings-grid">
         <span class="board-tab-label">Flats</span>
         <span id="rent-count" class="board-tab-count">0</span>
       </button>
-      <button onclick="switchTab('looking')" id="tab-looking-btn" class="board-tab">
+      <button type="button" onclick="switchTab('looking')" id="tab-looking-btn" class="board-tab" role="tab" aria-selected="false" aria-controls="listings-grid">
         <span class="board-tab-label">Tenant Requests</span>
         <span id="looking-count" class="board-tab-count">0</span>
       </button>
@@ -1353,7 +1553,7 @@
     <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
       <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
       <h3 class="font-display font-bold text-slate-800 text-base">Loading listings...</h3>
-      <p class="text-xs text-slate-500 font-sans mt-1 uppercase tracking-[0.08em]">Syncing sheet</p>
+      <p class="text-xs text-slate-500 font-sans mt-1 uppercase tracking-[0.08em]">Refreshing listings</p>
     </div>
 
     <!-- FAILURE FLOW STATE -->
@@ -1371,7 +1571,7 @@
     </div>
 
     <!-- LISTINGS CONTAINER GRID -->
-    <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5">
+    <div id="listings-grid" class="grid gap-2.5" role="tabpanel" aria-live="polite">
       <!-- CARDS RENDERED BY JS -->
     </div>
 
@@ -1445,6 +1645,7 @@
     const LIVE_API_URL = "https://lotus-zing-listings-api.lotus-zing.workers.dev/listings";
     const DATA_JSON_URL = "./listings.json";
     const SHEET_TIMEOUT_MS = 8000;
+    const LIVE_TIMEOUT_MS = 3500;
     const VALUE_LIMITS = {
       rentMin: 5000,
       rentMax: 150000,
@@ -1518,11 +1719,16 @@
     window.canonicalPortalUrl = canonicalPortalUrl;
     normalizeLivePortalRoute();
 
-    async function fetchJsonWithTimeout(url) {
+    function withCacheBuster(url) {
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}v=${Date.now()}`;
+    }
+
+    async function fetchJsonWithTimeout(url, timeoutMs = SHEET_TIMEOUT_MS) {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), SHEET_TIMEOUT_MS);
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        const response = await fetch(url, { cache: "no-cache", signal: controller.signal });
+        const response = await fetch(withCacheBuster(url), { cache: "no-store", signal: controller.signal });
         if (!response.ok) throw new Error(`JSON fetch failed: ${response.status}`);
         return await response.json();
       } finally {
@@ -1963,6 +2169,10 @@ ${SITE_URL}`);
       updateActiveTabButtons();
       renderFilters();
       fetchSheetData();
+      setInterval(refreshLiveListingsSilently, 20000);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) refreshLiveListingsSilently();
+      });
       openChecklistFromUrl();
     });
 
@@ -2030,9 +2240,13 @@ ${SITE_URL}`);
       if (activeTab === 'rent') {
         tabRentBtn.className = "board-tab is-active";
         tabLookingBtn.className = "board-tab";
+        tabRentBtn.setAttribute("aria-selected", "true");
+        tabLookingBtn.setAttribute("aria-selected", "false");
       } else {
         tabRentBtn.className = "board-tab";
         tabLookingBtn.className = "board-tab is-active";
+        tabRentBtn.setAttribute("aria-selected", "false");
+        tabLookingBtn.setAttribute("aria-selected", "true");
       }
     }
 
@@ -2542,6 +2756,10 @@ ${SITE_URL}`);
              (Array.isArray(payload?.lookingListings) ? payload.lookingListings.length : 0);
     }
 
+    function currentListingCount() {
+      return rentListings.length + lookingListings.length;
+    }
+
     function chooseBestPayload(payloads) {
       const validPayloads = payloads.filter(Boolean);
       if (!validPayloads.length) return null;
@@ -2556,34 +2774,73 @@ ${SITE_URL}`);
     async function fetchSheetData() {
       const loader = document.getElementById('loader-state');
       const errorDiv = document.getElementById('error-state');
-      const canFetchStaticJson = window.location.protocol !== "file:";
-      const sources = LIVE_API_URL
-        ? [LIVE_API_URL, ...(canFetchStaticJson ? [DATA_JSON_URL] : [])]
-        : [DATA_JSON_URL];
-
       errorDiv.classList.add('hidden');
       loader.classList.remove('hidden');
 
-      const payloads = await Promise.all(sources.map(async (source) => {
-        try {
-          return await fetchJsonWithTimeout(source);
-        } catch (err) {
-          return null;
-        }
-      }));
-      const payload = chooseBestPayload(payloads);
-
-      if (payload) {
+      const applyPayload = (payload) => {
         applyListingsPayload(payload);
         loader.classList.add('hidden');
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
-        return;
+      };
+
+      if (LIVE_API_URL) {
+        try {
+          const livePayload = await fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS);
+          if (livePayload && payloadItemCount(livePayload) > 0) {
+            applyPayload(livePayload);
+            return;
+          }
+        } catch (err) {
+          // Fall through to static cache if the live edge is temporarily slow.
+        }
+      }
+
+      const canFetchStaticJson = window.location.protocol !== "file:";
+      if (canFetchStaticJson) {
+        try {
+          const staticPayload = await fetchJsonWithTimeout(DATA_JSON_URL);
+          if (staticPayload) {
+            applyPayload(staticPayload);
+            return;
+          }
+        } catch (err) {
+          // Show the friendly unavailable state below.
+        }
+      }
+
+      if (window.location.protocol === "file:" && LIVE_API_URL) {
+        try {
+          const livePayload = await fetchJsonWithTimeout(LIVE_API_URL, SHEET_TIMEOUT_MS);
+          if (livePayload) {
+            applyPayload(livePayload);
+            return;
+          }
+        } catch (err) {
+          // Show the friendly unavailable state below.
+        }
       }
 
       loader.classList.add('hidden');
       setSyncStatus(`Cache unavailable ${syncTimeLabel()}`, "error");
       renderSetupPending("Listings are temporarily unavailable. Please refresh or try again shortly.");
+    }
+
+    async function refreshLiveListingsSilently() {
+      if (!LIVE_API_URL || document.hidden) return;
+      try {
+        const payload = await fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS);
+        if (!payload) return;
+        if (payloadItemCount(payload) === 0 && currentListingCount() > 0) return;
+        const previousStamp = lastDataUpdatedAt;
+        applyListingsPayload(payload);
+        if (lastDataUpdatedAt !== previousStamp) {
+          setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+          renderListings();
+        }
+      } catch (err) {
+        return;
+      }
     }
 
     function renderSetupPending(message = "Listings cache is not available yet. Valid new posts usually appear within seconds after Tally webhook delivery.") {

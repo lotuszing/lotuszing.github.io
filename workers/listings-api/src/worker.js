@@ -67,7 +67,7 @@ export class ListingWriter {
 async function getListings(env) {
   const cache = await readCache(env);
   return json(cache, 200, {
-    "Cache-Control": "public, max-age=30, stale-while-revalidate=120"
+    "Cache-Control": "public, max-age=5, stale-while-revalidate=20"
   });
 }
 
