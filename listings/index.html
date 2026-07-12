@@ -1459,7 +1459,55 @@
       touch-action: manipulation;
     }
     #filters-container button {
-      min-height: 2.35rem;
+      min-height: 2.75rem;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .app-button-primary,
+    .app-button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: 0.68rem 1rem;
+      border-radius: 999px;
+      font-family: "Archivo", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+    .app-button-primary {
+      border: 1px solid #071B3A;
+      background: #071B3A;
+      color: #FFFFFF;
+    }
+    .app-button-secondary {
+      border: 1px solid #BBD7F2;
+      background: #EAF4FF;
+      color: #0058A3;
+    }
+    .app-button-primary:hover,
+    .app-button-secondary:hover {
+      transform: translateY(-1px);
+    }
+    .empty-panel {
+      border: 1px solid #BBD7F2;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 0 0, rgba(0, 178, 143, 0.08), transparent 10rem),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
+      box-shadow: 0 12px 26px rgba(15, 43, 75, 0.09);
     }
     .sticky {
       margin-top: 0.55rem;
@@ -1658,21 +1706,21 @@
       <button id="copy-link-btn" type="button" onclick="copyCurrentViewLink(this)" class="utility-action">Copy view link</button>
     </div>
     <!-- LOADER STATE -->
-    <div id="loader-state" class="hidden py-8 text-center border border-dashed border-slate-300 rounded-xl bg-white max-w-md mx-auto my-5">
+    <div id="loader-state" class="empty-panel hidden py-8 text-center max-w-md mx-auto my-5">
       <div class="inline-block w-6 h-6 border-4 border-[#BBD7F2] border-t-[#071B3A] rounded-full animate-spin mb-3"></div>
       <h3 class="font-display font-bold text-slate-800 text-base">Loading listings...</h3>
       <p class="text-xs text-slate-500 font-sans mt-1 uppercase tracking-[0.08em]">Refreshing listings</p>
     </div>
 
     <!-- FAILURE FLOW STATE -->
-    <div id="error-state" class="hidden border border-rose-200 bg-rose-50 p-4 rounded-xl max-w-md mx-auto my-5 text-center space-y-2">
-      <span class="font-display text-lg font-bold text-rose-900">!</span>
-      <h3 class="font-display font-extrabold text-rose-950 text-lg">Couldn’t update listings</h3>
-      <p class="text-xs text-rose-800 font-sans leading-relaxed">
+    <div id="error-state" class="empty-panel hidden p-4 max-w-md mx-auto my-5 text-center space-y-2">
+      <span class="font-display text-lg font-bold text-[#0058A3]">!</span>
+      <h3 class="font-display font-extrabold text-[#071B3A] text-lg">Couldn’t update listings</h3>
+      <p class="text-xs text-[#48617D] font-sans leading-relaxed">
         The board could not load the latest posts. Please try again.
       </p>
       <div class="pt-2 flex justify-center gap-3">
-        <button type="button" onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-slate-900">
+        <button type="button" onclick="fetchSheetData()" class="app-button-primary">
           Try again
         </button>
       </div>
@@ -2452,6 +2500,7 @@ ${SITE_URL}`);
               <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Tenant view</span>
             </summary>
             <div class="border-t border-slate-200 p-2.5 sm:p-3">
+              <label for="filter-search-rent" class="sr-only">Search flats by tower, flat number, or owner</label>
               <input type="text" id="filter-search-rent" oninput="updateFilter('search', this.value)" placeholder="Tower, flat no., owner..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
               <div class="mt-2 flex items-center gap-2">
                 <button type="button" onclick="toggleAvailableNow()" aria-pressed="${rentFilters.availableNow}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.availableNow ? 'bg-[#00A889] border-[#00A889] text-white' : 'bg-[#E7F8F4] border-[#B9E6DC] text-[#116353]'}">Now</button>
@@ -2478,6 +2527,7 @@ ${SITE_URL}`);
               <span class="font-sans text-[10px] text-slate-400 uppercase tracking-[0.08em]">Owner view</span>
             </summary>
             <div class="border-t border-slate-200 p-2.5 sm:p-3">
+              <label for="filter-search-looking" class="sr-only">Search tenant requests by area, budget, or tenant</label>
               <input type="text" id="filter-search-looking" oninput="updateFilter('search', this.value)" placeholder="Area, budget, tenant..." value="${escapeHtml(lookingFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
               <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
                 ${renderBhkChips(lookingFilters.bhk)}
@@ -2744,15 +2794,15 @@ ${SITE_URL}`);
       lookingListings = [];
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
-        <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-[#EAF4FF] p-10 text-center max-w-xl mx-auto my-6 space-y-4">
+        <div class="empty-panel col-span-full p-10 text-center max-w-xl mx-auto my-6 space-y-4">
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-[#0058A3]">Temporary</span>
           <h3 class="font-display font-bold text-slate-900 text-lg">Listings unavailable</h3>
           <p class="text-sm text-slate-700 font-sans leading-relaxed">
             ${escapeHtml(message)}
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <button type="button" onclick="openSubmitChecklist('submit')" class="inline-flex justify-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Submit listing</button>
-            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center px-4 py-2 bg-[#0058A3] hover:bg-[#003E73] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-[#003E73]">Join group</a>
+            <button type="button" onclick="openSubmitChecklist('submit')" class="app-button-primary">Submit listing</button>
+            <a href="${WHATSAPP_GROUP_URL}" target="_blank" rel="noopener noreferrer" class="app-button-secondary">Join group</a>
           </div>
         </div>
       `;
@@ -2907,11 +2957,11 @@ ${SITE_URL}`;
     function renderEmptyState(message, title = "No matches", label = "Empty", showClear = true) {
       const grid = document.getElementById('listings-grid');
       grid.innerHTML = `
-        <div class="col-span-full border-2 border-dashed border-[#BBD7F2] rounded-xl bg-white p-12 text-center max-w-md mx-auto my-6 space-y-4">
+        <div class="empty-panel col-span-full p-12 text-center max-w-md mx-auto my-6 space-y-4">
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">${escapeHtml(label)}</span>
           <h3 class="font-display font-bold text-slate-800 text-lg">${escapeHtml(title)}</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
-          ${showClear ? '<button type="button" onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>' : ''}
+          ${showClear ? '<button type="button" onclick="resetFiltersAndReload()" class="app-button-primary">Clear Search</button>' : ''}
         </div>
       `;
     }
