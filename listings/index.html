@@ -462,11 +462,65 @@
       display: flex;
     }
     .listing-card.is-expanded .listing-card-body {
-      gap: 0.58rem;
+      gap: 0.78rem;
+      padding: 0.78rem 0.9rem 0.9rem;
+    }
+    .listing-card.is-expanded .listing-collapsible {
+      gap: 0.72rem;
+    }
+    .listing-card.is-expanded .listing-detail-list {
+      gap: 0.44rem 0.72rem;
+      padding: 0.64rem 0;
+    }
+    .listing-card.is-expanded .listing-detail {
+      gap: 0.38rem;
+      font-size: 0.72rem;
+      line-height: 1.42;
+    }
+    .listing-card.is-expanded .listing-detail span {
+      font-size: 0.56rem;
+    }
+    .listing-card.is-expanded .listing-detail strong {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+    .listing-card.is-expanded .listing-note {
+      padding: 0.58rem 0.68rem;
+      border: 1px solid rgba(187, 215, 242, 0.72);
+      border-radius: 0.78rem;
+      background: rgba(248, 251, 255, 0.84);
+    }
+    .listing-card.is-expanded .listing-note-label {
+      display: block;
+      margin-bottom: 0.24rem;
+    }
+    .listing-card.is-expanded .listing-note-copy {
+      font-size: 0.76rem;
+      line-height: 1.48;
+      display: block;
+      overflow: visible;
+    }
+    .listing-card.is-expanded .listing-extra-grid {
+      gap: 0.5rem;
+    }
+    .listing-card.is-expanded .listing-extra-field {
+      padding: 0.5rem 0.58rem;
+    }
+    .listing-card.is-expanded .listing-extra-field span {
+      font-size: 0.54rem;
+    }
+    .listing-card.is-expanded .listing-extra-field strong {
+      font-size: 0.72rem;
+      line-height: 1.32;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
     }
     .listing-card.is-expanded .listing-footer {
       margin-top: 0.08rem;
-      padding-top: 0.48rem;
+      gap: 0.5rem;
+      padding-top: 0.62rem;
       border-top: 1px solid rgba(187, 215, 242, 0.72);
     }
     .listing-chip-primary {
@@ -1619,6 +1673,9 @@
         grid-template-columns: 1fr;
       }
       .listing-extra-grid {
+        grid-template-columns: 1fr;
+      }
+      .listing-card.is-expanded .listing-detail-list {
         grid-template-columns: 1fr;
       }
       .listing-stat-grid {
