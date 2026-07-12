@@ -1311,7 +1311,7 @@
       color: #6D4A00;
     }
     .submit-rules-dialog {
-      width: min(92vw, 32rem);
+      width: min(92vw, 28rem);
       border: 1px solid #BBD7F2;
       border-radius: 1.25rem;
       padding: 0;
@@ -1324,7 +1324,7 @@
       backdrop-filter: blur(4px);
     }
     .submit-rules-panel {
-      padding: 1.1rem;
+      padding: 1rem;
       background: radial-gradient(circle at 0 0, rgba(0, 194, 168, 0.11), transparent 11rem), #FFFFFF;
     }
     .submit-rules-eyebrow {
@@ -1338,8 +1338,8 @@
     }
     .submit-rules-list {
       display: grid;
-      gap: 0.45rem;
-      margin: 0.95rem 0;
+      gap: 0.4rem;
+      margin: 0.78rem 0 0;
     }
     .submit-rules-list li {
       display: flex;
@@ -1358,15 +1358,6 @@
       margin-top: 0.32rem;
       border-radius: 999px;
       background: #00A58F;
-    }
-    .submit-rules-warning {
-      border: 1px solid #F2D49B;
-      border-radius: 0.9rem;
-      padding: 0.72rem 0.78rem;
-      background: #FFF8E7;
-      color: #6D4A00;
-      font-size: 0.78rem;
-      line-height: 1.38;
     }
     .submit-rules-actions {
       display: grid;
@@ -1643,20 +1634,17 @@
   <dialog id="submit-rules-dialog" class="submit-rules-dialog">
     <div class="submit-rules-panel">
       <span class="submit-rules-eyebrow">Before you submit</span>
-      <h3 id="submit-rules-title" class="mt-2 font-display text-xl font-extrabold tracking-tight text-[#071B3A]">Make your post go live</h3>
+      <h3 id="submit-rules-title" class="mt-2 font-display text-lg font-extrabold tracking-tight text-[#071B3A]">Quick check</h3>
       <p id="submit-rules-copy" class="mt-2 text-sm leading-relaxed text-[#48617D]">
-        The form works best when the post is clear, complete, and useful for residents.
+        Keep these ready so your post can show up cleanly.
       </p>
       <ul id="submit-rules-list" class="submit-rules-list"></ul>
-      <p class="submit-rules-warning">
-        Incomplete or unclear posts may stay hidden until they are fixed.
-      </p>
       <div class="submit-rules-actions">
         <button type="button" onclick="closeSubmitChecklist()" class="px-4 py-2.5 border border-[#BBD7F2] bg-white text-[#071B3A] font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
-          Review first
+          Not now
         </button>
         <button id="submit-rules-continue" type="button" onclick="continueToTally()" class="px-4 py-2.5 border border-[#071B3A] bg-[#071B3A] text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded-xl">
-          Continue to form
+          Open form
         </button>
       </div>
     </div>
@@ -1706,39 +1694,30 @@
     };
     const SUBMIT_RULES = {
       submit: {
-        title: "Submit without getting lost",
-        copy: "One form handles both flat listings and tenant requests. Pick the right type, then keep these details clean.",
+        title: "Quick check",
+        copy: "Keep these ready so your post can show up cleanly.",
         rules: [
-          "Choose the correct type inside the form: Flat available or Looking for flat.",
-          "Phone must be a real 10-digit Indian mobile number.",
-          "Flat posts need at least a tower or unit number, for example Tower 3. Flat number is recommended.",
-          "Rent, budget, and deposit must be realistic and inside the allowed ranges.",
-          "Move-in or available date must be Immediate or a reasonable valid date.",
-          "Incomplete, joke, or test entries stay hidden from the public board."
+          "Choose the right type: flat available or looking for flat.",
+          "Use a real 10-digit mobile number so people can contact you.",
+          "Add the essentials: tower or area, BHK, rent or budget, and move-in date."
         ]
       },
       owner: {
-        title: "List a flat that residents can trust",
-        copy: "Owners and brokers need these details ready before the post can go live.",
+        title: "Quick check",
+        copy: "Keep these ready so your flat post can show up cleanly.",
         rules: [
-          "Tower or unit number must be present, for example Tower 3. Flat number is recommended.",
-          "Phone must be a real 10-digit Indian mobile number.",
-          "Monthly rent must be between ₹5,000 and ₹1,50,000.",
-          "Deposit must be between ₹0 and ₹5,00,000.",
-          "Available date must be Immediate or a reasonable valid date.",
-          "BHK, furnishing, listed by, and contact name must be selected clearly."
+          "Use a real 10-digit mobile number.",
+          "Add tower, BHK, rent, deposit, furnishing, and availability.",
+          "Avoid test or joke entries; only useful posts show publicly."
         ]
       },
       tenant: {
-        title: "Post a tenant request owners can act on",
-        copy: "Tenant requests need clean contact and requirement details so owners can respond.",
+        title: "Quick check",
+        copy: "Keep these ready so owners can understand your request quickly.",
         rules: [
-          "Phone must be a real 10-digit Indian mobile number.",
-          "Budget must be between ₹5,000 and ₹1,50,000.",
-          "Move-in must be Immediate or a reasonable valid date.",
-          "Occupants must be between 1 and 8 people.",
-          "BHK, tenant type, preferred tower or area, and contact name must be clear.",
-          "Avoid jokes, test text, or missing details because they stay hidden from the public board."
+          "Use a real 10-digit mobile number.",
+          "Add BHK, budget, move-in date, occupants, and preferred tower or area.",
+          "Avoid test or joke entries; only useful requests show publicly."
         ]
       }
     };
@@ -2257,7 +2236,7 @@ ${SITE_URL}`);
       title.textContent = rules.title;
       copy.textContent = rules.copy;
       list.innerHTML = rules.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("");
-      continueButton.textContent = "Open one form";
+      continueButton.textContent = "Open form";
       if (typeof dialog.showModal === "function") dialog.showModal();
       else continueToTally();
     }
