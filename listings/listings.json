@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:39:48.036Z",
+  "generatedAt": "2026-07-12T21:33:20.148Z",
   "rentListings": [],
   "lookingListings": [
     {
@@ -14,7 +14,18 @@
       "posterName": "Shailansh",
       "contactNumber": "919917749494",
       "notes": "",
-      "extraFields": []
+      "reportCount": 1,
+      "reportRisk": "",
+      "extraFields": [
+        {
+          "label": "Reporter Keys",
+          "value": "codex-test-20260713-1"
+        },
+        {
+          "label": "Last Reported At",
+          "value": "7/12/2026"
+        }
+      ]
     },
     {
       "id": "sheet-looking-YjzvDkd",
@@ -28,6 +39,8 @@
       "posterName": "Shailansh",
       "contactNumber": "919897359581",
       "notes": "",
+      "reportCount": 0,
+      "reportRisk": "",
       "extraFields": []
     },
     {
@@ -42,6 +55,8 @@
       "posterName": "Shailansh",
       "contactNumber": "919458451695",
       "notes": "",
+      "reportCount": 0,
+      "reportRisk": "",
       "extraFields": []
     }
   ]
