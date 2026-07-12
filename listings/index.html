@@ -1140,23 +1140,59 @@
       color: #FFFFFF !important;
     }
     .wa-icon {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 1.12rem;
-      height: 1.12rem;
+      width: 1.28rem;
+      height: 1.28rem;
       margin-right: 0.42rem;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.22);
-      color: #FFFFFF;
+      background: #FFFFFF;
+      color: #00A58F;
       font-size: 0.72rem;
       font-weight: 900;
       line-height: 1;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.44);
+      animation: waPulse 2200ms ease-out infinite;
+    }
+    .wa-icon::after {
+      content: "";
+      position: absolute;
+      inset: -0.22rem;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: inherit;
+      opacity: 0.72;
+      animation: waRing 2200ms ease-out infinite;
     }
     .wa-icon svg {
-      width: 0.82rem;
-      height: 0.82rem;
+      position: relative;
+      z-index: 1;
+      width: 0.9rem;
+      height: 0.9rem;
       fill: currentColor;
+    }
+    .community-ticket:hover .wa-icon {
+      animation-duration: 1100ms;
+      transform: scale(1.04);
+    }
+    @keyframes waPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.34);
+      }
+      52% {
+        box-shadow: 0 0 0 0.38rem rgba(255, 255, 255, 0);
+      }
+    }
+    @keyframes waRing {
+      0% {
+        transform: scale(0.82);
+        opacity: 0.72;
+      }
+      70%, 100% {
+        transform: scale(1.14);
+        opacity: 0;
+      }
     }
     .post-ticket {
       background: #071B3A !important;
