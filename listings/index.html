@@ -844,7 +844,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 2rem;
+      min-height: 2.5rem;
       padding: 0.42rem 0.52rem;
       border-radius: 0.62rem;
       border: 1px solid transparent;
@@ -1114,11 +1114,18 @@
       color: #48617D !important;
     }
     .action-ticket {
-      min-height: 34px;
+      min-height: 44px;
       padding: 0.34rem 0.55rem;
       border-radius: 0.85rem;
       justify-content: center;
       box-shadow: none;
+    }
+    .action-ticket:focus-visible,
+    .board-tab:focus-visible,
+    .utility-action:focus-visible,
+    .submit-rules-close:focus-visible {
+      outline: 3px solid rgba(0, 88, 163, 0.24);
+      outline-offset: 3px;
     }
     .header-actions {
       margin-top: 1.18rem;
@@ -1277,7 +1284,7 @@
       font-size: 0.62rem;
     }
     .listing-card:not(.is-expanded) .listing-collapse-toggle {
-      min-height: 2.35rem;
+      min-height: 2.5rem;
       font-size: 0.66rem;
       border-radius: 0.72rem;
     }
@@ -1371,8 +1378,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
+      width: 2.75rem;
+      height: 2.75rem;
       border: 1px solid #D7E7F6;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.88);
@@ -1389,7 +1396,7 @@
     }
     .submit-rules-eyebrow {
       display: inline-flex;
-      margin-left: 2.5rem;
+      margin-left: 3.2rem;
       color: #0058A3;
       font-family: "DM Mono", ui-monospace, monospace;
       font-size: 0.66rem;
@@ -1433,7 +1440,7 @@
       margin: -0.2rem 0 0.75rem;
     }
     .utility-action {
-      min-height: 2rem;
+      min-height: 2.5rem;
       padding: 0.38rem 0.68rem;
       border: 1px solid #BBD7F2;
       border-radius: 999px;
@@ -1447,6 +1454,13 @@
       body {
         padding-bottom: 1.5rem;
       }
+    }
+    button,
+    a {
+      touch-action: manipulation;
+    }
+    #filters-container button {
+      min-height: 2.35rem;
     }
     .sticky {
       margin-top: 0.55rem;
@@ -1659,7 +1673,7 @@
         The board could not load the latest posts. Please try again.
       </p>
       <div class="pt-2 flex justify-center gap-3">
-        <button onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-slate-900">
+        <button type="button" onclick="fetchSheetData()" class="px-4 py-2 bg-rose-900 hover:bg-rose-950 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded border border-slate-900">
           Try again
         </button>
       </div>
@@ -2187,8 +2201,8 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
-              <button onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">Copy</button>
-              <button onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">Share</button>
+              <button type="button" onclick="copyRentSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy listing summary">Copy</button>
+              <button type="button" onclick="shareRentWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share listing">Share</button>
             </div>
           </div>
         </div>
@@ -2267,8 +2281,8 @@ ${SITE_URL}`);
             <div class="listing-footer">
               ${callAction}
               ${whatsappAction}
-              <button onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">Copy</button>
-              <button onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">Share</button>
+              <button type="button" onclick="copyLookingSummary(${indexInList}, this)" class="${cardCtaGroup}" aria-label="Copy request summary">Copy</button>
+              <button type="button" onclick="shareLookingWhatsapp(${indexInList})" class="${cardCtaGroup}" aria-label="Share request">Share</button>
             </div>
           </div>
         </div>
@@ -2441,8 +2455,8 @@ ${SITE_URL}`);
             <div class="border-t border-slate-200 p-2.5 sm:p-3">
               <input type="text" id="filter-search-rent" oninput="updateFilter('search', this.value)" placeholder="Tower, flat no., owner..." value="${escapeHtml(rentFilters.search)}" class="w-full bg-[#F8FBFF] border border-[#BBD7F2] focus:border-[#0058A3] rounded-lg px-3 py-2 text-sm outline-none">
               <div class="mt-2 flex items-center gap-2">
-                <button onclick="toggleAvailableNow()" aria-pressed="${rentFilters.availableNow}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.availableNow ? 'bg-[#00A889] border-[#00A889] text-white' : 'bg-[#E7F8F4] border-[#B9E6DC] text-[#116353]'}">Now</button>
-                <button onclick="toggleOwnerOnly()" aria-pressed="${rentFilters.ownerOnly}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.ownerOnly ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-[#EAF4FF] border-[#BBD7F2] text-[#315776]'}" id="owner-toggle-btn">Owner</button>
+                <button type="button" onclick="toggleAvailableNow()" aria-pressed="${rentFilters.availableNow}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.availableNow ? 'bg-[#00A889] border-[#00A889] text-white' : 'bg-[#E7F8F4] border-[#B9E6DC] text-[#116353]'}">Now</button>
+                <button type="button" onclick="toggleOwnerOnly()" aria-pressed="${rentFilters.ownerOnly}" class="shrink-0 rounded-lg border px-3 py-2 text-xs font-bold transition ${rentFilters.ownerOnly ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-[#EAF4FF] border-[#BBD7F2] text-[#315776]'}" id="owner-toggle-btn">Owner</button>
               </div>
               <div class="mt-2 flex gap-1.5 overflow-x-auto pb-0.5">
                 ${renderBhkChips(rentFilters.bhk)}
@@ -2481,7 +2495,7 @@ ${SITE_URL}`);
     function renderBhkChips(activeBhk) {
       return ["All", "Studio", "1 BHK", "2 BHK", "3 BHK", "4+ BHK"].map((bhk) => {
         const isActive = activeBhk === bhk;
-        return `<button onclick="updateFilter('bhk', '${bhk}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${bhk}</button>`;
+        return `<button type="button" onclick="updateFilter('bhk', '${bhk}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#06152A] border-[#06152A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${bhk}</button>`;
       }).join("");
     }
 
@@ -2493,7 +2507,7 @@ ${SITE_URL}`);
         { value: "30plus", label: "30k+" }
       ].map((band) => {
         const isActive = activeBudget === band.value;
-        return `<button onclick="updateFilter('budget', '${band.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0058A3] border-[#0058A3] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${band.label}</button>`;
+        return `<button type="button" onclick="updateFilter('budget', '${band.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0058A3] border-[#0058A3] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${band.label}</button>`;
       }).join("");
     }
 
@@ -2504,7 +2518,7 @@ ${SITE_URL}`);
         { value: "bachelor", label: "Bachelors" }
       ].map((type) => {
         const isActive = activeTenant === type.value;
-        return `<button onclick="updateFilter('tenant', '${type.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0B6B58] border-[#0B6B58] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${type.label}</button>`;
+        return `<button type="button" onclick="updateFilter('tenant', '${type.value}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#0B6B58] border-[#0B6B58] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${type.label}</button>`;
       }).join("");
     }
 
@@ -2512,7 +2526,7 @@ ${SITE_URL}`);
       return ["All", "Yes"].map((parking) => {
         const isActive = activeParking === parking;
         const label = parking === "All" ? "Any parking" : "Parking";
-        return `<button onclick="updateFilter('parking', '${parking}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#071B3A] border-[#071B3A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${label}</button>`;
+        return `<button type="button" onclick="updateFilter('parking', '${parking}')" aria-pressed="${isActive}" class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold transition ${isActive ? 'bg-[#071B3A] border-[#071B3A] text-white' : 'bg-white border-[#BBD7F2] text-[#315776]'}">${label}</button>`;
       }).join("");
     }
 
@@ -2898,7 +2912,7 @@ ${SITE_URL}`;
           <span class="font-sans text-xs uppercase tracking-[0.12em] text-slate-400">${escapeHtml(label)}</span>
           <h3 class="font-display font-bold text-slate-800 text-lg">${escapeHtml(title)}</h3>
           <p class="text-xs text-slate-500 font-sans leading-relaxed">${message}</p>
-          ${showClear ? '<button onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>' : ''}
+          ${showClear ? '<button type="button" onclick="resetFiltersAndReload()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-sans text-xs font-bold uppercase tracking-[0.06em] rounded shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">Clear Search</button>' : ''}
         </div>
       `;
     }
