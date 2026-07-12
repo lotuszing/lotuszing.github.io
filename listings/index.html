@@ -2784,29 +2784,27 @@ ${SITE_URL}`);
         renderListings();
       };
 
-      if (LIVE_API_URL) {
-        try {
-          const livePayload = await fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS);
-          if (livePayload && payloadItemCount(livePayload) > 0) {
-            applyPayload(livePayload);
-            return;
-          }
-        } catch (err) {
-          // Fall through to static cache if the live edge is temporarily slow.
+      const canFetchStaticJson = window.location.protocol !== "file:";
+      const requests = [];
+      if (LIVE_API_URL) requests.push(fetchJsonWithTimeout(LIVE_API_URL, LIVE_TIMEOUT_MS));
+      if (canFetchStaticJson) requests.push(fetchJsonWithTimeout(DATA_JSON_URL, SHEET_TIMEOUT_MS));
+
+      const pending = requests.map((request) => request.catch(() => null));
+      let emptyPayload = null;
+      while (pending.length) {
+        const wrapped = pending.map((request, index) => request.then((payload) => ({ index, payload })));
+        const { index, payload } = await Promise.race(wrapped);
+        pending.splice(index, 1);
+        if (payload && payloadItemCount(payload) > 0) {
+          applyPayload(payload);
+          return;
         }
+        if (payload && !emptyPayload) emptyPayload = payload;
       }
 
-      const canFetchStaticJson = window.location.protocol !== "file:";
-      if (canFetchStaticJson) {
-        try {
-          const staticPayload = await fetchJsonWithTimeout(DATA_JSON_URL);
-          if (staticPayload) {
-            applyPayload(staticPayload);
-            return;
-          }
-        } catch (err) {
-          // Show the friendly unavailable state below.
-        }
+      if (emptyPayload) {
+        applyPayload(emptyPayload);
+        return;
       }
 
       if (window.location.protocol === "file:" && LIVE_API_URL) {
