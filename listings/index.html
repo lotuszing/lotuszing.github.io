@@ -1183,47 +1183,55 @@
     .listing-stat-label {
       color: #60758E !important;
     }
-    /* Collapsed density pass: cards should scan like listings, not full detail panels. */
+    /* Collapsed cards: compact, but readable enough to scan without squinting. */
     .listing-card:not(.is-expanded) .listing-card-header {
-      padding: 0.34rem 0.48rem 0.3rem;
-      gap: 0.22rem;
+      padding: 0.42rem 0.58rem 0.36rem;
+      gap: 0.32rem;
     }
     .listing-card:not(.is-expanded) .listing-card-body {
-      gap: 0.24rem;
-      padding: 0.34rem 0.48rem 0.42rem;
+      gap: 0.34rem;
+      padding: 0.44rem 0.58rem 0.52rem;
     }
     .listing-card:not(.is-expanded) .listing-title {
-      margin-top: 0.1rem;
-      font-size: 0.82rem;
-      line-height: 1;
+      margin-top: 0.16rem;
+      font-size: 0.9rem;
+      line-height: 1.12;
     }
     .listing-card:not(.is-expanded) .listing-kicker {
-      font-size: 0.45rem;
-      letter-spacing: 0.08em;
+      font-size: 0.5rem;
+      letter-spacing: 0.085em;
     }
     .listing-card:not(.is-expanded) .listing-subhead {
-      gap: 0.2rem;
+      gap: 0.28rem;
     }
     .listing-card:not(.is-expanded) .listing-poster {
-      font-size: 0.54rem;
+      font-size: 0.62rem;
+      line-height: 1.25;
+    }
+    .listing-card:not(.is-expanded) .listing-glance {
+      margin-top: 0.28rem;
+      gap: 0.34rem;
+      font-size: 0.64rem;
+      line-height: 1.28;
     }
     .listing-card:not(.is-expanded) .listing-price-value {
-      font-size: 0.94rem;
+      font-size: 1rem;
+      line-height: 1.04;
     }
     .listing-card:not(.is-expanded) .listing-price-meta {
-      margin-top: 0.02rem;
-      font-size: 0.46rem;
+      margin-top: 0.05rem;
+      font-size: 0.52rem;
     }
     .listing-card:not(.is-expanded) .listing-chip-primary,
     .listing-card:not(.is-expanded) .listing-chip-secondary {
-      min-height: 1.02rem;
-      padding-top: 0.08rem;
-      padding-bottom: 0.08rem;
+      min-height: 1.12rem;
+      padding-top: 0.1rem;
+      padding-bottom: 0.1rem;
     }
     .listing-card:not(.is-expanded) .listing-collapse-toggle {
-      min-height: 1.28rem;
-      font-size: 0.48rem;
-      border-radius: 0.42rem;
+      min-height: 1.42rem;
+      font-size: 0.52rem;
+      border-radius: 0.5rem;
     }
     .listing-card:not(.is-expanded)::after {
       width: 2.6rem;
@@ -1231,7 +1239,7 @@
     }
     #listings-grid {
       gap: 0.72rem;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 26rem));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 28rem));
       justify-content: start;
       align-items: start;
     }
