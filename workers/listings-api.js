@@ -43,6 +43,14 @@ function json(body, status, request, env, cacheable = false) {
   });
 }
 
+function responseHeadersWithoutCors(headers) {
+  const clean = {};
+  headers.forEach((value, key) => {
+    if (!key.toLowerCase().startsWith("access-control-")) clean[key] = value;
+  });
+  return clean;
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [""];
@@ -340,13 +348,14 @@ async function fetchListings(request, env) {
   }
 
   const cache = caches.default;
-  const cacheKey = new Request(new URL("/listings-cache-v1", request.url), { method: "GET" });
+  const origin = request.headers.get("Origin") || "no-origin";
+  const cacheKey = new Request(new URL(`/listings-cache-v2/${encodeURIComponent(origin)}`, request.url), { method: "GET" });
   const cached = await cache.match(cacheKey);
   if (cached) {
     return new Response(cached.body, {
       status: cached.status,
       headers: {
-        ...Object.fromEntries(cached.headers),
+        ...responseHeadersWithoutCors(cached.headers),
         ...corsHeaders(request, env),
         "X-LZ-Cache": "hit"
       }
