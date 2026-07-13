@@ -2498,6 +2498,10 @@
       return params.get("loadtest") === "100" || params.get("flood") === "100";
     }
 
+    function isExpiryDemoMode() {
+      return new URLSearchParams(window.location.search).get("expirytest") === "1";
+    }
+
     function buildLoadTestPayload(count = LOAD_TEST_COUNT) {
       const towers = [1, 2, 3, 4, 5, 6, 15, 16];
       const bhks = ["Studio", "1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
@@ -2507,7 +2511,12 @@
       const rentCount = Math.round(count * 0.7);
       const lookingCount = count - rentCount;
       const today = new Date();
-      const stamp = "2026-07-13 09:00:00";
+      const timestampForDemo = (daysAgo = 0) => {
+        const date = new Date(today);
+        date.setDate(today.getDate() - daysAgo);
+        return `${date.toISOString().slice(0, 10)} 09:00:00`;
+      };
+      const stamp = timestampForDemo(isExpiryDemoMode() ? 26 : 0);
 
       const futureDate = (offset) => {
         const next = new Date(today);
