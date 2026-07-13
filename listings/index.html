@@ -2238,8 +2238,9 @@
     const SITE_URL = "https://lotuszing.github.io/listings/";
     const PORTAL_NAME = "Lotus Zing Listings";
     const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
-    const DATA_JSON_URL = "https://lotuszing.github.io/listings/listings.json";
+    const DATA_JSON_URL = "listings.json";
     const SHEET_TIMEOUT_MS = 8000;
+    const LIVE_REFRESH_MS = 12000;
     const REPORT_REASONS = [
       "Already rented / closed",
       "Wrong information",
@@ -2817,6 +2818,7 @@ ${SITE_URL}`);
       updateActiveTabButtons();
       renderFilters();
       fetchSheetData();
+      startLiveRefresh();
       openChecklistFromUrl();
     });
 
@@ -3421,6 +3423,29 @@ ${SITE_URL}`);
       setSyncStatus(`Update paused ${syncTimeLabel()}`, "error");
       showPortalFeedback("Could not refresh.", "Please try again. If this repeats, wait a minute and refresh the board.", "warn");
       renderSetupPending("The board is taking longer than usual to update. Please refresh or try again shortly.");
+    }
+
+    async function refreshListingsQuietly() {
+      if (document.hidden) return;
+      try {
+        const payload = await fetchJsonWithTimeout(DATA_JSON_URL, 5000);
+        const nextGeneratedAt = payload?.generatedAt || "";
+        if (!nextGeneratedAt || nextGeneratedAt === lastDataUpdatedAt) return;
+        applyListingsPayload(payload);
+        setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+        renderListings();
+        const total = rentListings.length + lookingListings.length;
+        showPortalFeedback("Listings updated.", `${total} active ${total === 1 ? "post" : "posts"} now live.`, "good");
+      } catch (_) {
+        // Keep the current board visible; the next poll can recover.
+      }
+    }
+
+    function startLiveRefresh() {
+      window.setInterval(refreshListingsQuietly, LIVE_REFRESH_MS);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) refreshListingsQuietly();
+      });
     }
 
     function renderSetupPending(message = "The board is still preparing the latest posts. Valid new posts usually appear shortly after submission.") {
