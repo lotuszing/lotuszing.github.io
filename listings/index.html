@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://lotuszing.github.io/listings/">
   <meta property="og:url" content="https://lotuszing.github.io/listings/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071B3A'/%3E%3Cpath d='M17 43h30v7H10V14h7v29Zm13-7h17v7H23V14h7v22Z' fill='%2300C2A8'/%3E%3C/svg%3E">
-  <title>Lotus Zing Flat Board</title>
+  <title>Lotus Zing Listings</title>
   
   <!-- Font Imports -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2049,9 +2049,9 @@
           <div>
             <div class="brand-row">
               <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
-                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing Flat Board home">Lotus Zing</a>
+                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing Listings home">Lotus Zing</a>
               </h1>
-              <span class="brand-purpose">Flat Board</span>
+              <span class="brand-purpose">Listings</span>
             </div>
             <span id="refresh-counter" class="refresh-counter">Checking board</span>
             <p class="header-subcopy">Resident flat listings and tenant requests, updated from verified community submissions.</p>
@@ -2192,7 +2192,7 @@
     <div class="max-w-3xl mx-auto space-y-4">
       <div class="text-center flex flex-col items-center gap-2">
         <span class="green-light" aria-hidden="true"></span>
-        <h4 class="font-display font-bold text-slate-950 text-sm">Lotus Zing Flat Board</h4>
+        <h4 class="font-display font-bold text-slate-950 text-sm">Lotus Zing Listings</h4>
         <p class="text-xs text-slate-600 leading-relaxed max-w-xl">
           Built by a resident to help the community share flat listings and tenant requests faster.
         </p>
@@ -2213,7 +2213,7 @@
         <div class="rounded-xl border border-[#D7E7F6] bg-white/70 p-3">
           <strong class="block font-sans text-[10px] uppercase tracking-[0.12em] text-[#0058A3]">Copyright</strong>
           <p class="mt-1 text-xs leading-relaxed text-slate-600">
-            © 2026 Lotus Zing Flat Board. Built and maintained by a Lotus Zing resident.
+            © 2026 Lotus Zing Listings. Built and maintained by a Lotus Zing resident.
           </p>
         </div>
       </div>
@@ -2237,7 +2237,7 @@
     const TALLY_FORM_URL = "https://tally.so/r/KYg7YD";
     const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/DRaBE5Kky5J6kNymTPko8j";
     const SITE_URL = "https://lotuszing.github.io/listings/";
-    const PORTAL_NAME = "Lotus Zing Flat Board";
+    const PORTAL_NAME = "Lotus Zing Listings";
     const SUBMIT_ENTRY_URL = `${SITE_URL}?submit=1`;
     const DATA_JSON_URL = "https://lotuszing.github.io/listings/listings.json";
     const SHEET_TIMEOUT_MS = 8000;
@@ -2642,17 +2642,12 @@
       const preferredTenant = formatDisplayText(item.preferredTenant);
       const parking = formatDisplayText(item.parking);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your listing on the *${PORTAL_NAME}*.
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your flat listing on *${PORTAL_NAME}*.
 
 • *Flat*: ${item.bhkType} at ${item.towerFlat}
 • *Rent*: ${formatCurrency(item.monthlyRent)}/mo
 
-Is it still available? Happy to connect and discuss.
-
-You can also join the Lotus Zing WhatsApp community here:
-${WHATSAPP_GROUP_URL}
-
-Board link:
+Is it still available? Please let me know a good time to connect.
 ${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">${ctaLabel('call', 'Call')}</a>`
@@ -2724,17 +2719,12 @@ ${SITE_URL}`);
       const { daysRemaining, showWarning } = getExpiryInfo(item.timestamp);
       const tenantType = formatDisplayText(item.tenantType);
       const phone = cleanPhoneNumber(item.contactNumber);
-      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your request on the *${PORTAL_NAME}*.
+      const whatsappUrl = whatsappPosterUrl(item.contactNumber, `Hi ${item.posterName}, I saw your flat requirement on *${PORTAL_NAME}*.
 
 • *Request*: ${item.preferredBhk}
 • *Budget*: ${formatCurrency(item.budget)}/mo
 
-Can we connect if you know of a suitable option?
-
-You can also join the Lotus Zing WhatsApp community here:
-${WHATSAPP_GROUP_URL}
-
-Board link:
+I may have a suitable lead. Please let me know a good time to connect.
 ${SITE_URL}`);
       const callAction = phone
         ? `<a href="tel:${phone}" onclick="showPortalFeedback('Calling poster.', 'Your phone app should open with this contact.', 'info')" class="${cardCtaCall}" aria-label="Call poster">${ctaLabel('call', 'Call')}</a>`
@@ -3422,21 +3412,31 @@ ${SITE_URL}`);
     // Share Rent Whatsapp Text Helper
     function rentShareText(item) {
       return `*${PORTAL_NAME}*
-Flat available: ${item.bhkType} at ${item.towerFlat}
-Rent: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo | From: ${item.availableFrom}
-Contact: ${item.posterName} ${item.contactNumber}
+*Flat available*
+• ${item.bhkType} at ${item.towerFlat}
+• Rent: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo
+• Available from: ${item.availableFrom}
+• Contact: ${item.posterName} ${item.contactNumber}
 
-Shared via ${PORTAL_NAME} - built for quicker, trusted community connections.
+Join the Lotus Zing community:
+${WHATSAPP_GROUP_URL}
+
+View board:
 ${SITE_URL}`;
     }
 
     function lookingShareText(item) {
       return `*${PORTAL_NAME}*
-Tenant request: ${item.preferredBhk}
-Budget: ₹${item.budget.toLocaleString('en-IN')}/mo | Move-in: ${item.preferredMoveIn}
-Contact: ${item.posterName} ${item.contactNumber}
+*Tenant looking*
+• Requirement: ${item.preferredBhk}
+• Budget: ₹${item.budget.toLocaleString('en-IN')}/mo
+• Move-in: ${item.preferredMoveIn}
+• Contact: ${item.posterName} ${item.contactNumber}
 
-Shared via ${PORTAL_NAME} - built for quicker, trusted community connections.
+Join the Lotus Zing community:
+${WHATSAPP_GROUP_URL}
+
+View board:
 ${SITE_URL}`;
     }
 

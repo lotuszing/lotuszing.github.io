@@ -69,7 +69,7 @@ Do not share the raw Tally link publicly unless necessary. The portal link shows
 Use this on the Tally thank-you screen:
 
 ```text
-Submitted. Valid posts usually appear on the Lotus Zing Flat Board within seconds.
+Submitted. Valid posts usually appear on Lotus Zing Listings within seconds.
 
 If your post does not appear, it likely failed one of these checks:
 - phone number is not a valid 10-digit Indian mobile
