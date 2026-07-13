@@ -2116,6 +2116,44 @@
       border-color: #071B3A;
       color: #FFFFFF;
     }
+    @media (min-width: 900px) {
+      main.max-w-7xl,
+      header .max-w-7xl {
+        max-width: 72rem;
+      }
+      #listings-grid {
+        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+        justify-content: center;
+        gap: 1.15rem;
+      }
+      .listing-card:not(.is-expanded) .listing-card-header {
+        padding: 0.78rem 0.92rem 0.64rem;
+      }
+      .listing-card:not(.is-expanded) .listing-card-body {
+        padding: 0.78rem 0.92rem 0.86rem;
+      }
+      .listing-title-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 1rem;
+      }
+      .listing-price-panel {
+        min-width: 8.3rem;
+      }
+      .filter-panel,
+      .result-summary,
+      .utility-actions,
+      #loader-state,
+      #error-state,
+      .empty-panel {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1180px) {
+      #listings-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
     @media (max-width: 1120px) {
       .listing-title-row {
         grid-template-columns: 1fr;
