@@ -2229,6 +2229,7 @@
     let rentListings = [];
     let lookingListings = [];
     let lastDataUpdatedAt = "";
+    let lastDataSignature = "";
     let renderDebounceTimer = null;
     let pendingReport = null;
     
@@ -3410,7 +3411,34 @@ ${SITE_URL}`);
       rentListings = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
       lookingListings = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
       lastDataUpdatedAt = payload?.generatedAt || "";
+      lastDataSignature = listingsPayloadSignature(payload);
       cleanupListings();
+    }
+
+    function listingsPayloadSignature(payload) {
+      const rent = Array.isArray(payload?.rentListings) ? payload.rentListings : [];
+      const looking = Array.isArray(payload?.lookingListings) ? payload.lookingListings : [];
+      return JSON.stringify({
+        rent: rent.map((item) => [
+          item.id,
+          item.timestamp,
+          item.towerFlat,
+          item.monthlyRent,
+          item.contactNumber,
+          item.reportCount,
+          item.reportRisk
+        ]),
+        looking: looking.map((item) => [
+          item.id,
+          item.timestamp,
+          item.preferredBhk,
+          item.budget,
+          item.preferredArea,
+          item.contactNumber,
+          item.reportCount,
+          item.reportRisk
+        ])
+      });
     }
 
     // Public clients only read the sanitized JSON cache. Raw Sheet access stays server-side.
@@ -3443,8 +3471,12 @@ ${SITE_URL}`);
       if (document.hidden) return;
       try {
         const payload = await fetchListingsPayload(5000);
-        const nextGeneratedAt = payload?.generatedAt || "";
-        if (!nextGeneratedAt || nextGeneratedAt === lastDataUpdatedAt) return;
+        const nextSignature = listingsPayloadSignature(payload);
+        if (!nextSignature || nextSignature === lastDataSignature) {
+          lastDataUpdatedAt = payload?.generatedAt || lastDataUpdatedAt;
+          setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+          return;
+        }
         applyListingsPayload(payload);
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
