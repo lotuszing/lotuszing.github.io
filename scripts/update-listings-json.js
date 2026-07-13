@@ -306,7 +306,7 @@ function isValidLookingListing(item) {
 
 async function main() {
   if (!CSV_URL) {
-    throw new Error("Missing SHEET_CSV_URL. Add it as a GitHub Actions secret before running the sync.");
+    throw new Error("Missing SHEET_CSV_URL. Provide it from a trusted private environment before running the sync.");
   }
 
   const response = await fetch(`${CSV_URL}&v=${Date.now()}`, { cache: "no-store" });

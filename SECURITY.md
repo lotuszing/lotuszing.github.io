@@ -4,18 +4,18 @@
 
 - Public users load `listings/listings.json` by default.
 - Raw Google Sheet CSV access must stay out of the frontend.
-- The scheduled GitHub Action reads the Sheet through the `SHEET_CSV_URL` repository secret.
-- Rejected rows are logged in the Action output only; they are not written to public JSON.
+- There is no scheduled GitHub Action sync. If `listings/listings.json` is regenerated, do it from a trusted private environment only.
+- Rejected rows should stay out of public JSON.
 
-## Required GitHub Secret
+## Private Sync Input
 
-Create this repository secret before running the sync workflow:
+If the sync script is run manually or from a trusted backend, provide the private Sheet CSV URL as:
 
 ```text
 SHEET_CSV_URL
 ```
 
-If the secret is missing, `scripts/update-listings-json.js` fails closed and does not generate a cache.
+If the value is missing, `scripts/update-listings-json.js` fails closed and does not generate a cache.
 
 ## Known Product Risk
 
