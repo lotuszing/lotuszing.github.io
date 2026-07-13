@@ -2115,8 +2115,8 @@
 
     <div id="result-summary" class="result-summary" aria-live="polite"></div>
     <div id="submit-reassurance" class="submit-reassurance hidden" aria-live="polite">
-      <strong>Post received. You can breathe.</strong>
-      <p>If the details are complete, your post should appear shortly. If it does not, please review the phone number, tower or flat details, rent or budget, deposit, and date.</p>
+      <strong>Post received.</strong>
+      <p>Your listing should appear shortly if the details are complete.</p>
     </div>
     <div id="portal-feedback" class="portal-feedback hidden" aria-live="polite"></div>
     <div class="utility-actions">
@@ -2952,7 +2952,7 @@ ${SITE_URL}`);
       const submitted = params.get("submitted") === "1";
       notice.classList.toggle("hidden", !submitted);
       if (submitted) {
-        showPortalFeedback("Post received.", "If everything is complete, it should appear on the board shortly.", "info");
+        showPortalFeedback("Post received.", "It should appear shortly.", "info");
       }
     }
 
@@ -2990,7 +2990,7 @@ ${SITE_URL}`);
 
     function continueToTally() {
       closeSubmitChecklist();
-      showPortalFeedback("Opening form.", "After submitting, come back here and refresh if your post does not appear right away.", "info");
+      showPortalFeedback("Opening form.", "Submit and return to the board.", "info");
       const url = `${TALLY_FORM_URL}?source=listings_portal&type=${encodeURIComponent(pendingSubmitType)}`;
       window.location.href = url;
     }
