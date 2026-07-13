@@ -62,7 +62,7 @@ Do not share the raw Tally link publicly unless necessary. The portal link shows
 - Occupants: required number.
 - Occupants min/max: `1` to `8`.
 - Tenant type: required fixed option: `Family`, `Bachelor`, `Any`.
-- Preferred tower or area: required short text or fixed multi-select.
+- Tower preference: required fixed option or multi-select.
 
 ## Confirmation Page Copy
 

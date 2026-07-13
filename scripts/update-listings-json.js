@@ -139,7 +139,7 @@ function formatPreferredArea(value) {
   const allowed = new Set(["1", "2", "3", "4", "5", "6", "15", "16"]);
   const raw = String(value || "").trim();
   if (!raw) return "";
-  if (/any/i.test(raw)) return "Any allowed tower";
+  if (/any/i.test(raw)) return "Any tower";
 
   const towers = [];
   const seen = new Set();
@@ -147,10 +147,11 @@ function formatPreferredArea(value) {
   matches.forEach((tower) => {
     if (allowed.has(tower) && !seen.has(tower)) {
       seen.add(tower);
-      towers.push(`Tower ${tower}`);
+      towers.push(tower);
     }
   });
-  return towers.length ? towers.join(", ") : raw;
+  if (towers.length === 1) return `Tower ${towers[0]}`;
+  return towers.length ? `Towers ${towers.join(", ")}` : raw;
 }
 
 function numberFrom(value) {
@@ -248,7 +249,7 @@ function rowToLookingListing(row, mapping, idx) {
     preferredMoveIn: getVal("preferredMoveIn") || "Immediate",
     occupants: numberFrom(getVal("occupants")) || 1,
     tenantType: getVal("tenantType") || "Family",
-    preferredArea: formatPreferredArea(getVal("preferredArea")) || "Any allowed tower",
+    preferredArea: formatPreferredArea(getVal("preferredArea")) || "Any tower",
     posterName: getVal("posterName") || "Resident",
     contactNumber: getVal("contactNumber") || "",
     notes: getVal("notes") || "",

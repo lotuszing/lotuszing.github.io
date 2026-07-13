@@ -2049,9 +2049,8 @@
           <div>
             <div class="brand-row">
               <h1 class="pop-in pop-delay-1 text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-[-0.05em] text-[#071B3A] leading-[0.9]">
-                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing Listings home">Lotus Zing</a>
+                <a class="home-brand-link" href="./" aria-label="Go to Lotus Zing Listings home">Lotus Zing Listings</a>
               </h1>
-              <span class="brand-purpose">Listings</span>
             </div>
             <span id="refresh-counter" class="refresh-counter">Checking board</span>
             <p class="header-subcopy">Resident flat listings and tenant requests, updated from verified community submissions.</p>
@@ -2268,7 +2267,7 @@
         rules: [
           "Choose the right type: flat available or looking for flat.",
           "Use a real 10-digit mobile number so people can contact you.",
-          "Add the essentials: tower or area, BHK, rent or budget, and move-in date."
+          "Add the essentials: tower preference, BHK, rent or budget, and move-in date."
         ]
       },
       owner: {
@@ -2285,7 +2284,7 @@
         copy: "Keep these ready so owners can understand your request quickly.",
         rules: [
           "Use a real 10-digit mobile number.",
-          "Add BHK, budget, move-in date, occupants, and preferred tower or area.",
+          "Add BHK, budget, move-in date, occupants, and tower preference.",
           "Avoid test or joke entries; only useful requests show publicly."
         ]
       }
@@ -2345,6 +2344,13 @@
 
     function cleanPhoneNumber(value) {
       return String(value || "").replace(/[^\d+]/g, "");
+    }
+
+    function localPhoneNumber(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      const local = digits.length > 10 ? digits.slice(-10) : digits;
+      if (local.length !== 10) return String(value || "").replace(/^\+?91[\s-]*/, "").trim();
+      return local.replace(/(\d{5})(\d{5})/, "$1 $2");
     }
 
     function whatsappPhoneNumber(value) {
@@ -2528,6 +2534,27 @@
       }).format(parsed);
     }
 
+    function formatShortDate(value, fallback = "Not shared") {
+      const raw = String(value || "").trim();
+      if (!raw) return fallback;
+      if (/immediate|ready|now/i.test(raw)) return "Now";
+      const parsed = safeParseDate(raw);
+      if (!parsed) return raw;
+      const today = new Date(BASELINE_DATE);
+      const tomorrow = new Date(BASELINE_DATE);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const sameDay = (left, right) =>
+        left.getFullYear() === right.getFullYear() &&
+        left.getMonth() === right.getMonth() &&
+        left.getDate() === right.getDate();
+      if (sameDay(parsed, today)) return "Today";
+      if (sameDay(parsed, tomorrow)) return "Tomorrow";
+      return new Intl.DateTimeFormat("en-IN", {
+        day: "numeric",
+        month: "short"
+      }).format(parsed);
+    }
+
     function isAvailableNow(value) {
       const raw = String(value || "").trim();
       if (!raw) return false;
@@ -2544,18 +2571,9 @@
       if (!raw) return fallback;
       const parsed = safeParseDate(raw);
       if (!parsed) return raw;
-      const hasTime = /T|\d{1,2}:\d{2}/.test(raw);
-      return new Intl.DateTimeFormat("en-IN", hasTime ? {
-        day: "2-digit",
+      return new Intl.DateTimeFormat("en-IN", {
+        day: "numeric",
         month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false
-      } : {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
       }).format(parsed);
     }
 
@@ -2680,8 +2698,8 @@ ${SITE_URL}`);
                 <span class="listing-role-badge ${isOwner ? 'listing-role-owner' : 'listing-role-broker'}">${escapeHtml(listedBy)}</span>
                 <span class="listing-poster">Posted by ${escapeHtml(item.posterName)}</span>
               </div>
-              <div class="listing-glance" title="${escapeHtml(`From ${formatDateOnly(item.availableFrom, "Immediate")} | ${preferredTenant} | Parking ${parking}`)}">
-                <span>${escapeHtml(formatDateOnly(item.availableFrom, "Immediate"))}</span>
+              <div class="listing-glance" title="${escapeHtml(`From ${formatShortDate(item.availableFrom, "Now")} | ${preferredTenant} | Parking ${parking}`)}">
+                <span>${escapeHtml(formatShortDate(item.availableFrom, "Now"))}</span>
                 <span class="listing-glance-dot"></span>
                 <span>${escapeHtml(preferredTenant)}</span>
                 <span class="listing-glance-dot"></span>
@@ -2692,7 +2710,7 @@ ${SITE_URL}`);
           <button type="button" class="listing-collapse-toggle" onclick="toggleListingCard(this)" aria-expanded="false">Details</button>
           <div class="listing-collapsible">
             <div class="listing-detail-list">
-              <div class="listing-detail"><span>From</span><strong>${escapeHtml(formatDateOnly(item.availableFrom, "Immediate"))}</strong></div>
+              <div class="listing-detail"><span>From</span><strong>${escapeHtml(formatShortDate(item.availableFrom, "Now"))}</strong></div>
               <div class="listing-detail"><span>Tenant</span><strong>${escapeHtml(preferredTenant)}</strong></div>
               <div class="listing-detail"><span>Parking</span><strong>${escapeHtml(parking)}</strong></div>
               <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
@@ -2732,7 +2750,7 @@ ${SITE_URL}`);
       const whatsappAction = whatsappUrl
         ? `<a href="${whatsappUrl}" onclick="showPortalFeedback('Opening WhatsApp.', 'A short message is ready to send.', 'info')" target="_blank" rel="noopener noreferrer" class="${cardCtaWa} listing-cta--icon-only" aria-label="WhatsApp poster">${ctaIconOnly('wa', 'WhatsApp')}</a>`
         : `<span class="${cardCtaDisabled} listing-cta--icon-only" aria-disabled="true">${ctaIconOnly('wa', 'WhatsApp')}</span>`;
-      const preferredArea = item.preferredArea || "Any allowed tower";
+      const preferredArea = formatTowerPreference(item.preferredArea);
 
       const card = document.createElement('div');
       card.className = "listing-pop listing-card flex flex-col h-full";
@@ -2758,8 +2776,8 @@ ${SITE_URL}`);
                 <span class="listing-role-badge listing-role-owner">Looking to move</span>
                 <span class="listing-poster">${escapeHtml(preferredArea)}</span>
               </div>
-              <div class="listing-glance" title="${escapeHtml(`Move ${formatDateOnly(item.preferredMoveIn, "Immediate")} | ${formatOccupantsLabel(item.occupants)} | ${preferredArea}`)}">
-                <span>${escapeHtml(formatDateOnly(item.preferredMoveIn, "Immediate"))}</span>
+              <div class="listing-glance" title="${escapeHtml(`Move ${formatShortDate(item.preferredMoveIn, "Now")} | ${formatOccupantsLabel(item.occupants)} | ${preferredArea}`)}">
+                <span>${escapeHtml(formatShortDate(item.preferredMoveIn, "Now"))}</span>
                 <span class="listing-glance-dot"></span>
                 <span>${escapeHtml(formatOccupantsLabel(item.occupants))}</span>
                 <span class="listing-glance-dot"></span>
@@ -2770,9 +2788,9 @@ ${SITE_URL}`);
           <button type="button" class="listing-collapse-toggle" onclick="toggleListingCard(this)" aria-expanded="false">Details</button>
           <div class="listing-collapsible">
             <div class="listing-detail-list">
-              <div class="listing-detail"><span>Move</span><strong>${escapeHtml(formatDateOnly(item.preferredMoveIn, "Immediate"))}</strong></div>
+              <div class="listing-detail"><span>Move</span><strong>${escapeHtml(formatShortDate(item.preferredMoveIn, "Now"))}</strong></div>
               <div class="listing-detail"><span>People</span><strong>${escapeHtml(formatOccupantsLabel(item.occupants))}</strong></div>
-              <div class="listing-detail"><span>Area</span><strong>${escapeHtml(preferredArea)}</strong></div>
+              <div class="listing-detail"><span>Tower choice</span><strong>${escapeHtml(preferredArea)}</strong></div>
               <div class="listing-detail"><span>Posted</span><strong>${escapeHtml(formatDateTime(item.timestamp))}</strong></div>
             </div>
             ${renderNotesPanel(item.notes)}
@@ -3075,7 +3093,7 @@ ${SITE_URL}`);
                 ${renderTenantSelect(lookingFilters.tenant)}
               </div>
               <div class="filter-search-row">
-                <label for="filter-search-looking" class="sr-only">Search tenant requests by name, area, budget, or move-in details</label>
+                <label for="filter-search-looking" class="sr-only">Search tenant requests by name, tower preference, budget, or move-in details</label>
                 <input type="text" id="filter-search-looking" oninput="updateFilter('search', this.value)" placeholder="Optional search: name, notes, move-in..." value="${escapeHtml(lookingFilters.search)}" class="filter-input">
               </div>
             </div>
@@ -3110,9 +3128,26 @@ ${SITE_URL}`);
       return match ? `Tower ${match[1]}` : "";
     }
 
-    function areaFromRequest(value) {
+    function towerPreferenceNumbers(value) {
+      const raw = String(value || "").trim();
+      const matches = raw.match(/\b(?:1[56]|[1-6])\b/g) || [];
+      return [...new Set(matches)];
+    }
+
+    function formatTowerPreference(value) {
       const cleaned = String(value || "").trim();
-      return cleaned && cleaned.toLowerCase() !== "any allowed tower" ? cleaned : "";
+      if (!cleaned || /any/i.test(cleaned)) return "Any tower";
+      const towers = towerPreferenceNumbers(cleaned);
+      if (towers.length === 1) return `Tower ${towers[0]}`;
+      if (towers.length > 1) return `Towers ${towers.join(", ")}`;
+      return cleaned;
+    }
+
+    function towerPreferenceValues(value) {
+      const towers = towerPreferenceNumbers(value);
+      if (towers.length) return towers.map((tower) => `Tower ${tower}`);
+      const formatted = formatTowerPreference(value);
+      return formatted === "Any tower" ? [] : [formatted];
     }
 
     function renderFilterSwitch(label, isOn, handler, id = "") {
@@ -3128,7 +3163,8 @@ ${SITE_URL}`);
     }
 
     function renderPreferenceSelect(activeArea) {
-      return renderSelectControl("Tower", "area", activeArea, uniqueSortedOptions(lookingListings, (item) => areaFromRequest(item.preferredArea), "Any tower"));
+      const values = [...new Set(lookingListings.flatMap((item) => towerPreferenceValues(item.preferredArea)))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      return renderSelectControl("Tower choice", "area", activeArea, [{ value: "All", label: "Any tower" }, ...values.map((value) => ({ value, label: value }))]);
     }
 
     function renderBudgetSelect(activeBudget) {
@@ -3260,7 +3296,7 @@ ${SITE_URL}`);
                             item.preferredArea.toLowerCase().includes(query) ||
                             item.preferredBhk.toLowerCase().includes(query) ||
                             (queryDigits && String(item.budget).includes(queryDigits));
-        const matchArea = lookingFilters.area === "All" || areaFromRequest(item.preferredArea) === lookingFilters.area;
+        const matchArea = lookingFilters.area === "All" || towerPreferenceValues(item.preferredArea).includes(lookingFilters.area);
         const matchBhk = lookingFilters.bhk === 'All' || item.preferredBhk.toLowerCase() === lookingFilters.bhk.toLowerCase();
         const matchBudget = matchesBudgetBand(item.budget, lookingFilters.budget);
         const matchTenant = matchesTenantType(item.tenantType, lookingFilters.tenant);
@@ -3415,8 +3451,8 @@ ${SITE_URL}`);
 *Flat available*
 • ${item.bhkType} at ${item.towerFlat}
 • Rent: ₹${item.monthlyRent.toLocaleString('en-IN')}/mo
-• Available from: ${item.availableFrom}
-• Contact: ${item.posterName} ${item.contactNumber}
+• Available: ${formatShortDate(item.availableFrom, "Now")}
+• Contact: ${item.posterName} ${localPhoneNumber(item.contactNumber)}
 
 Join the Lotus Zing community:
 ${WHATSAPP_GROUP_URL}
@@ -3430,8 +3466,9 @@ ${SITE_URL}`;
 *Tenant looking*
 • Requirement: ${item.preferredBhk}
 • Budget: ₹${item.budget.toLocaleString('en-IN')}/mo
-• Move-in: ${item.preferredMoveIn}
-• Contact: ${item.posterName} ${item.contactNumber}
+• Tower choice: ${formatTowerPreference(item.preferredArea)}
+• Move-in: ${formatShortDate(item.preferredMoveIn, "Now")}
+• Contact: ${item.posterName} ${localPhoneNumber(item.contactNumber)}
 
 Join the Lotus Zing community:
 ${WHATSAPP_GROUP_URL}
@@ -3488,7 +3525,7 @@ ${SITE_URL}`;
         if (activeTab === "rent") {
           return `${index + 1}. ${item.bhkType} ${item.towerFlat} - ${formatCurrency(item.monthlyRent)}/mo - ${item.listedBy}`;
         }
-        return `${index + 1}. ${item.preferredBhk} request - ${formatCurrency(item.budget)}/mo - ${item.preferredArea}`;
+        return `${index + 1}. ${item.preferredBhk} request - ${formatCurrency(item.budget)}/mo - ${formatTowerPreference(item.preferredArea)}`;
       });
       return `${title}\n${lines.join("\n")}\n\nOpen filtered view:\n${canonicalPortalUrl()}`;
     }
