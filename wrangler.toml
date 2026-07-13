@@ -1,0 +1,6 @@
+name = "lotus-zing-listings-read-api"
+main = "workers/listings-api.js"
+compatibility_date = "2026-07-13"
+
+[vars]
+ALLOWED_ORIGINS = "https://lotuszing.github.io,null"

@@ -1,9 +1,3 @@
-#!/usr/bin/env node
-const fs = require("fs");
-const path = require("path");
-
-const CSV_URL = process.env.SHEET_CSV_URL;
-const OUT_FILE = path.join(__dirname, "..", "listings", "listings.json");
 const LIMITS = {
   rentMin: 5000,
   rentMax: 150000,
@@ -16,6 +10,38 @@ const LIMITS = {
   datePastDays: 120,
   dateFutureDays: 730
 };
+
+const DEFAULT_ALLOWED_ORIGINS = "https://lotuszing.github.io,null";
+const CACHE_TTL_SECONDS = 1;
+
+function corsHeaders(request, env) {
+  const origin = request.headers.get("Origin") || "";
+  const allowed = String(env.ALLOWED_ORIGINS || DEFAULT_ALLOWED_ORIGINS)
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const allowOrigin = allowed.includes(origin) ? origin : allowed[0] || "https://lotuszing.github.io";
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin"
+  };
+}
+
+function json(body, status, request, env, cacheable = false) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": cacheable
+        ? `public, max-age=${CACHE_TTL_SECONDS}, s-maxage=${CACHE_TTL_SECONDS}, stale-while-revalidate=30`
+        : "no-store",
+      "X-Content-Type-Options": "nosniff",
+      ...corsHeaders(request, env)
+    }
+  });
+}
 
 function parseCSV(text) {
   const rows = [];
@@ -101,6 +127,11 @@ function normalizeTowerLabel(value) {
   return match ? `Tower ${match[1]}` : raw;
 }
 
+function hasLocationNumber(value) {
+  const numbers = String(value || "").match(/\d+/g) || [];
+  return numbers.length >= 1;
+}
+
 function combinedTowerFlat(row, mapping) {
   const combined = getRowValue(row, mapping, "towerFlat");
   if (hasLocationNumber(combined)) return combined;
@@ -122,36 +153,6 @@ function classifyListingRow(row, mapping) {
 function isHiddenRow(row, mapping) {
   const status = getRowValue(row, mapping, "status").toLowerCase();
   return /\b(hidden|hide|removed|remove|delete|deleted|spam|fake|rented|closed|inactive)\b/.test(status);
-}
-
-function reportCountFrom(row, mapping) {
-  return Math.max(0, numberFrom(getRowValue(row, mapping, "reportCount")));
-}
-
-function reportRiskFrom(row, mapping) {
-  const count = reportCountFrom(row, mapping);
-  if (count >= 3) return "high";
-  if (count >= 2) return "medium";
-  return "";
-}
-
-function formatPreferredArea(value) {
-  const allowed = new Set(["1", "2", "3", "4", "5", "6", "15", "16"]);
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-  if (/any/i.test(raw)) return "Any tower";
-
-  const towers = [];
-  const seen = new Set();
-  const matches = raw.match(/\b(?:1[56]|[1-6])\b/g) || [];
-  matches.forEach((tower) => {
-    if (allowed.has(tower) && !seen.has(tower)) {
-      seen.add(tower);
-      towers.push(tower);
-    }
-  });
-  if (towers.length === 1) return `Tower ${towers[0]}`;
-  return towers.length ? `Towers ${towers.join(", ")}` : raw;
 }
 
 function numberFrom(value) {
@@ -187,9 +188,34 @@ function normalizePhoneDigits(value) {
   return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
 }
 
-function hasLocationNumber(value) {
-  const numbers = String(value || "").match(/\d+/g) || [];
-  return numbers.length >= 1;
+function reportCountFrom(row, mapping) {
+  return Math.max(0, numberFrom(getRowValue(row, mapping, "reportCount")));
+}
+
+function reportRiskFrom(row, mapping) {
+  const count = reportCountFrom(row, mapping);
+  if (count >= 3) return "high";
+  if (count >= 2) return "medium";
+  return "";
+}
+
+function formatPreferredArea(value) {
+  const allowed = new Set(["1", "2", "3", "4", "5", "6", "15", "16"]);
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (/any/i.test(raw)) return "Any tower";
+
+  const towers = [];
+  const seen = new Set();
+  const matches = raw.match(/\b(?:1[56]|[1-6])\b/g) || [];
+  matches.forEach((tower) => {
+    if (allowed.has(tower) && !seen.has(tower)) {
+      seen.add(tower);
+      towers.push(tower);
+    }
+  });
+  if (towers.length === 1) return `Tower ${towers[0]}`;
+  return towers.length ? `Towers ${towers.join(", ")}` : raw;
 }
 
 function normalizeHeaderLabel(value) {
@@ -264,94 +290,91 @@ function rentValidationReasons(item) {
   if (!item || !item.towerFlat || item.towerFlat === "Unknown Unit" || !hasLocationNumber(item.towerFlat)) {
     reasons.push("add tower or unit number");
   }
-  if (!numberInRange(item?.monthlyRent, LIMITS.rentMin, LIMITS.rentMax)) {
-    reasons.push(`rent must be ₹${LIMITS.rentMin.toLocaleString("en-IN")}-₹${LIMITS.rentMax.toLocaleString("en-IN")}`);
-  }
-  if (!numberInRange(item?.securityDeposit, LIMITS.depositMin, LIMITS.depositMax)) {
-    reasons.push(`deposit must be ₹${LIMITS.depositMin.toLocaleString("en-IN")}-₹${LIMITS.depositMax.toLocaleString("en-IN")}`);
-  }
-  if (!hasReasonableDate(item?.availableFrom)) {
-    reasons.push("available date looks invalid");
-  }
-  if (normalizePhoneDigits(item?.contactNumber).length !== 10) {
-    reasons.push("enter a valid 10-digit phone number");
-  }
+  if (!numberInRange(item?.monthlyRent, LIMITS.rentMin, LIMITS.rentMax)) reasons.push("rent out of range");
+  if (!numberInRange(item?.securityDeposit, LIMITS.depositMin, LIMITS.depositMax)) reasons.push("deposit out of range");
+  if (!hasReasonableDate(item?.availableFrom)) reasons.push("available date invalid");
+  if (normalizePhoneDigits(item?.contactNumber).length !== 10) reasons.push("phone invalid");
   return reasons;
-}
-
-function isValidRentListing(item) {
-  return rentValidationReasons(item).length === 0;
 }
 
 function lookingValidationReasons(item) {
   const reasons = [];
-  if (!numberInRange(item?.budget, LIMITS.budgetMin, LIMITS.budgetMax)) {
-    reasons.push(`budget must be ₹${LIMITS.budgetMin.toLocaleString("en-IN")}-₹${LIMITS.budgetMax.toLocaleString("en-IN")}`);
-  }
-  if (!numberInRange(item?.occupants, LIMITS.occupantsMin, LIMITS.occupantsMax)) {
-    reasons.push(`occupants must be ${LIMITS.occupantsMin}-${LIMITS.occupantsMax}`);
-  }
-  if (!hasReasonableDate(item?.preferredMoveIn)) {
-    reasons.push("move-in date looks invalid");
-  }
-  if (normalizePhoneDigits(item?.contactNumber).length !== 10) {
-    reasons.push("enter a valid 10-digit phone number");
-  }
+  if (!numberInRange(item?.budget, LIMITS.budgetMin, LIMITS.budgetMax)) reasons.push("budget out of range");
+  if (!numberInRange(item?.occupants, LIMITS.occupantsMin, LIMITS.occupantsMax)) reasons.push("occupants out of range");
+  if (!hasReasonableDate(item?.preferredMoveIn)) reasons.push("move-in date invalid");
+  if (normalizePhoneDigits(item?.contactNumber).length !== 10) reasons.push("phone invalid");
   return reasons;
 }
 
-function isValidLookingListing(item) {
-  return lookingValidationReasons(item).length === 0;
-}
-
-async function main() {
-  if (!CSV_URL) {
-    throw new Error("Missing SHEET_CSV_URL. Provide it from a trusted private environment before running the sync.");
-  }
-
-  const response = await fetch(`${CSV_URL}&v=${Date.now()}`, { cache: "no-store" });
-  if (!response.ok) throw new Error(`CSV fetch failed: ${response.status}`);
-
-  const rows = parseCSV(await response.text());
+function buildListingsPayload(csvText) {
+  const rows = parseCSV(csvText);
   const mapping = mapHeaders(rows[0] || []);
   mapping.__headers = rows[0] || [];
 
   const rentListings = [];
   const lookingListings = [];
-  const skippedRows = [];
 
   rows.slice(1).forEach((row, idx) => {
-    if (isHiddenRow(row, mapping)) {
-      skippedRows.push({ row: idx + 2, type: "hidden", reasons: ["marked hidden in sheet"] });
-      return;
-    }
+    if (isHiddenRow(row, mapping)) return;
     const listingType = classifyListingRow(row, mapping);
     if (listingType === "rent") {
       const listing = rowToRentListing(row, mapping, idx);
-      if (isValidRentListing(listing)) rentListings.push(listing);
-      else skippedRows.push({ row: idx + 2, type: "rent", reasons: rentValidationReasons(listing) });
+      if (rentValidationReasons(listing).length === 0) rentListings.push(listing);
     }
     if (listingType === "looking") {
       const listing = rowToLookingListing(row, mapping, idx);
-      if (isValidLookingListing(listing)) lookingListings.push(listing);
-      else skippedRows.push({ row: idx + 2, type: "looking", reasons: lookingValidationReasons(listing) });
+      if (lookingValidationReasons(listing).length === 0) lookingListings.push(listing);
     }
   });
 
-  const payload = {
+  return {
     generatedAt: new Date().toISOString(),
     rentListings,
     lookingListings
   };
-
-  fs.writeFileSync(OUT_FILE, `${JSON.stringify(payload, null, 2)}\n`);
-  console.log(`Updated ${OUT_FILE}: ${rentListings.length} flats, ${lookingListings.length} tenant requests, ${skippedRows.length} skipped`);
-  if (skippedRows.length) {
-    console.log(`Skipped rows: ${JSON.stringify(skippedRows)}`);
-  }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+async function fetchListings(request, env) {
+  if (!env.SHEET_CSV_URL) {
+    return json({ ok: false, error: "Missing SHEET_CSV_URL" }, 500, request, env);
+  }
+
+  const cache = caches.default;
+  const cacheKey = new Request(new URL("/listings-cache-v1", request.url), { method: "GET" });
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    return new Response(cached.body, {
+      status: cached.status,
+      headers: {
+        ...Object.fromEntries(cached.headers),
+        ...corsHeaders(request, env),
+        "X-LZ-Cache": "hit"
+      }
+    });
+  }
+
+  const separator = env.SHEET_CSV_URL.includes("?") ? "&" : "?";
+  const sheetResponse = await fetch(`${env.SHEET_CSV_URL}${separator}v=${Date.now()}`, {
+    headers: { "User-Agent": "LotusZingListingsWorker/1.0" },
+    cf: { cacheTtl: 0, cacheEverything: false }
+  });
+  if (!sheetResponse.ok) {
+    return json({ ok: false, error: `Sheet fetch failed: ${sheetResponse.status}` }, 502, request, env);
+  }
+
+  const payload = buildListingsPayload(await sheetResponse.text());
+  const response = json(payload, 200, request, env, true);
+  await cache.put(cacheKey, response.clone());
+  return response;
+}
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(request, env) });
+    if (request.method !== "GET") return json({ ok: false, error: "Method not allowed" }, 405, request, env);
+    if (url.pathname === "/health") return json({ ok: true }, 200, request, env);
+    if (url.pathname === "/" || url.pathname === "/listings") return fetchListings(request, env);
+    return json({ ok: false, error: "Not found" }, 404, request, env);
+  }
+};
