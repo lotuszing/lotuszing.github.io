@@ -1824,16 +1824,6 @@
       body {
         padding-bottom: 1.5rem;
       }
-      .filter-top-row {
-        grid-template-columns: 1fr;
-      }
-      .filter-switch-row {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-      .filter-select-row {
-        grid-template-columns: 1fr;
-      }
     }
     button,
     a {
@@ -1912,8 +1902,8 @@
     }
     .filter-body {
       display: grid;
-      gap: 0.72rem;
-      padding: 0.68rem;
+      gap: 0.32rem;
+      padding: 0.4rem;
       border-top: 1px solid rgba(187, 215, 242, 0.72);
       background: linear-gradient(180deg, rgba(248, 251, 255, 0.9), rgba(255, 255, 255, 0.96));
       animation: filterSweep var(--motion-base) var(--ease-out) both;
@@ -1921,7 +1911,7 @@
     .filter-top-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 0.5rem;
+      gap: 0.38rem;
       align-items: center;
     }
     .filter-search-row {
@@ -1929,14 +1919,14 @@
     }
     .filter-input {
       width: 100%;
-      min-height: 2.42rem;
+      min-height: 1.92rem;
       border: 1px solid #BBD7F2;
-      border-radius: 0.82rem;
+      border-radius: 0.68rem;
       background: #FFFFFF;
       color: #071B3A;
-      padding: 0.54rem 0.72rem;
+      padding: 0.25rem 0.44rem;
       font-family: var(--font-body);
-      font-size: var(--text-body-lg);
+      font-size: var(--text-body);
       outline: none;
       box-shadow: inset 0 1px 0 rgba(187, 215, 242, 0.22);
       transition: border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease, background-color var(--motion-fast) ease;
@@ -1951,19 +1941,53 @@
     .filter-switch-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.5rem;
+      gap: 0.28rem;
+    }
+    .filter-sort-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.34rem;
+      padding: 0;
+    }
+    .filter-sort-copy {
+      min-width: 0;
+      padding-left: 0.02rem;
+    }
+    .filter-sort-copy strong {
+      display: block;
+      color: #071B3A;
+      font-family: var(--font-display);
+      font-size: var(--text-label);
+      line-height: 1.2;
+    }
+    .filter-sort-copy span {
+      display: none;
+      margin-top: 0;
+      color: #60758E;
+      font-size: var(--text-caption);
+      line-height: 1.25;
+    }
+    .filter-sort-row .filter-select-field {
+      width: min(9.4rem, 64%);
+      min-width: 7.25rem;
+      flex: 0 0 auto;
+      gap: 0;
+    }
+    .filter-sort-row .filter-select-label {
+      display: none;
     }
     .filter-switch {
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.55rem;
-      min-height: 2.5rem;
+      min-height: 1.94rem;
       border: 1px solid #BBD7F2;
-      border-radius: 0.9rem;
+      border-radius: 0.7rem;
       background: #FFFFFF;
       color: #315776;
-      padding: 0.38rem 0.46rem 0.38rem 0.62rem;
+      padding: 0.2rem 0.3rem 0.2rem 0.38rem;
       font-family: var(--font-body);
       font-size: var(--text-caption);
       font-weight: 850;
@@ -1982,8 +2006,8 @@
     }
     .filter-switch-track {
       position: relative;
-      width: 2.14rem;
-      height: 1.16rem;
+      width: 1.92rem;
+      height: 1.04rem;
       flex: 0 0 auto;
       border-radius: 999px;
       background: #DDEDFB;
@@ -1992,10 +2016,10 @@
     .filter-switch-track::after {
       content: "";
       position: absolute;
-      top: 0.18rem;
-      left: 0.18rem;
-      width: 0.8rem;
-      height: 0.8rem;
+      top: 0.16rem;
+      left: 0.16rem;
+      width: 0.72rem;
+      height: 0.72rem;
       border-radius: 999px;
       background: #FFFFFF;
       box-shadow: 0 1px 4px rgba(7, 27, 58, 0.18);
@@ -2006,36 +2030,36 @@
       box-shadow: inset 0 0 0 1px rgba(0, 143, 125, 0.38);
     }
     .filter-switch.is-on .filter-switch-track::after {
-      transform: translateX(0.98rem);
+      transform: translateX(0.88rem);
     }
     .filter-select-row {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.55rem;
+      gap: 0.3rem;
     }
     .filter-select-field {
       display: grid;
-      gap: 0.24rem;
+      gap: 0.14rem;
       min-width: 0;
     }
     .filter-select-label {
       color: #60758E;
       font-family: var(--font-mono);
-      font-size: var(--text-micro);
+      font-size: 0.47rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
     .filter-select {
       width: 100%;
-      min-height: 2.45rem;
+      min-height: 1.88rem;
       border: 1px solid #BBD7F2;
-      border-radius: 0.82rem;
+      border-radius: 0.68rem;
       background: #FFFFFF;
       color: #315776;
-      padding: 0.44rem 0.72rem;
+      padding: 0.22rem 0.38rem;
       font-family: var(--font-body);
-      font-size: var(--text-body);
+      font-size: var(--text-small);
       font-weight: 850;
       letter-spacing: 0.02em;
       outline: none;
@@ -2051,6 +2075,26 @@
     .filter-select:focus {
       border-color: #0058A3;
       box-shadow: 0 0 0 3px rgba(0, 88, 163, 0.12);
+    }
+    @media (max-width: 640px) {
+      .filter-top-row {
+        grid-template-columns: 1fr;
+      }
+      .filter-switch-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .filter-select-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .filter-sort-row {
+        align-items: center;
+        flex-direction: row;
+        gap: 0.34rem;
+      }
+      .filter-sort-row .filter-select-field {
+        width: min(9.4rem, 64%);
+      }
     }
     .sr-only {
       position: absolute;
@@ -2777,8 +2821,8 @@
     const BASELINE_DATE = new Date();
 
     // Dynamic state filters
-    let rentFilters = { search: '', tower: 'All', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false };
-    let lookingFilters = { search: '', area: 'All', bhk: 'All', budget: 'All', tenant: 'All' };
+    let rentFilters = { search: '', tower: 'All', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false, sort: 'smart' };
+    let lookingFilters = { search: '', area: 'All', bhk: 'All', budget: 'All', tenant: 'All', sort: 'smart' };
 
     // Expiry date calculative utility
     function parseListingDate(timestampStr) {
@@ -3346,6 +3390,7 @@ ${SITE_URL}`);
       rentFilters.budget = params.get("budget") || rentFilters.budget;
       rentFilters.tenant = params.get("tenant") || rentFilters.tenant;
       rentFilters.parking = params.get("parking") || rentFilters.parking;
+      rentFilters.sort = params.get("sort") || rentFilters.sort;
       rentFilters.ownerOnly = params.get("owner") === "1";
       rentFilters.availableNow = params.get("now") === "1";
 
@@ -3354,6 +3399,7 @@ ${SITE_URL}`);
       lookingFilters.bhk = params.get("bhk") || lookingFilters.bhk;
       lookingFilters.budget = params.get("budget") || lookingFilters.budget;
       lookingFilters.tenant = params.get("tenant") || lookingFilters.tenant;
+      lookingFilters.sort = params.get("sort") || lookingFilters.sort;
     }
 
     function syncUrlFromState() {
@@ -3369,6 +3415,7 @@ ${SITE_URL}`);
       params.delete("parking");
       params.delete("owner");
       params.delete("now");
+      params.delete("sort");
 
       params.set("tab", activeTab);
       const filters = activeTab === "rent" ? rentFilters : lookingFilters;
@@ -3377,6 +3424,7 @@ ${SITE_URL}`);
       if (activeTab === "looking" && lookingFilters.area !== "All") params.set("area", lookingFilters.area);
       if (filters.bhk !== "All") params.set("bhk", filters.bhk);
       if (filters.tenant !== "All") params.set("tenant", filters.tenant);
+      if (filters.sort !== "smart") params.set("sort", filters.sort);
       if (activeTab === "rent") {
         if (rentFilters.budget !== "All") params.set("budget", rentFilters.budget);
         if (rentFilters.parking !== "All") params.set("parking", rentFilters.parking);
@@ -3427,6 +3475,10 @@ ${SITE_URL}`);
                 ${renderBudgetSelect(rentFilters.budget)}
                 ${renderTenantSelect(rentFilters.tenant)}
               </div>
+              <div class="filter-sort-row">
+                <span class="filter-sort-copy"><strong>Sort by</strong><span>Change order, not filters.</span></span>
+                ${renderRentSortSelect(rentFilters.sort)}
+              </div>
               <div class="filter-top-row filter-search-row">
                 <label for="filter-search-rent" class="sr-only">Search flats by tower, flat number, or owner</label>
                 <input type="text" id="filter-search-rent" oninput="updateFilter('search', this.value)" placeholder="Optional search: flat no., owner, notes..." value="${escapeHtml(rentFilters.search)}" class="filter-input">
@@ -3455,6 +3507,10 @@ ${SITE_URL}`);
                 ${renderBhkSelect(lookingFilters.bhk)}
                 ${renderLookingBudgetSelect(lookingFilters.budget)}
                 ${renderTenantSelect(lookingFilters.tenant)}
+              </div>
+              <div class="filter-sort-row">
+                <span class="filter-sort-copy"><strong>Sort by</strong><span>Change order, not filters.</span></span>
+                ${renderLookingSortSelect(lookingFilters.sort)}
               </div>
               <div class="filter-search-row">
                 <label for="filter-search-looking" class="sr-only">Search tenant requests by name, tower preference, budget, or move-in details</label>
@@ -3557,6 +3613,24 @@ ${SITE_URL}`);
       ]);
     }
 
+    function renderRentSortSelect(activeSort) {
+      return renderSelectControl("Sort", "sort", activeSort, [
+        { value: "smart", label: "Best match" },
+        { value: "newest", label: "Newest" },
+        { value: "rentLow", label: "Rent low" },
+        { value: "rentHigh", label: "Rent high" }
+      ]);
+    }
+
+    function renderLookingSortSelect(activeSort) {
+      return renderSelectControl("Sort", "sort", activeSort, [
+        { value: "smart", label: "Best match" },
+        { value: "newest", label: "Newest" },
+        { value: "budgetLow", label: "Budget low" },
+        { value: "budgetHigh", label: "Budget high" }
+      ]);
+    }
+
     // Filter value reactive update
     function updateFilter(key, value) {
       if (activeTab === 'rent') {
@@ -3629,9 +3703,27 @@ ${SITE_URL}`);
       return new Date(b.timestamp) - new Date(a.timestamp);
     }
 
+    function sortRentListings(items) {
+      return items.sort((a, b) => {
+        if (rentFilters.sort === "newest") return newestFirst(a, b);
+        if (rentFilters.sort === "rentLow") return Number(a.monthlyRent) - Number(b.monthlyRent) || newestFirst(a, b);
+        if (rentFilters.sort === "rentHigh") return Number(b.monthlyRent) - Number(a.monthlyRent) || newestFirst(a, b);
+        return (rankRentListing(b) - rankRentListing(a)) || newestFirst(a, b);
+      });
+    }
+
+    function sortLookingListings(items) {
+      return items.sort((a, b) => {
+        if (lookingFilters.sort === "newest") return newestFirst(a, b);
+        if (lookingFilters.sort === "budgetLow") return Number(a.budget) - Number(b.budget) || newestFirst(a, b);
+        if (lookingFilters.sort === "budgetHigh") return Number(b.budget) - Number(a.budget) || newestFirst(a, b);
+        return (rankLookingListing(b) - rankLookingListing(a)) || newestFirst(a, b);
+      });
+    }
+
     function filteredRentListings() {
       const query = rentFilters.search.toLowerCase().trim();
-      return rentListings.filter(item => {
+      const results = rentListings.filter(item => {
         const { isExpired } = getExpiryInfo(item.timestamp);
         if (isExpired) return false;
         const matchSearch = item.towerFlat.toLowerCase().includes(query) ||
@@ -3646,13 +3738,14 @@ ${SITE_URL}`);
         const matchTenant = matchesTenantType(item.preferredTenant, rentFilters.tenant);
         const matchParking = rentFilters.parking === "All" || item.parking.toLowerCase().includes("yes");
         return matchSearch && matchTower && matchBhk && matchOwner && matchAvailableNow && matchBudget && matchTenant && matchParking;
-      }).sort((a, b) => (rankRentListing(b) - rankRentListing(a)) || newestFirst(a, b));
+      });
+      return sortRentListings(results);
     }
 
     function filteredLookingListings() {
       const query = lookingFilters.search.toLowerCase().trim();
       const queryDigits = query.replace(/[^\d]/g, "");
-      return lookingListings.filter(item => {
+      const results = lookingListings.filter(item => {
         const { isExpired } = getExpiryInfo(item.timestamp);
         if (isExpired) return false;
         const matchSearch = item.posterName.toLowerCase().includes(query) ||
@@ -3665,7 +3758,8 @@ ${SITE_URL}`);
         const matchBudget = matchesBudgetBand(item.budget, lookingFilters.budget);
         const matchTenant = matchesTenantType(item.tenantType, lookingFilters.tenant);
         return matchSearch && matchArea && matchBhk && matchBudget && matchTenant;
-      }).sort((a, b) => (rankLookingListing(b) - rankLookingListing(a)) || newestFirst(a, b));
+      });
+      return sortLookingListings(results);
     }
 
     function dedupeByNewest(items, keyFn) {
@@ -3726,6 +3820,7 @@ ${SITE_URL}`);
         rentFilters.budget !== "All" ||
         rentFilters.tenant !== "All" ||
         rentFilters.parking !== "All" ||
+        rentFilters.sort !== "smart" ||
         rentFilters.ownerOnly ||
         rentFilters.availableNow
       );
@@ -3750,7 +3845,8 @@ ${SITE_URL}`);
         lookingFilters.area !== "All" ||
         lookingFilters.bhk !== "All" ||
         lookingFilters.budget !== "All" ||
-        lookingFilters.tenant !== "All"
+        lookingFilters.tenant !== "All" ||
+        lookingFilters.sort !== "smart"
       );
     }
 
@@ -4088,8 +4184,8 @@ ${SITE_URL}`;
     }
 
     function resetFiltersAndReload() {
-      rentFilters = { search: '', tower: 'All', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false };
-      lookingFilters = { search: '', area: 'All', bhk: 'All', budget: 'All', tenant: 'All' };
+      rentFilters = { search: '', tower: 'All', bhk: 'All', budget: 'All', tenant: 'All', parking: 'All', ownerOnly: false, availableNow: false, sort: 'smart' };
+      lookingFilters = { search: '', area: 'All', bhk: 'All', budget: 'All', tenant: 'All', sort: 'smart' };
       syncUrlFromState();
       renderFilters();
       renderListings();
