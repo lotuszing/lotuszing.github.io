@@ -1465,6 +1465,20 @@
       font-size: var(--text-body-lg);
       line-height: 1.45;
       box-shadow: 0 10px 24px rgba(7, 27, 58, 0.07);
+      opacity: 0;
+      transform: translateY(-0.35rem) scale(0.985);
+      transition:
+        opacity 220ms ease,
+        transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: opacity, transform;
+    }
+    .portal-feedback.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .portal-feedback.is-closing {
+      opacity: 0;
+      transform: translateY(-0.25rem) scale(0.99);
     }
     .portal-feedback strong {
       color: #071B3A;
@@ -2345,16 +2359,32 @@
       throw lastError || new Error("No listing source configured");
     }
 
+    async function fetchLiveListingsPayload(timeoutMs = 5000) {
+      if (!LIVE_API_URL) throw new Error("No live listing source configured");
+      return fetchJsonWithTimeout(LIVE_API_URL, timeoutMs);
+    }
+
     let feedbackTimer = null;
+    let feedbackHideTimer = null;
     function showPortalFeedback(title, message, tone = "info") {
       const box = document.getElementById("portal-feedback");
       if (!box) return;
       clearTimeout(feedbackTimer);
+      clearTimeout(feedbackHideTimer);
       box.className = `portal-feedback ${tone === "good" ? "is-good" : tone === "warn" ? "is-warn" : ""}`;
       box.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
       box.classList.remove("hidden");
+      box.classList.remove("is-closing");
+      requestAnimationFrame(() => {
+        box.classList.add("is-visible");
+      });
       feedbackTimer = setTimeout(() => {
-        box.classList.add("hidden");
+        box.classList.remove("is-visible");
+        box.classList.add("is-closing");
+        feedbackHideTimer = setTimeout(() => {
+          box.classList.add("hidden");
+          box.classList.remove("is-closing");
+        }, 260);
       }, 5200);
     }
 
@@ -3462,6 +3492,11 @@ ${SITE_URL}`);
       }
 
       loader.classList.add('hidden');
+      if (rentListings.length || lookingListings.length) {
+        setSyncStatus(`Update paused ${syncTimeLabel()}`, "error");
+        showPortalFeedback("Could not refresh.", "Keeping the current board visible. Please try again shortly.", "warn");
+        return;
+      }
       setSyncStatus(`Update paused ${syncTimeLabel()}`, "error");
       showPortalFeedback("Could not refresh.", "Please try again. If this repeats, wait a minute and refresh the board.", "warn");
       renderSetupPending("The board is taking longer than usual to update. Please refresh or try again shortly.");
@@ -3470,7 +3505,7 @@ ${SITE_URL}`);
     async function refreshListingsQuietly() {
       if (document.hidden) return;
       try {
-        const payload = await fetchListingsPayload(5000);
+        const payload = await fetchLiveListingsPayload(5000);
         const nextSignature = listingsPayloadSignature(payload);
         if (!nextSignature || nextSignature === lastDataSignature) {
           lastDataUpdatedAt = payload?.generatedAt || lastDataUpdatedAt;
