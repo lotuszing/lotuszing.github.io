@@ -1374,6 +1374,33 @@
       text-transform: uppercase;
       transform: translateY(0.1rem);
     }
+    .header-post-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.2rem;
+      padding: 0.42rem 0.76rem;
+      border: 1px solid rgba(0, 88, 163, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #0058A3;
+      font-family: var(--font-body);
+      font-size: var(--text-small);
+      font-weight: 850;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(7, 27, 58, 0.06);
+      transition: transform var(--motion-fast) var(--ease-out), background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
+    }
+    .header-post-pill:hover {
+      transform: translateY(-1px);
+      border-color: rgba(0, 88, 163, 0.38);
+      background: #FFFFFF;
+    }
+    .header-post-pill:active {
+      transform: translateY(0) scale(0.985);
+    }
     .home-brand-link:focus-visible {
       outline: 3px solid rgba(0, 88, 163, 0.28);
       outline-offset: 3px;
@@ -2285,7 +2312,10 @@
             <span id="refresh-counter" class="refresh-counter">Checking board</span>
             <p class="header-subcopy">Resident flat listings and tenant requests, updated from verified community submissions.</p>
           </div>
-          <span id="sync-status" hidden>Checking</span>
+          <div class="flex shrink-0 items-start gap-2">
+            <button type="button" onclick="openSubmitChecklist('submit')" class="header-post-pill">Post listing</button>
+            <span id="sync-status" hidden>Checking</span>
+          </div>
         </div>
 
         <div class="header-actions grid">
