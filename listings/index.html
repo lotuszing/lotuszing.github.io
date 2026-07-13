@@ -3760,6 +3760,54 @@ ${SITE_URL}`);
       cleanupListings();
     }
 
+    function rentListingKey(item) {
+      return normalizeKey(item?.towerFlat) || normalizeKey(item?.id);
+    }
+
+    function lookingListingKey(item) {
+      return normalizeKey(`${item?.posterName}-${item?.preferredBhk}-${item?.budget}`) || normalizeKey(item?.id);
+    }
+
+    function mergeListingSet(currentItems, nextItems, keyFn) {
+      const byKey = new Map();
+      currentItems.forEach((item) => {
+        const key = keyFn(item);
+        if (key && !getExpiryInfo(item.timestamp).isExpired) byKey.set(key, item);
+      });
+      nextItems.forEach((item) => {
+        const key = keyFn(item);
+        if (!key) return;
+        const existing = byKey.get(key);
+        byKey.set(key, existing && newestFirst(existing, item) < 0 ? existing : item);
+      });
+      return Array.from(byKey.values());
+    }
+
+    function mergeListingsPayload(payload) {
+      const nextRent = Array.isArray(payload?.rentListings) ? payload.rentListings.filter(isValidRentListing) : [];
+      const nextLooking = Array.isArray(payload?.lookingListings) ? payload.lookingListings.filter(isValidLookingListing) : [];
+      rentListings = mergeListingSet(rentListings, nextRent, rentListingKey);
+      lookingListings = mergeListingSet(lookingListings, nextLooking, lookingListingKey);
+      lastDataUpdatedAt = payload?.generatedAt || lastDataUpdatedAt;
+      cleanupListings();
+      lastDataSignature = listingsPayloadSignature({
+        rentListings,
+        lookingListings
+      });
+    }
+
+    function hasVisibleListings() {
+      return rentListings.length > 0 || lookingListings.length > 0;
+    }
+
+    function safelyAcceptListingsPayload(payload) {
+      if (hasVisibleListings()) {
+        mergeListingsPayload(payload);
+      } else {
+        applyListingsPayload(payload);
+      }
+    }
+
     function listingsPayloadSignature(payload) {
       const rent = Array.isArray(payload?.rentListings) ? payload.rentListings : [];
       const looking = Array.isArray(payload?.lookingListings) ? payload.lookingListings : [];
@@ -3795,7 +3843,7 @@ ${SITE_URL}`);
 
       try {
         const payload = await fetchListingsPayload(SHEET_TIMEOUT_MS);
-        applyListingsPayload(payload);
+        safelyAcceptListingsPayload(payload);
         loader.classList.add('hidden');
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
         renderListings();
@@ -3827,8 +3875,10 @@ ${SITE_URL}`);
           setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
           return;
         }
-        applyListingsPayload(payload);
+        const previousSignature = lastDataSignature;
+        mergeListingsPayload(payload);
         setSyncStatus(`Updated ${formatUpdatedLabel(lastDataUpdatedAt)}`, "live");
+        if (lastDataSignature === previousSignature) return;
         renderListings();
         const total = rentListings.length + lookingListings.length;
         showPortalFeedback("Listings updated.", `${total} active ${total === 1 ? "post" : "posts"} now live.`, "good");
