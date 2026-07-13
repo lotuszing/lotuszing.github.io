@@ -2257,6 +2257,7 @@
     const DATA_JSON_URL = "listings.json";
     const SHEET_TIMEOUT_MS = 8000;
     const LIVE_REFRESH_MS = 2000;
+    const LOAD_TEST_COUNT = 100;
     const REPORT_REASONS = [
       "Already rented / closed",
       "Wrong information",
@@ -2346,7 +2347,83 @@
       }
     }
 
+    function isLoadTestMode() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("loadtest") === "100" || params.get("flood") === "100";
+    }
+
+    function buildLoadTestPayload(count = LOAD_TEST_COUNT) {
+      const towers = [1, 2, 3, 4, 5, 6, 15, 16];
+      const bhks = ["Studio", "1 BHK", "2 BHK", "3 BHK", "4+ BHK"];
+      const furnishing = ["Fully furnished", "Semi furnished", "Unfurnished"];
+      const tenantTypes = ["Any", "Family", "Bachelor", "Company lease"];
+      const names = ["Amit", "Sunita", "Rohit", "Neha", "Karan", "Priya", "Ankit", "Meera"];
+      const rentCount = Math.round(count * 0.7);
+      const lookingCount = count - rentCount;
+      const today = new Date();
+      const stamp = "2026-07-13 09:00:00";
+
+      const futureDate = (offset) => {
+        const next = new Date(today);
+        next.setDate(today.getDate() + offset);
+        return next.toISOString().slice(0, 10);
+      };
+
+      const rentListings = Array.from({ length: rentCount }, (_, index) => {
+        const tower = towers[index % towers.length];
+        const bhk = bhks[(index + 2) % bhks.length];
+        const rent = 12000 + ((index % 13) * 2500);
+        return {
+          id: `load-rent-${index + 1}`,
+          timestamp: stamp,
+          towerFlat: `Tower ${tower}, Flat ${201 + index}`,
+          bhkType: bhk,
+          furnishing: furnishing[index % furnishing.length],
+          monthlyRent: rent,
+          securityDeposit: rent * 2,
+          availableFrom: futureDate((index % 28) + 1),
+          preferredTenant: tenantTypes[index % tenantTypes.length],
+          parking: index % 3 === 0 ? "Yes" : "No",
+          listedBy: index % 4 === 0 ? "Broker Agent" : "Owner",
+          posterName: names[index % names.length],
+          contactNumber: `98100${String(10000 + index).slice(-5)}`,
+          notes: index % 5 === 0 ? "Society-facing unit. Visit timing flexible." : "",
+          reportCount: 0,
+          reportRisk: "",
+          extraFields: []
+        };
+      });
+
+      const lookingListings = Array.from({ length: lookingCount }, (_, index) => {
+        const tower = towers[(index + 3) % towers.length];
+        const bhk = bhks[(index + 1) % bhks.length];
+        return {
+          id: `load-looking-${index + 1}`,
+          timestamp: stamp,
+          preferredBhk: bhk,
+          budget: 18000 + ((index % 10) * 3000),
+          preferredMoveIn: futureDate((index % 21) + 2),
+          occupants: (index % 5) + 1,
+          tenantType: tenantTypes[(index + 1) % tenantTypes.length],
+          preferredArea: `Tower ${tower}`,
+          posterName: names[(index + 2) % names.length],
+          contactNumber: `98200${String(20000 + index).slice(-5)}`,
+          notes: index % 4 === 0 ? "Ready to close quickly if the fit is right." : "",
+          reportCount: 0,
+          reportRisk: "",
+          extraFields: []
+        };
+      });
+
+      return {
+        generatedAt: new Date().toISOString(),
+        rentListings,
+        lookingListings
+      };
+    }
+
     async function fetchListingsPayload(timeoutMs = SHEET_TIMEOUT_MS) {
+      if (isLoadTestMode()) return buildLoadTestPayload();
       const sources = [LIVE_API_URL, DATA_JSON_URL].filter(Boolean);
       let lastError = null;
       for (const source of sources) {
@@ -2360,6 +2437,7 @@
     }
 
     async function fetchLiveListingsPayload(timeoutMs = 5000) {
+      if (isLoadTestMode()) return buildLoadTestPayload();
       if (!LIVE_API_URL) throw new Error("No live listing source configured");
       return fetchJsonWithTimeout(LIVE_API_URL, timeoutMs);
     }
