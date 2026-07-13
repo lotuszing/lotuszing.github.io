@@ -12,7 +12,7 @@ const LIMITS = {
 };
 
 const DEFAULT_ALLOWED_ORIGINS = "https://lotuszing.github.io,null";
-const CACHE_TTL_SECONDS = 1;
+const CACHE_TTL_SECONDS = 10;
 
 function corsHeaders(request, env) {
   const origin = request.headers.get("Origin") || "";
@@ -35,7 +35,7 @@ function json(body, status, request, env, cacheable = false) {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": cacheable
-        ? `public, max-age=${CACHE_TTL_SECONDS}, s-maxage=${CACHE_TTL_SECONDS}, stale-while-revalidate=30`
+        ? `public, max-age=${CACHE_TTL_SECONDS}, s-maxage=${CACHE_TTL_SECONDS}, stale-while-revalidate=60`
         : "no-store",
       "X-Content-Type-Options": "nosniff",
       ...corsHeaders(request, env)

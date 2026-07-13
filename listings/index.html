@@ -2416,7 +2416,7 @@
       });
 
       return {
-        generatedAt: new Date().toISOString(),
+        generatedAt: "2026-07-13T09:00:00.000Z",
         rentListings,
         lookingListings
       };
@@ -2424,7 +2424,7 @@
 
     async function fetchListingsPayload(timeoutMs = SHEET_TIMEOUT_MS) {
       if (isLoadTestMode()) return buildLoadTestPayload();
-      const sources = [LIVE_API_URL, DATA_JSON_URL].filter(Boolean);
+      const sources = LIVE_API_URL ? [LIVE_API_URL] : [DATA_JSON_URL].filter(Boolean);
       let lastError = null;
       for (const source of sources) {
         try {
