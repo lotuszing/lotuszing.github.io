@@ -1,63 +1,25 @@
 {
-  "generatedAt": "2026-07-13T04:48:28.529Z",
-  "rentListings": [],
-  "lookingListings": [
+  "generatedAt": "2026-07-13T07:59:01.317Z",
+  "rentListings": [
     {
-      "id": "sheet-looking-J1kxK9J",
-      "timestamp": "2026-07-12 14:48:21",
-      "preferredBhk": "3 BHK",
-      "budget": 25000,
-      "preferredMoveIn": "2026-07-31",
-      "occupants": 1,
-      "tenantType": "Bachelors (Men)",
-      "preferredArea": "Tower 1, Tower 3, Tower 5",
+      "id": "sheet-rent-KpB481k",
+      "timestamp": "2026-07-13 7:45:48",
+      "towerFlat": "Tower 6",
+      "bhkType": "3 BHK",
+      "furnishing": "Fully furnished",
+      "monthlyRent": 25000,
+      "securityDeposit": 60000,
+      "availableFrom": "2026-07-31",
+      "preferredTenant": "Any",
+      "parking": "Yes",
+      "listedBy": "Owner",
       "posterName": "Shailansh",
       "contactNumber": "919917749494",
-      "notes": "",
-      "reportCount": 3,
-      "reportRisk": "high",
-      "extraFields": [
-        {
-          "label": "Reporter Keys",
-          "value": "codex-test-20260713-1|codex-test-20260713-2|codex-test-20260713-5"
-        },
-        {
-          "label": "Last Reported At",
-          "value": "7/12/2026"
-        }
-      ]
-    },
-    {
-      "id": "sheet-looking-YjzvDkd",
-      "timestamp": "2026-07-12 14:50:55",
-      "preferredBhk": "3 BHK",
-      "budget": 25000,
-      "preferredMoveIn": "2026-07-29",
-      "occupants": 1,
-      "tenantType": "Bachelors (Women)",
-      "preferredArea": "Tower 1, Tower 2, Tower 3, Tower 5",
-      "posterName": "Shailansh",
-      "contactNumber": "919897359581",
-      "notes": "",
-      "reportCount": 0,
-      "reportRisk": "",
-      "extraFields": []
-    },
-    {
-      "id": "sheet-looking-LDMqpyp",
-      "timestamp": "2026-07-12 20:13:53",
-      "preferredBhk": "3 BHK",
-      "budget": 35000,
-      "preferredMoveIn": "2026-07-31",
-      "occupants": 5,
-      "tenantType": "Bachelors (Women)",
-      "preferredArea": "Tower 16",
-      "posterName": "Shailansh",
-      "contactNumber": "919458451695",
       "notes": "",
       "reportCount": 0,
       "reportRisk": "",
       "extraFields": []
     }
-  ]
+  ],
+  "lookingListings": []
 }
